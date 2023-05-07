@@ -3,10 +3,9 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
-
 }
 body {
-    background-image: url(/assets/images/LoginBG.jpg);
+    background-image: url(./assets/images/LoginBG.jpg);
     background-size: auto;
     background-repeat: no-repeat;
     background-position: center;
