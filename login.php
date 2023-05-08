@@ -1,20 +1,40 @@
 <?php
-include "./lib/database.php";
+require './lib/database.php';
 $userName = $passWord = "";
 $userName_error = $passWord_error = "";
 if(isset($_POST['submit'])) {
     if (empty($_POST['userName'])) {
         $userName_error = "Bạn chưa đăng nhập tài khoản";
     } else {
-        $userName = $_POST['userName'];
+        $userName = htmlspecialchars($_POST['userName']);
     }
 
     if (empty($_POST['passWord'])) {
         $passWord_error = "Bạn chưa đăng nhập mật khẩu";
     } else {
-        $passWord = $_POST['passWord'];
+        $passWord = htmlspecialchars($_POST['passWord']);
     }
-    
+}
+
+$test = empty($userName_error) && empty($passWord_error) ;
+if($test){
+    $sql = "select * from TK_HS where BINARY  TenDN = ? and BINARY  passWord = ? ";
+    try{
+       $statement = $connection->prepare($sql);
+       $statement->execute([$userName,$passWord]);
+       $student = $statement->fetch();
+       if($student){
+        session_start();
+        $_SESSION['student_id'] = $userName;
+        $_SESSION['student_name'] = $passWord;
+        header("Location: pages/home.php");
+        exit();
+       }else{
+        $passWord_error = "Tài khoản hoặc mật khẩu bạn sai";
+       }
+    }catch(PDOException $e){
+         $e->getMessage();
+    }
 }
 
 
@@ -49,13 +69,15 @@ if(isset($_POST['submit'])) {
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc Email:">
                     </div>
-                    <p style="color:red"><?php
+                    <p style="color:red ; margin-bottom: 20px;"><?php
                             echo "$userName_error";
                     ?></p>
                     <div>
-                        <input name="passWord" class="login-student-form-input" type="text" placeholder="Mật khẩu : ">
+                        <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
                     </div>
-                    <p style="color:red"><?php
+                    <p style="color:red ; margin-bottom: 20px;">
+                    <?php
+                    if(isset($_POST['submit']))
                             echo "$passWord_error";
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
