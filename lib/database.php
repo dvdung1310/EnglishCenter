@@ -1,5 +1,4 @@
 <?php
-
 define("DATABASE_SEVER","localhost");
 define("DATABASE_USER","root");
 define("DATABASE_PASSWORD","Toiladung123");

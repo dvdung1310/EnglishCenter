@@ -1,7 +1,77 @@
 
+<?php
+include "./lib/database.php";
+$name = $gender = $date = $address = $age = $phone = $email = ""; 
+$error_name = $error_gender = $error_date = $error_address = $error_age = $error_phone = $error_email = ""; 
+if(isset($_POST['submit'])){
+    if(empty($_POST['name'])){
+        $error_name = "chưa đăng nhập tên ";
+    }else{
+       $name = $_POST['name'] ; 
+    }
+
+    if(empty($_POST['gender'])){
+        $error_gender = "chưa ấn giới tính ";
+    }else{
+       $gender = $_POST['gender'] ; 
+    }
+
+    if(empty($_POST['date'])){
+        $error_date = "chưa điền đủ thông tin ngày sinh ";
+    }else{
+       $date = $_POST['date'] ; 
+    }
+
+    if(empty($_POST['address'])){
+        $error_address = "chưa đăng nhập địa chỉ ";
+    }else{
+       $address = $_POST['address'] ; 
+    }
+
+    if(empty($_POST['age'])){
+        $error_age = "chưa đăng nhập tuổi";
+    }else{
+       $age = $_POST['age'] ; 
+    }
+
+    if(empty($_POST['phone'])){
+        $error_phone = "chưa đăng nhập số điện thoại ";
+    }else{
+       $phone = $_POST['phone'] ; 
+    }
+
+    if(empty($_POST['email'])){
+        $error_email = "chưa đăng nhập email ";
+    }else{
+       $email = $_POST['email'] ; 
+    }
+}
+$test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
+if($test){
+    $sql = "insert into HOCSINH(TENHS,GioiTinh,NgaySinh,Tuoi,DIACHI,sdt,Email) values(?,?,?,?,?,?,?)";
+    try{
+       $statement = $connection->prepare($sql);
+       $statement->bindParam(1,$name);
+       $statement->bindParam(2,$gender);
+       $statement->bindParam(3,$date);
+       $statement->bindParam(4,$age);
+       $statement->bindParam(5,$address);
+       $statement->bindParam(6,$phone);
+       $statement->bindParam(7,$email);
+       $statement->execute();
+       $id = $connection->lastInsertId();
+   if($id){
+    header("Location: pages/home.php?id=$id");
+    exit();
+   }
+    }catch(PDOException $e){
+         $e->getMessage();
+    }
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +85,6 @@
         <img src="./assets/images/login_stars.png" alt="">
     </div>
     <div id="contain">
-
         <div class="login-student">
             <div class="login-student-img">
                 <img src="./assets/images/Apollo-Logo.png" alt="">
@@ -27,35 +96,76 @@
                         <h1>Đăng kí</h1>
                     </div>
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="userName" placeholder="Tên phụ huynh:">
+                        <input class="login-student-form-input" type="text" name="name" placeholder="Tên học sinh :">
                     </div>
+                    <p style="color:red">
+                            <?php
+                            echo $error_name;
+                            ?>
+                    </p>
 
-                    <div class="login-student-form-center">
-                       <select>
-                        <option value="">Nam</option>
-                        <option value="">Nữ</option>
+                    <div style="display: flex;" class="login-student-form-center">
+                        <div>
+                            <h1>Gíơi tính</h1>
+                        </div>
+                       <select name="gender">
+                        <option value="nam">Nam</option>
+                        <option value="nu">Nữ</option>
+                        <option value="lgbt">LGBT</option>
                        </select>
                     </div>
+                    <p style="color:red">
+                            <?php
+                            echo $error_gender;
+                            ?>
+                    </p>
 
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="date" name="userName" placeholder="Ngày sinh :">
-                    </div>
-                    <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="userName" placeholder="Địa chỉ:">
+                        <input class="login-student-form-input" type="date" name="date" placeholder="Ngày sinh :">
                     </div>
 
+                    <p style="color:red">
+                            <?php
+                            echo $error_date;
+                            ?>
+                    </p>
+
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="userName" placeholder="Số điện thoại:">
+                        <input class="login-student-form-input" type="text" name="age" placeholder="Tuổi:">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;"><?php
-                            
-                    ?></p>
+
+                    <p style="color:red">
+                            <?php
+                            echo $error_age;
+                            ?>
+                    </p>
+
                     <div>
-                        <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
+                        <input name="address" class="login-student-form-input" type="text" placeholder="Địa Chỉ : ">
                     </div>
+                    <p style="color:red">
+                            <?php
+                            echo $error_address;
+                            ?>
+                    </p>
+
                     <div>
-                        <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
+                        <input name="phone" class="login-student-form-input" type="text" placeholder="Số điện thoại : ">
                     </div>
+                    <p style="color:red">
+                            <?php
+                            echo $error_phone;
+                            ?>
+                    </p>
+
+                    <div>
+                        <input name="email" class="login-student-form-input" type="text" placeholder="Email : ">
+                    </div>
+                    <p style="color:red">
+                            <?php
+                            echo $error_email;
+                            ?>
+                    </p>
                     <p style="color:red ; margin-bottom: 20px;">
                     <?php
                     if(isset($_POST['submit']))
