@@ -1,6 +1,6 @@
 
 <?php
-include "./lib/database.php";
+include "./lib/function.php";
 $name = $gender = $date = $address = $age = $phone = $email = ""; 
 $error_name = $error_gender = $error_date = $error_address = $error_age = $error_phone = $error_email = ""; 
 if(isset($_POST['submit'])){
@@ -43,29 +43,26 @@ if(isset($_POST['submit'])){
     if(empty($_POST['email'])){
         $error_email = "chưa đăng nhập email ";
     }else{
-       $email = $_POST['email'] ; 
+       $email = $_POST['email']; 
+    }
+
+    if(empty($_POST['maph'])){
+      $maph = null ;
+    }else{
+       $maph = $_POST['maph'] ; 
     }
 }
-$test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
+$test = false;
+if(isset($_POST['submit'])){
+    $test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
+}
 if($test){
-    $sql = "insert into HOCSINH(TENHS,GioiTinh,NgaySinh,Tuoi,DIACHI,sdt,Email) values(?,?,?,?,?,?,?)";
-    try{
-       $statement = $connection->prepare($sql);
-       $statement->bindParam(1,$name);
-       $statement->bindParam(2,$gender);
-       $statement->bindParam(3,$date);
-       $statement->bindParam(4,$age);
-       $statement->bindParam(5,$address);
-       $statement->bindParam(6,$phone);
-       $statement->bindParam(7,$email);
-       $statement->execute();
-       $id = $connection->lastInsertId();
-   if($id){
-    header("Location: pages/home.php?id=$id");
-    exit();
-   }
-    }catch(PDOException $e){
-         $e->getMessage();
+    $result = registerTableStudent($name,$gender,$date,$age,$address,$phone,$email,$connection);
+    if($result != null){
+        header("Location: RegisterAcounHS.php?id=$result&&maph=$maph");
+        exit();
+    }else{
+       
     }
 }
 ?>
@@ -161,11 +158,15 @@ if($test){
                     <div>
                         <input name="email" class="login-student-form-input" type="text" placeholder="Email : ">
                     </div>
+                    
                     <p style="color:red">
                             <?php
                             echo $error_email;
                             ?>
                     </p>
+                    <div>
+                        <input name="maph" class="login-student-form-input" type="text" placeholder="Mã phụ huynh (nếu có) : ">
+                    </div>
                     <p style="color:red ; margin-bottom: 20px;">
                     <?php
                     if(isset($_POST['submit']))
@@ -173,7 +174,7 @@ if($test){
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
                         <a class="form-a" href="">Làm sao để đăng nhập ?</a>
-                        <input class="form-submit" type="submit" name="submit" value="Đăng kí">
+                        <input class="form-submit" type="submit" name="submit" value="Tiếp theo">
                     </div>
 
                     <div>

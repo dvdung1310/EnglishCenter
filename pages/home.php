@@ -1,3 +1,7 @@
+<?php
+ session_start();
+ $name = $_SESSION['userName'];
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +11,10 @@
     <title>Document</title>
 </head>
 <body>
-    home.php
+    <h1>Helo
+        <?php
+        echo $name;
+        ?>
+    </h1>
 </body>
 </html>
