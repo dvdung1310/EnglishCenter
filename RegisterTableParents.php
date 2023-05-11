@@ -46,10 +46,10 @@ if(isset($_POST['submit'])){
        $email = $_POST['email']; 
     }
 
-    if(empty($_POST['maph'])){
-      $maph = null ;
+    if(empty($_POST['mahs'])){
+      $mahs = null ;
     }else{
-       $maph = $_POST['maph'] ; 
+       $mahs = $_POST['mahs'] ; 
     }
 }
 $test = false;
@@ -57,9 +57,9 @@ if(isset($_POST['submit'])){
     $test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
 }
 if($test){
-    $result = registerTableStudent($name,$gender,$date,$age,$address,$phone,$email,$connection);
+    $result = registerTableParents($name,$gender,$date,$age,$address,$phone,$email,$connection);
     if($result != null){
-        header("Location: RegisterAcounHS.php?id=$result&&maph=$maph");
+        header("Location: RegisterAcountParents.php?id=$result&&mahs=$mahs");
         exit();
     }else{
        
@@ -90,10 +90,10 @@ if($test){
             <div style="padding: 0 100px;" class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <div style="display: flex;justify-content: start;">
-                        <h1>Thông tin học sinh</h1>
+                        <h1>Thông tin phụ huynh</h1>
                     </div>
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="name" placeholder="Tên học sinh :">
+                        <input class="login-student-form-input" type="text" name="name" placeholder="Tên học phụ huynh :">
                     </div>
                     <p style="color:red">
                             <?php
@@ -165,7 +165,7 @@ if($test){
                             ?>
                     </p>
                     <div>
-                        <input name="maph" class="login-student-form-input" type="text" placeholder="Mã phụ huynh (nếu có) : ">
+                        <input name="mahs" class="login-student-form-input" type="text" placeholder="Mã học sinh (nếu có) : ">
                     </div>
                     <p style="color:red ; margin-bottom: 20px;">
                     <?php
@@ -173,7 +173,7 @@ if($test){
                            
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
-                        <a class="form-a" href="login.php">Làm sao để đăng nhập ?</a>
+                        <a class="form-a" href="/login.php">Làm sao để đăng nhập ?</a>
                         <input class="form-submit" type="submit" name="submit" value="Tiếp theo">
                     </div>
 

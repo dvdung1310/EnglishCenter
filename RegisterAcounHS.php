@@ -3,6 +3,7 @@ include './lib/function.php';
 $userName = $passWord = $confirmPassword = "";
 $userName_error = $passWord_error = $confirmPassword_error = "";
 $success="";
+$maHS = $_GET['id'];
 if(isset($_POST['submit'])) {
     if (empty($_POST['userName'])) {
         $userName_error = "Bạn chưa đăng nhập tài khoản";
@@ -10,7 +11,7 @@ if(isset($_POST['submit'])) {
         $userName = htmlspecialchars($_POST['userName']);
     }
 
-    if(empty($_POST['passWord'])) {
+    if(empty($_POST['passWord'])){
         $passWord_error = "Bạn chưa đăng nhập mật khẩu";
     } else {
         $passWord = htmlspecialchars($_POST['passWord']);
@@ -21,7 +22,7 @@ if(isset($_POST['submit'])) {
     } else {
         $confirmPassword = htmlspecialchars($_POST['confirmpassWord']);
     }
- 
+
     if($userName!=""){
         $result = checkExitUser($userName,$connection);
         if($result){
@@ -29,7 +30,16 @@ if(isset($_POST['submit'])) {
         }else if(!empty($passWord) && !empty($confirmPassword)){
             $check = testConfirmPassWord($passWord,$confirmPassword);
             if($check){
-                $success = "Bạn đã đăng kí thành công";
+                $student = registerAcountStudent($userName, $passWord, $maHS,$connection);
+                if($student){
+                  $success = "Bạn đã tạo tài khoản thành công";
+                  $maph = $_GET['maph'];
+                  if($maHS != null){
+                    createTablPH_HS($maHS,$maph,$connection);
+                  }
+                }else{
+                    $success = "Lỗi !!!";
+                }
             }else{
                 $confirmPassword_error = "Mật khẩu không trùng khớp";
             }
@@ -99,7 +109,7 @@ if(isset($_POST['submit'])) {
                             echo "$success";
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
-                        <a class="form-a" href="">Làm sao để đăng nhập ?</a>
+                        <a class="form-a" href="./login.php">Làm sao để đăng nhập ?</a>
                         <input class="form-submit" type="submit" name="submit" value="Đăng kí">
                     </div>
 

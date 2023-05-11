@@ -22,9 +22,8 @@ if(isset($_POST['submit'])){
 }
 
 if($test){
-    $result = checkAcount($userName,$passWord,$connection);
-    $checkParents = checkAcountParents($userName,$passWord,$connection);
-    if($result || $checkParents){
+    $result = checkAcountTeacher($userName,$passWord,$connection);
+    if($result){
         session_start();
         $_SESSION['userName'] = htmlspecialchars($userName);
         header("Location: pages/home.php");
@@ -61,7 +60,7 @@ if($test){
             <div class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <div style="display: flex;justify-content: start;">
-                        <h1>Đăng nhập</h1>
+                        <h1>Giáo Viên</h1>
                     </div>
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc Email:">
@@ -78,8 +77,7 @@ if($test){
                             echo "$passWord_error";
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
-                        <a class="form-a" href="./RegisterTableHS.php">Đăng kí tài khoản học sinh</a>
-                        <a class="form-a" href="./RegisterTableParents.php">Đăng kí tài khoản phụ huynh</a>
+
                     </div>
 
                     <div>

@@ -12,6 +12,8 @@ create table HOCSINH(
      Email varchar(50) not null
 );
 
+
+
 insert into HOCSINH(TENHS,GioiTinh,NgaySinh,Tuoi,DIACHI,sdt,Email) values
 ('Nguyen Van A', 'Nam', '2005-01-01', 18, 'Ha Noi', 123456789, 'nguyenvana@gmail.com'),
 ('Tran Thi B', 'Nu', '2006-02-02', 17, 'Ho Chi Minh', 987654321, 'tranthib@gmail.com');
@@ -61,7 +63,7 @@ PRIMARY KEY (MaHS))
 CREATE TABLE tk_hs 
 (UserName VARCHAR(30) NOT NULL , 
 Password VARCHAR(30) NOT NULL , 
-MaHS int,
+MaHS int not null,
 foreign key (MaHS) references hocsinh(MaHS) , 
 PRIMARY KEY (UserName)) 
 
@@ -81,9 +83,9 @@ PRIMARY KEY (MaPH))
 CREATE TABLE tk_ph 
 (UserName VARCHAR(30) NOT NULL , 
 Password VARCHAR(30) NOT NULL , 
-MaPH int,
+MaPH int not null,
 foreign key (MaPH) references phuhuynh(MaPH) , 
-PRIMARY KEY (UserName)) 
+PRIMARY KEY (UserName))
 
 --ph-hs
 CREATE TABLE ph_hs
@@ -109,7 +111,12 @@ Email VARCHAR(50) NOT NULL ,
 PRIMARY KEY (MaGV)) 
 
 --tk_gv
-CREATE TABLE tk_gv (UserName VARCHAR(30) NOT NULL , Password VARCHAR(30) NOT NULL , MaGV int, foreign key (MaGV) references giaovien(MaGV) , PRIMARY KEY (UserName));
+CREATE TABLE tk_gv (
+UserName VARCHAR(30) NOT NULL , 
+Password VARCHAR(30) NOT NULL , 
+MaGV int, 
+foreign key (MaGV) references giaovien(MaGV) , 
+PRIMARY KEY (UserName));
 
 --lop
 CREATE TABLE lop 
