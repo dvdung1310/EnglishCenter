@@ -96,7 +96,6 @@ foreign key (MaHS) references hocsinh(MaHS) ,
 PRIMARY KEY (MaHS,MaPH)) 
 
 --giaovien
-
 CREATE TABLE giaovien 
 (MaGV INT NOT NULL AUTO_INCREMENT,
 TenGV VARCHAR(30) NOT NULL , 
@@ -121,9 +120,9 @@ PRIMARY KEY (UserName));
 --lop
 CREATE TABLE lop 
 (MaLop varchar(20),
-TenLop VARCHAR(100) NOT NULL , 
-LuaTuoi int not null,
-ThoiGian date not null,
+ TenLop VARCHAR(100) NOT NULL , 
+ LuaTuoi int not null,
+ ThoiGian date not null,
  SLHS int not null DEFAULT '0',
  SLHSToiDa int not null,
  HocPhi float not null,

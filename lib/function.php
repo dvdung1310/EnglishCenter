@@ -35,6 +35,40 @@ function checkExitParents($user, $connection)
         echo $e->getMessage();
     }
 }
+// check đã tồn tại mã học sinh chưa 
+function checkCodeStudents($mahs, $connection)
+{
+    $sql = "select * from tk_hs Where mahs = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$mahs]);
+        $student = $statement->fetch();
+        if ($student) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+// check đã tồn tại mã phụ huynh chưa 
+function checkCodeParents($maph, $connection)
+{
+    $sql = "select * from tk_ph Where maph = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$maph]);
+        $student = $statement->fetch();
+        if ($student) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 
 //check mật khẩu có trùng nhau hay không  
 function testConfirmPassWord($passWord, $confirmPassword)

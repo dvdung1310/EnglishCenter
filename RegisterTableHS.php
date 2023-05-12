@@ -3,6 +3,8 @@
 include "./lib/function.php";
 $name = $gender = $date = $address = $age = $phone = $email = ""; 
 $error_name = $error_gender = $error_date = $error_address = $error_age = $error_phone = $error_email = ""; 
+$check = true;
+$error_check = "";
 if(isset($_POST['submit'])){
     if(empty($_POST['name'])){
         $error_name = "chưa đăng nhập tên ";
@@ -50,20 +52,21 @@ if(isset($_POST['submit'])){
       $maph = null ;
     }else{
        $maph = $_POST['maph'] ; 
+       $check = checkCodeParents($maph,$connection);
     }
 }
 $test = false;
 if(isset($_POST['submit'])){
     $test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
 }
-if($test){
+if($test && $check){
     $result = registerTableStudent($name,$gender,$date,$age,$address,$phone,$email,$connection);
     if($result != null){
         header("Location: RegisterAcounHS.php?id=$result&&maph=$maph");
         exit();
-    }else{
-       
     }
+}else {
+    $error_check = "Mã phụ huynh không trùng khớp";
 }
 ?>
 
@@ -167,6 +170,11 @@ if($test){
                     <div>
                         <input name="maph" class="login-student-form-input" type="text" placeholder="Mã phụ huynh (nếu có) : ">
                     </div>
+                    <p style="color:red">
+                    <?php
+                    if(isset($_POST['submit']))
+                    echo $error_check;
+                    ?></p>
                     <p style="color:red ; margin-bottom: 20px;">
                     <?php
                     if(isset($_POST['submit']))

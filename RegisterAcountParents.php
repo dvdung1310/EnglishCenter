@@ -22,8 +22,6 @@ if(isset($_POST['submit'])) {
     } else {
         $confirmPassword = htmlspecialchars($_POST['confirmpassWord']);
     }
-
-
     if($userName!=""){
         $result = checkExitParents($userName,$connection);
         if($result){

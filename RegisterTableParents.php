@@ -3,6 +3,8 @@
 include "./lib/function.php";
 $name = $gender = $date = $address = $age = $phone = $email = ""; 
 $error_name = $error_gender = $error_date = $error_address = $error_age = $error_phone = $error_email = ""; 
+$check= true;
+$error_check = "";
 if(isset($_POST['submit'])){
     if(empty($_POST['name'])){
         $error_name = "chưa đăng nhập tên ";
@@ -50,20 +52,21 @@ if(isset($_POST['submit'])){
       $mahs = null ;
     }else{
        $mahs = $_POST['mahs'] ; 
+       $check = checkCodeStudents($mahs,$connection);
     }
 }
 $test = false;
 if(isset($_POST['submit'])){
     $test = empty($error_name) && empty($error_gender) && empty($error_address) && empty($error_age) && empty($error_date) && empty($error_email) && empty($error_phone);
 }
-if($test){
+if($test && $check){
     $result = registerTableParents($name,$gender,$date,$age,$address,$phone,$email,$connection);
     if($result != null){
         header("Location: RegisterAcountParents.php?id=$result&&mahs=$mahs");
         exit();
-    }else{
-       
     }
+}else{
+       $error_check= "Mã học sinh không tồn tại";
 }
 ?>
 
@@ -167,10 +170,10 @@ if($test){
                     <div>
                         <input name="mahs" class="login-student-form-input" type="text" placeholder="Mã học sinh (nếu có) : ">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red">
                     <?php
                     if(isset($_POST['submit']))
-                           
+                    echo $error_check;
                     ?></p>
                     <div style="display: flex; justify-content: space-around;">
                         <a class="form-a" href="/login.php">Làm sao để đăng nhập ?</a>
