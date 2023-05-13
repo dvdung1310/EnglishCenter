@@ -1,10 +1,18 @@
 <?php
-include './lib/function.php';
+
+
+
+// $path_dir = __DIR__ . '/../../lib';
+// include $path_dir . '/function.php';
+
+include '../../lib/function.php';
+
+
 
 
 $userName = $passWord = "";
 $userName_error = $passWord_error = "";
-if(isset($_POST['submit'])) {
+if (isset($_POST['submit'])) {
     if (empty($_POST['userName'])) {
         $userName_error = "Bạn chưa nhập tên đăng nhập!";
     } else {
@@ -17,23 +25,30 @@ if(isset($_POST['submit'])) {
     }
 }
 $test = false;
-if(isset($_POST['submit'])){
-    $test = empty($userName_error) && empty($passWord_error) ;
+if (isset($_POST['submit'])) {
+    $test = empty($userName_error) && empty($passWord_error);
 }
 
-if($test){
-    $result = checkAcount($userName,$passWord,$connection);
-    $checkParents = checkAcountParents($userName,$passWord,$connection);
-    if($result || $checkParents){
+if ($test) {
+    $check_student = checkAcount($userName, $passWord, $connection);
+
+    if ($check_student) {
         session_start();
         $_SESSION['userName'] = htmlspecialchars($userName);
-        header("Location: pages/homeStudent.php");
+        header("Location: ../main_pages/homeStudent.php");
         exit();
-    }else{
-        $passWord_error = "Tên đăng nhập hoặc mật khẩu của  bạn sai!";
+    } else {
+        $check_parent = checkAcountParents($userName, $passWord, $connection);
+        if ($check_parent) {
+            session_start();
+            $_SESSION['userName'] = htmlspecialchars($userName);
+            header("Location: ../main_pages/homeParent.php");
+            exit();
+        } else {
+            $passWord_error = "Tên đăng nhập hoặc mật khẩu của  bạn sai!";
+        }
     }
 }
-
 
 ?>
 <!DOCTYPE html>
@@ -44,7 +59,7 @@ if($test){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apollo-login</title>
-    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="../assets/css/login.css">
 </head>
 
 <body>
@@ -53,13 +68,13 @@ if($test){
     </div>
 
     <div class="login-star">
-        <img src="./assets/images/login_stars.png" alt="">
+        <img src="/assets/images/login_stars.png" alt="">
     </div>
     <div id="contain">
 
         <div class="login-student">
             <div class="login-student-img">
-                <img src="./assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/Apollo-Logo.png" alt="">
             </div>
 
             <div class="login-student-form">
@@ -71,23 +86,23 @@ if($test){
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Tên đăng nhập">
                     </div>
                     <p style="color:red ; margin-bottom: 20px;"><?php
-                            echo "$userName_error";
-                    ?></p>
+                                                                echo "$userName_error";
+                                                                ?></p>
                     <div>
                         <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
                     </div>
                     <p style="color:red ; margin-bottom: 20px;">
-                    <?php
-                    if(isset($_POST['submit']))
+                        <?php
+                        if (isset($_POST['submit']))
                             echo "$passWord_error";
-                    ?></p>
+                        ?></p>
                     <div style="display: flex; margin-right: 10px; justify-content: space-around;">
                         <a class="form-a" href="../register_pages/RegisterStudent.php">Đăng kí tài khoản học sinh</a>
                         <a class="form-a" href="../register_pages/RegisterParent.php">Đăng kí tài khoản phụ huynh</a>
                     </div>
 
                     <div>
-                    <input class="form-submit"  type="submit" name="submit" value="Đăng nhập">
+                        <input class="form-submit" type="submit" name="submit" value="Đăng nhập">
                     </div>
 
                     <div>

@@ -1,5 +1,9 @@
 <?php
-require '../lib/database.php';
+
+$path_dir = __DIR__.'/../lib';
+
+include $path_dir.'/database.php';
+
 
 //  check có trùng user học sinh đã tồn tại hay không ?
 function checkExitUser($user, $connection)
@@ -81,7 +85,7 @@ function testConfirmPassWord($passWord, $confirmPassword)
     }
 }
 
-//  check tài khoản có trong database hay ko ?
+//  check tài khoản HOC SINH có trong database hay ko ?
 function checkAcount($userName, $passWord, $connection)
 {
     $sql = "select * from tk_hs where BINARY  userName = ? and BINARY  passWord = ? ";
@@ -99,7 +103,7 @@ function checkAcount($userName, $passWord, $connection)
     }
 }
 
-//  check tài khoản có trong database hay ko ?
+//  check tài khoản PHU HUYNH có trong database hay ko ?
 function checkAcountParents($userName, $passWord, $connection)
 {
     $sql = "select * from tk_ph where BINARY  userName = ? and BINARY  passWord = ? ";
@@ -116,7 +120,7 @@ function checkAcountParents($userName, $passWord, $connection)
         $e->getMessage();
     }
 }
-//  check tài khoản có trong database hay ko ?
+//  check tài khoản GIAO VIEN có trong database hay ko ?
 function checkAcountTeacher($userName, $passWord, $connection)
 {
     $sql = "select * from tk_gv where BINARY  userName = ? and BINARY  passWord = ? ";
@@ -133,6 +137,26 @@ function checkAcountTeacher($userName, $passWord, $connection)
         $e->getMessage();
     }
 }
+
+//  check tài khoản ADMIN có trong database hay ko ?
+function checkAcountAdmin($userName, $passWord, $connection)
+{
+    $sql = "select * from admin where BINARY  userName = ? and BINARY  passWord = ? ";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$userName, $passWord]);
+        $student = $statement->fetch();
+        if ($student) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+}
+
+
 // đăng kí bảng thông tin sinh viên
 function registerTableStudent($name, $gender, $date, $age, $address, $phone, $email, $connection)
 {

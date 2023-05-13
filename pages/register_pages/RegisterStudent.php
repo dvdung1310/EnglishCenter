@@ -1,5 +1,11 @@
 <?php
-include "./lib/function.php";
+
+
+$path_dir = __DIR__.'/../../lib';  
+include $path_dir.'/function.php';
+
+
+
 $name = $gender = $date = $address = $age = $phone = $email = $maph = "";
 $error_name = $error_gender = $error_date = $error_address = $error_age = $error_phone = $error_email = "";
 $check = true;
@@ -121,13 +127,13 @@ if ($check_empty) {
 
 <body>
     <div class="login-star">
-        <img src="./assets/images/login_stars.png" alt="">
+        <img src="/assets/images/login_stars.png" alt="">
     </div>
     <div id="contain">
         <div class="login-student">
             <div class="login-student-img">
 
-                <img src="./assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/Apollo-Logo.png" alt="">
             </div>
 
             <div style="padding: 0 100px;" class="login-student-form">
@@ -244,10 +250,10 @@ if ($check_empty) {
         </div>
 
         <div class="login-slogan">
-            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="./assets/images/LoginSlogan.png" alt="">
+            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="/assets/images/LoginSlogan.png" alt="">
             <div>
-                <a href=""><img style="width: 150px;" src="./assets/images/app-store-badge.png" alt=""></a>
-                <a href=""><img style="width:170px" src="./assets/images/google-play-badge.png" alt=""></a>
+                <a href=""><img style="width: 150px;" src="/assets/images/app-store-badge.png" alt=""></a>
+                <a href=""><img style="width:170px" src="/assets/images/google-play-badge.png" alt=""></a>
             </div>
         </div>
     </div>
