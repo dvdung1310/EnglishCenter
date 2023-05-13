@@ -1,5 +1,6 @@
 <?php
-require './lib/database.php';
+require '../lib/database.php';
+
 //  check có trùng user học sinh đã tồn tại hay không ?
 function checkExitUser($user, $connection)
 {

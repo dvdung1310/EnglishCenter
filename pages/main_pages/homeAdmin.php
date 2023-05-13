@@ -11,7 +11,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Helo
+    <h1> Admin
         <?php
         echo $name;
         ?>

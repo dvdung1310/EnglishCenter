@@ -1,17 +1,17 @@
 <?php
-require './lib/function.php';
+include './lib/function.php';
+
 
 $userName = $passWord = "";
 $userName_error = $passWord_error = "";
 if(isset($_POST['submit'])) {
     if (empty($_POST['userName'])) {
-        $userName_error = "Bạn chưa đăng nhập tài khoản";
+        $userName_error = "Bạn chưa nhập tên đăng nhập!";
     } else {
         $userName = htmlspecialchars($_POST['userName']);
     }
-
     if (empty($_POST['passWord'])) {
-        $passWord_error = "Bạn chưa đăng nhập mật khẩu";
+        $passWord_error = "Bạn chưa nhập mật khẩu!";
     } else {
         $passWord = htmlspecialchars($_POST['passWord']);
     }
@@ -22,14 +22,15 @@ if(isset($_POST['submit'])){
 }
 
 if($test){
-    $result = checkAcountTeacher($userName,$passWord,$connection);
-    if($result){
+    $result = checkAcount($userName,$passWord,$connection);
+    $checkParents = checkAcountParents($userName,$passWord,$connection);
+    if($result || $checkParents){
         session_start();
         $_SESSION['userName'] = htmlspecialchars($userName);
-        header("Location: pages/home.php");
+        header("Location: pages/homeStudent.php");
         exit();
     }else{
-        $passWord_error = "Tài khoản hoặc mật khẩu bạn sai";
+        $passWord_error = "Tên đăng nhập hoặc mật khẩu của  bạn sai!";
     }
 }
 
@@ -43,10 +44,14 @@ if($test){
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apollo-login</title>
-    <link rel="stylesheet" href="./assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
 </head>
 
 <body>
+    <div class="admin-login" style="float : right">
+        <button><a href="./loginAdmin.php">Đăng nhập Admin</a></button>
+    </div>
+
     <div class="login-star">
         <img src="./assets/images/login_stars.png" alt="">
     </div>
@@ -60,10 +65,10 @@ if($test){
             <div class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <div style="display: flex;justify-content: start;">
-                        <h1>Giáo Viên</h1>
+                        <h1>Đăng nhập</h1>
                     </div>
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc Email:">
+                        <input class="login-student-form-input" type="text" name="userName" placeholder="Tên đăng nhập">
                     </div>
                     <p style="color:red ; margin-bottom: 20px;"><?php
                             echo "$userName_error";
@@ -76,12 +81,13 @@ if($test){
                     if(isset($_POST['submit']))
                             echo "$passWord_error";
                     ?></p>
-                    <div style="display: flex; justify-content: space-around;">
-
+                    <div style="display: flex; margin-right: 10px; justify-content: space-around;">
+                        <a class="form-a" href="../register_pages/RegisterStudent.php">Đăng kí tài khoản học sinh</a>
+                        <a class="form-a" href="../register_pages/RegisterParent.php">Đăng kí tài khoản phụ huynh</a>
                     </div>
 
                     <div>
-                    <input class="form-submit" type="submit" name="submit" value="Đăng nhập">
+                    <input class="form-submit"  type="submit" name="submit" value="Đăng nhập">
                     </div>
 
                     <div>
@@ -92,14 +98,13 @@ if($test){
                 </form>
             </div>
 
-
         </div>
 
         <div class="login-slogan">
-            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="./assets/images/LoginSlogan.png" alt="">
+            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="/assets/images/LoginSlogan.png" alt="">
             <div>
-                <a href=""><img style="width: 150px;" src="./assets/images/app-store-badge.png" alt=""></a>
-                <a href=""><img style="width:170px" src="./assets/images/google-play-badge.png" alt=""></a>
+                <a href=""><img style="width: 150px;" src="/assets/images/app-store-badge.png" alt=""></a>
+                <a href=""><img style="width:170px" src="/assets/images/google-play-badge.png" alt=""></a>
             </div>
         </div>
     </div>

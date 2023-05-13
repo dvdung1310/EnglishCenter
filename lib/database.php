@@ -1,8 +1,8 @@
 <?php
 define("DATABASE_SEVER","localhost");
 define("DATABASE_USER","root");
-define("DATABASE_PASSWORD","Toiladung123");
-define("DATABASE_NAME","EnglishCenter");
+define("DATABASE_PASSWORD","");
+define("DATABASE_NAME","englishCenter");
 $connection = null ;
     try{
         $connection = new PDO(
@@ -13,4 +13,6 @@ $connection = null ;
       echo "failed" . $e->getMessage();
       $connection = null ;
     }
+
+   
 ?>
