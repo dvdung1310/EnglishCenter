@@ -130,7 +130,7 @@ if ($check_empty) {
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="name" placeholder="Họ và tên :" value="<?php echo $name ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_name;
                         ?>
@@ -147,7 +147,7 @@ if ($check_empty) {
                         </div>
 
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_gender;
                         ?>
@@ -157,7 +157,7 @@ if ($check_empty) {
                         <input class="login-student-form-input" type="date" name="date" placeholder="Ngày sinh :" value="<?php echo $date ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_date;
                         ?>
@@ -167,7 +167,7 @@ if ($check_empty) {
                         <input class="login-student-form-input" type="text" name="age" placeholder="Tuổi:" value="<?php echo $age ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_age;
                         ?>
@@ -176,7 +176,7 @@ if ($check_empty) {
                     <div>
                         <input name="address" class="login-student-form-input" type="text" placeholder="Địa Chỉ : " value="<?php echo $address ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_address;
                         ?>
@@ -185,7 +185,7 @@ if ($check_empty) {
                     <div>
                         <input name="phone" class="login-student-form-input" type="text" placeholder="Số điện thoại : " value="<?php echo $phone ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_phone;
                         ?>
@@ -195,7 +195,7 @@ if ($check_empty) {
                         <input name="email" class="login-student-form-input" type="text" placeholder="Email (nếu có) : " value="<?php echo $email ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_email;
                         ?>
@@ -203,7 +203,7 @@ if ($check_empty) {
                     <div>
                         <input name="mahs" class="login-student-form-input" type="text" placeholder="Mã học sinh (nếu có) : ">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         if (isset($_POST['submit']))
                             echo $error_check;

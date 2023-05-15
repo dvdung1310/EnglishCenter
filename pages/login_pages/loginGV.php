@@ -69,13 +69,13 @@ if ($test) {
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc Email:">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;"><?php
+                    <p style="color:red ; margin-bottom: 20p;font-size : 18px;"><?php
                                                                 echo "$userName_error";
                                                                 ?></p>
                     <div>
                         <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit']))
                             echo "$passWord_error";
@@ -95,7 +95,6 @@ if ($test) {
 
                 </form>
             </div>
-
 
         </div>
 

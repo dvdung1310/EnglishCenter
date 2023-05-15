@@ -100,7 +100,7 @@ if ($test) {
 		}
 
 		.login input[type="submit"] {
-			width: 100%;
+			width: 105%;
 			background-color: #333;
 			color: #fff;
 			padding: 10px;
@@ -143,13 +143,13 @@ if ($test) {
 		<h1>Admin Login</h1>
 		<form action="#" method="post">
 			<input type="text" name="username" placeholder="Username">
-			<p style="color:red ; margin-bottom: 20px;">
+			<p style="color:red ; margin-bottom: 20px;font-size : 18px">
 				<?php
 				if (isset($_POST['submit']))
 					echo $userName_error;
 				?></p>
 			<input type="password" name="password" placeholder="Password">
-			<p style="color:red ; margin-bottom: 20px;">
+			<p style="color:red ; margin-bottom: 20px;font-size : 18px">
 				<?php
 				if (isset($_POST['submit']))
 					echo $passWord_error;

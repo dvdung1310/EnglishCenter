@@ -7,9 +7,6 @@
 
 include '../../lib/function.php';
 
-
-
-
 $userName = $passWord = "";
 $userName_error = $passWord_error = "";
 if (isset($_POST['submit'])) {
@@ -50,6 +47,8 @@ if ($test) {
     }
 }
 
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +58,7 @@ if ($test) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apollo-login</title>
-    <link rel="stylesheet" href="../assets/css/login.css">
+    <link rel="stylesheet" href="/assets/css/login.css">
 </head>
 
 <body>
@@ -85,13 +84,13 @@ if ($test) {
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Tên đăng nhập">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;"><?php
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px"><?php
                                                                 echo "$userName_error";
                                                                 ?></p>
                     <div>
                         <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit']))
                             echo "$passWord_error";
@@ -127,5 +126,9 @@ if ($test) {
         <p class="footer-p">Copyright © Smart Education is Now, All rights reserved</p>
     </footer>
 </body>
+
+<script>
+    
+</script>
 
 </html>
