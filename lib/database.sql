@@ -177,6 +177,12 @@ CREATE TABLE thuhocphi
 PRIMARY KEY (MaHS,MaLop,ThoiGian)) 
 
 
+--lich_hoc
+CREATE TABLE lich_hoc( MaLop VARCHAR(20),GioBatDau TIME, GioKetThuc TIME, Thu VARCHAR(10), PRIMARY KEY (MaLop, Thu, GioBatDau), FOREIGN KEY (MaLop) REFERENCES lop (MaLop) );
+
+
+
+
 
 
 
