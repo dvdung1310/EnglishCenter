@@ -2,17 +2,6 @@
 include "../lib/FunctionClass.php";
 $result = listSchedules($connection);
 $listTeacher = listTeacher($connection);
-// classcode
-// classname
-// classAge
-// classTimeOpen
-// schedules
-// price
-// numberlessons
-// students
-// teachers
-// khi tạo 1 lớp thì phải kèm theo tạo bảng gv_lop + schedules_class
-// 
 $classcode = $classname = $classAge = $classTimeOpen = $schedules1 = $schedules2 = $schedules3 = $price = $numberLessons = $sumStudents = $teachers = "";
 $information = "";
 $kq = "";
@@ -20,21 +9,21 @@ $teacherClass;
 $schedulesClass;
 $error_schedules = "";
 $boolean = false;
-if (isset($_GET['submit'])) {
+if (isset($_POST['submit'])) {
   if (
-    empty($_GET['classcode']) || empty($_GET['classname']) || empty($_GET['classAge']) || empty($_GET['classTimeOpen'])
-    || empty($_GET['schedules0']) || empty($_GET['price']) || empty($_GET['numberlessons']) || empty($_GET['students'])
-    || empty($_GET['teachers'])
+    empty($_POST['classcode']) || empty($_POST['classname']) || empty($_POST['classAge']) || empty($_POST['classTimeOpen'])
+    || empty($_POST['schedules0']) || empty($_POST['price']) || empty($_POST['numberlessons']) || empty($_POST['students'])
+    || empty($_POST['teachers'])
   ) {
     $information = "Bạn chưa điền đủ thông tin";
   } else {
-    $classcode = $_GET['classcode'];
-    $classname = $_GET['classname'];
-    $classAge  = $_GET['classAge'];
-    $classTimeOpen = $_GET['classTimeOpen'];
-    $price = $_GET['price'];
-    $numberLessons = $_GET['numberlessons'];
-    $sumStudents = $_GET['students'];
+    $classcode = $_POST['classcode'];
+    $classname = $_POST['classname'];
+    $classAge  = $_POST['classAge'];
+    $classTimeOpen = $_POST['classTimeOpen'];
+    $price = $_POST['price'];
+    $numberLessons = $_POST['numberlessons'];
+    $sumStudents = $_POST['students'];
     $kq = CreateClass(
       $classcode,
       $classname,
@@ -50,21 +39,18 @@ if (isset($_GET['submit'])) {
     );
 
     if ($kq != null) {
-      $schedules0 = $_GET['schedules0'];
-      if(isset($_GET['schedules1'])){
-        $schedules1 = $_GET['schedules1'];
+      $schedules0 = $_POST['schedules0'];
+      if(isset($_POST['schedules1'])){
+        $schedules1 = $_POST['schedules1'];
       }else{
         $schedules1 = "schedules1";
       }
 
-      if(isset($_GET['schedules2'])){
-        $schedules2 = $_GET['schedules2'];
+      if(isset($_POST['schedules2'])){
+        $schedules2 = $_POST['schedules2'];
       }else{
         $schedules2 = "schedules2";
       }
-      echo $schedules0;
-      echo $schedules1;
-      echo $schedules2;
 
       if($schedules0 == $schedules1 || $schedules0 == $schedules2 || $schedules1 == $schedules2) {
         $error_schedules = "Lịch học trùng nhau";
@@ -78,7 +64,7 @@ if (isset($_GET['submit'])) {
           $schedulesClass2 = CreateSchedules_Class($schedules2, $kq, $connection);
         }
        
-        $teachers = $_GET['teachers'];
+        $teachers = $_POST['teachers'];
         $teacherClass = CreateTeacher_Class($teachers, $kq, $connection);
         if ($teacherClass) {
           $information = "Tạo lớp thành công";
@@ -89,13 +75,12 @@ if (isset($_GET['submit'])) {
       $information = "Tạo lớp thất bại";
     }
   }
-
   echo "<div class='overlay'></div>";
   echo "<div class='center-box'>";
   echo "<h2>Thông báo</h2>";
   echo "<p>$error_schedules</p>";
   echo "<p>$information</p>";
-  echo "<div class='close-button'><a href='#' onclick='closeNotification()'>Đóng</a></div>";
+  echo "<div class='close-button'><a href='' onclick='closeNotification()'>Đóng</a></div>";
   echo "</div>";
 }
 ?>
@@ -107,6 +92,33 @@ if (isset($_GET['submit'])) {
   <title>Quản lý hệ thống giáo dục</title>
   <link rel="stylesheet" href="../assets/css/manage.css">
   <style>
+.card{
+  border: none;
+  padding: 0;
+  margin-bottom: 0;
+}
+.delete-button{
+  background-color: red; 
+  border: 1px solid #fff; 
+  border-radius:5px ; 
+  padding: 5px 6px;
+}
+#classTimeOpen {
+  padding: 8px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: #0088cc;
+  border-radius: 50%;
+}
+input[type="date"] {
+  color: #0088cc;
+}
+
+
 
   </style>
 </head>
@@ -118,7 +130,7 @@ if (isset($_GET['submit'])) {
     </div>
     <nav>
       <ul>
-        <li><a href="#">Quản lý lớp học</a></li>
+        <li><a href="ListClass.php">Quản lý lớp học</a></li>
         <li><a href="#">Quản lý học viên</a></li>
         <li><a href="manageTeacher.php">Quản lý giáo viên</a></li>
         <li><a href="#">Quản lý phụ huynh</a></li>
@@ -129,8 +141,8 @@ if (isset($_GET['submit'])) {
 
   <main>
     <div class="container">
-      <h1>Quản lý lớp học</h1>
-      <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="get">
+      <h1 style="color: #0088cc;">Thêm lớp học</h1>
+      <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
         <label for="classcode">Mã lớp:</label>
         <input type="text" id="classcode" name="classcode" placeholder="Nhập mã lớp...">
 
@@ -148,14 +160,14 @@ if (isset($_GET['submit'])) {
         <select name="schedules0" id="select-option">
           <option value="">Thời gian</option>
           <?php foreach ($result as $results) : ?>
-            <option <?php if (isset($_GET['schedules0']) && $_GET['schedules0'] == $results['idSchedules']) echo 'selected' ?> value="<?php echo $results['idSchedules']  ?>">
+            <option style="height: 30px;" <?php if (isset($_POST['schedules0']) && $_POST['schedules0'] == $results['idSchedules']) echo 'selected' ?> value="<?php echo $results['idSchedules']  ?>">
 
               <?php echo $results['day_of_week'] . ' - ' . $results['start_time'] . '-' . $results['end_time']   ?>
             </option>
           <?php endforeach; ?>
         </select>
 
-        <button type="button" onclick="addCard()">Thêm lịch học</button>
+        <button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px;" type="button" onclick="addCard()">Thêm lịch học</button>
         <div id="addSchedules"></div>
 
 
@@ -182,9 +194,9 @@ if (isset($_GET['submit'])) {
       </form>
 
       <div id="card-container"></div>
-      <br>
-      <input type="text" id="search" name="search" placeholder="Tìm kiếm lớp học...">
-      <br><br>
+     
+     <h3>Dữ liệu lớp vừa được thêm : </h3>
+      
       <table>
         <thead>
           <tr>
@@ -196,6 +208,7 @@ if (isset($_GET['submit'])) {
         </thead>
         <?php
         if($boolean){
+          echo $classname;
           $data = dataSchedulesByMaLop($kq,$connection);
           $nameTeacher = dataTeacherByMaLop($kq,$connection);
           echo "<tbody>";
@@ -204,9 +217,7 @@ if (isset($_GET['submit'])) {
           if($nameTeacher != null){
             echo "<td>";
             foreach($nameTeacher as $nameTeachers){
-              
               echo $nameTeachers['TenGV'];
-              
             } 
             echo "</td>"; 
           }
@@ -254,7 +265,7 @@ if (isset($_GET['submit'])) {
           <option value="">Thời gian</option>
           <?php foreach ($result as $results) : ?>
             <?php $counter = 1 ?>
-            <option <?php if (isset($_GET['schedules']) && $_GET['schedules'] == $results['idSchedules']) echo 'selected' ?>
+            <option <?php if (isset($_POST['schedules']) && $_POST['schedules'] == $results['idSchedules']) echo 'selected' ?>
              value="<?php echo $results['idSchedules']  ?>">
               <?php echo $results['day_of_week'] . ' - ' . $results['start_time'] . '-' . $results['end_time']   ?>
             </option>

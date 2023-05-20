@@ -151,7 +151,7 @@ function dataSchedulesByMaLop($malop,$connection){
     return null;
 }
 
-// truy vấn dữ liệu ra lịch học với mã lớp
+// truy vấn dữ liệu ra giáo viên với mã lớp
 function dataTeacherByMaLop($malop,$connection){
     $sql = "SELECT giaovien.*
     from gv_lop
@@ -183,6 +183,40 @@ function dataClassOn($connection){
        $e->getMessage();
     }
     return null;
+}
+// Truy vấn ra dữ liệu lớp học từ mã id lớp 
+function dataClassById($malop,$connection){
+     $sql = "select * from lop where MaLop = ?";
+     try{
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $malop);
+        $statement->execute();
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        return $data;
+     }catch(PDOException $e){
+        $e->getMessage();
+     }
+     return null;
+}
+
+// thục hiện xóa lớp (xóa lớp , liên kết lớp vs lịch học , lớp vs giáo viên)
+function deleteClassById($malop,$connection){
+   $sql1 = "DELETE from gv_lop where MaLop = ?";
+   $sql2 = "DELETE from schedules_class where MaLop = ?";
+   $sql3 = "DELETE from lop where MaLop = ?";
+   try{
+    $statement1 = $connection->prepare($sql1);
+    $statement2 = $connection->prepare($sql2);
+    $statement3 = $connection->prepare($sql3);
+    
+    $statement1->execute([$malop]);
+    $statement2->execute([$malop]);
+    $statement3->execute([$malop]);
+    return true;
+   }catch(PDOException $e){
+      $e->getMessage();
+   }
+   return false;
 }
   
 ?>
