@@ -6,7 +6,7 @@ $userName = $passWord = $confirmPassword = "";
 $userName_error = $passWord_error = $confirmPassword_error = "";
 $success = "";
 
-echo $_COOKIE['mahs'];
+
 
 if (isset($_POST['submit'])) {
 

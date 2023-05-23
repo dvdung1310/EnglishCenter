@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
 
 if ($check_empty) {
 
-    if (empty($phone)) $phone = ' ';
+    
     if (empty($email)) $email = ' ';
 
     setcookie('mahs', $mahs);

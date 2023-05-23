@@ -75,7 +75,7 @@ GioiTinh VARCHAR(5) NOT NULL ,
 NgaySinh DATE NOT NULL , 
 Tuoi INT NOT NULL , 
 DiaChi VARCHAR(100) NOT NULL , 
-SDT VARCHAR(11) NULL , 
+SDT VARCHAR(11) NOT NULL , 
 Email VARCHAR(50) NULL , 
 PRIMARY KEY (MaPH)) 
 
@@ -133,7 +133,7 @@ PRIMARY KEY (MaLop))
 
 --lich hoc
 CREATE TABLE schedules (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    idSchedules INT PRIMARY KEY AUTO_INCREMENT,
     day_of_week VARCHAR(10) NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
@@ -143,7 +143,7 @@ CREATE TABLE schedules (
 CREATE TABLE schedules_class
 (idSchedules int,
 MaLop varchar(20),
-foreign key (idSchedules) references schedules(id) ,
+foreign key (idSchedules) references schedules(idSchedules) ,
 foreign key (MaLop) references lop(MaLop) ,
 PRIMARY KEY (idSchedules,MaLop)) 
 
