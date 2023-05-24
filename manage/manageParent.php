@@ -1,67 +1,61 @@
 <?php
-require '../lib/functionStudent.php';
+require '../lib/functionParent.php';
 
 
 
-// unset($_POST['update']);
-// unset($_POST['add']);
-// unset($_POST['delete']);
-
-
-
-$listStudent = listStudent($connection);
+$listParent = listParent($connection);
 $listph_hs = listph_hs($connection);
-$lisths_lop = lisths_lop($connection);
-$listtk_hs =  listtk_hs($connection);
+// $lisths_lop = lisths_lop($connection);
+$listtk_ph =  listtk_ph($connection);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-	if (isset($_POST['sudent_name_edit'])) {
+	if (isset($_POST['parent_name_edit'])) {
 
-		$mahs = $_POST['id_edit'];
-		$ten = trim($_POST['sudent_name_edit']);
+		$maph = $_POST['id_edit'];
+		$ten = trim($_POST['parent_name_edit']);
 		$gt = $_POST['gender_edit'];
 		$ns = $_POST['birthday_edit'];
 		$tuoi = $_POST['age_edit'];
 		$dc = trim($_POST['address_edit']);
 		$sdt = $_POST['phone_number_edit'];
 		$email = trim($_POST['email_edit']);
-		updateStudentbyID($connection, $mahs, $ten, $gt, $ns, $tuoi, $dc, $sdt, $email);
-		header("Location: manageStudent.php");
+		updateParentbyID($connection, $maph, $ten, $gt, $ns, $tuoi, $dc, $sdt, $email);
+		header("Location: manageParent.php");
 	}
 
 
 	if (isset($_POST['refesh'])) {
-		header("Location: manageStudent.php");
+		header("Location: manageParent.php");
 	}
 
 	if (isset($_POST['search'])) {
 		$key = trim($_POST['keyword']);
-		$listStudent = searchStudent($connection, $key);
+		$listParent = searchParent($connection, $key);
 	}
 
-	if (isset($_POST['mahs_delete'])) {
-		$mahs = $_POST['mahs_delete'];
-		deletetk_hs($connection, $mahs);
-		deleteStudent_ph_hs($connection, $mahs);
-		deleteStudent($connection, $mahs);
-		header("Location: manageStudent.php");
+	if (isset($_POST['maph_delete'])) {
+		$maph = $_POST['maph_delete'];
+		deletetk_ph($connection, $maph);
+		deleteParent_ph_hs($connection, $maph);
+		deleteParent($connection, $maph);
+		header("Location: manageParent.php");
 	}
 
 	if (isset($_POST['username-login'])) {
 		$username = $_POST['username-login'];
 		$pass = $_POST['new-password'];
 
-		updatePassHS($connection, $username, $pass);
-		header("Location: manageStudent.php");
+		updatePassPH($connection, $username, $pass);
+		header("Location: manageParent.php");
 	}
 }
 
 
-$jsonListStudent = json_encode($listStudent);
+$jsonListParent = json_encode($listParent);
 $jsonListph_hs = json_encode($listph_hs);
 $jsonLisths_lop = json_encode($lisths_lop);
-$jsonListtk_hs =  json_encode($listtk_hs);
+$jsonListtk_ph =  json_encode($listtk_ph);
 
 
 ?>
@@ -74,7 +68,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 	<meta charset="UTF-8">
 	<title>Quản lý hệ thống giáo dục</title>
 	<link rel="stylesheet" href="../assets/css/manage.css">
-	<link rel="stylesheet" href="../assets/css/manageStudent.css">
+	<link rel="stylesheet" href="../assets/css/manageParent.css">
 
 </head>
 
@@ -96,7 +90,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 	</header>
 	<main>
 
-		<h1>Quản lý Học viên</h1>
+		<h1>Quản lý Phụ huynh</h1>
 		<div class="search-container">
 			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
 				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
@@ -114,30 +108,32 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					<th>Giới tính</th>
 					<th>Tuổi</th>
 					<th style="width :200px">Địa chỉ</th>
-					<th>Lớp đang học</th>
-					
+					<th>Phụ huynh của</th>
 
 				</tr>
 			</thead>
 			<tbody class="tbody-1">
 				<?php $i = 1;
-				if (!$listStudent)
+				if (!$listParent)
 					echo ' <h2>Không tìm thấy kết quả phù hợp "' . $_POST['keyword'] . '"</h2>';
 				else {
-					foreach ($listStudent as $Student) : ?>
+					foreach ($listParent as $Parent) : ?>
 						<tr>
 							<td><?php echo $i++ ?></td>
-							<td><?php echo $Student['TenHS']; ?></td>
-							<td><?php echo $Student['GioiTinh']; ?></td>
-							<td><?php echo $Student['Tuoi']; ?></td>
-							<td style="width :200px"><?php echo $Student['DiaChi']; ?></td>
+							<td><?php echo $Parent['TenPH']; ?></td>
+							<td><?php echo $Parent['GioiTinh']; ?></td>
+							<td><?php echo $Parent['Tuoi']; ?></td>
+							<td style="width :200px"><?php echo $Parent['DiaChi']; ?></td>
 							<td><?php
-								$listClass = classOfStudent($connection, $Student['MaHS']);
-								foreach ($listClass as $class) :
-									echo $class['MaLop'] . ' ; ';
+
+								foreach ($listph_hs as $hs) :
+									if ($hs['MaPH'] === $Parent['MaPH']) {
+										echo $hs['TenHS'];
+										echo '<br>';
+									}
 								endforeach;
 								?></td>
-							
+
 
 						</tr>
 				<?php endforeach;
@@ -153,7 +149,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			<div class="modal-content">
 
 
-				<h2>Thông tin học viên</h2>
+				<h2>Thông tin phụ huynh</h2>
 				<button id="edit-button" style="position: absolute;top: 40px;right: 60px;">Sửa</button>
 
 				<button id="delete-button" name="delete" style="position: absolute;top: 40px;right: 11px; background-color: #e90000">Xóa</button>
@@ -163,7 +159,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					<div class="header">
 						<img id="img" alt="Avatar" class="avatar">
 
-						<h1 class="name" id="Student-name"></h1>
+						<h1 class="name" id="Parent-name"></h1>
 					</div>
 
 					<div class="detail">
@@ -178,52 +174,77 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 							<table>
 								<tr>
-									<th>Mã học viên:</th>
-									<td id="Student-id"></td>
+									<th>Mã phụ huynh:</th>
+									<td id="Parent-id"></td>
 								</tr>
 								<tr>
 									<th>Giới tính:</th>
-									<td id="Student-gender" contenteditable="false"></td>
+									<td id="Parent-gender" contenteditable="false"></td>
 								</tr>
 								<tr>
 									<th>Ngày sinh:</th>
-									<td id="Student-date" contenteditable="false"></td>
+									<td id="Parent-date" contenteditable="false"></td>
 								</tr>
 								<tr>
 									<th>Tuổi:</th>
-									<td id="Student-age" contenteditable="false">43</td>
+									<td id="Parent-age" contenteditable="false">43</td>
 								</tr>
 
 								<tr>
 									<th>Địa chỉ:</th>
-									<td id="Student-address" contenteditable="false"></td>
+									<td id="Parent-address" contenteditable="false"></td>
 								</tr>
 
-								<tr>
+								<!-- <tr>
 									<th>Lớp đang học</th>
-									<td id="Student-class" contenteditable="false"></td>
-								</tr>
+									<td id="Parent-class" contenteditable="false"></td>
+								</tr> -->
 
 								<tr>
-									<th>Phụ huynh:</th>
-									<td id="Student-parent"></td>
+									<th>Phụ huynh của học viên:</th>
+									<td id="Parent-parent"></td>
 								</tr>
 
 								<tr>
 									<th>Số điện thoại: </th>
-									<td id="Student-phone" contenteditable="false"></td>
+									<td id="Parent-phone" contenteditable="false"></td>
 								</tr>
 
 								<tr>
 									<th>Email:</th>
-									<td id="Student-email" contenteditable="false"></td>
+									<td id="Parent-email" contenteditable="false"></td>
 								</tr>
 							</table>
+
+
+							<div class="div-student-info">
+								<table>
+									<tr>
+										<td style="unset">
+											<p><strong>Tên:</strong> John Doe</p>
+										</td>
+										<td>
+											<p><strong>Tuổi:</strong> 25</p>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<p><strong>Giới tính:</strong> Nam</p>
+										</td>
+										<td>
+											<p><strong>Ngày sinh:</strong> 01/01/1998</p>
+										</td>
+									</tr>
+								</table>
+								<p><strong>Số điện thoại:</strong> 0123456789</p>
+								<p><strong>Email:</strong> johndoe@example.com</p>
+								<p><strong>Lớp đang học:</strong> Lập trình web cơ bản</p>
+							</div>
 						</div>
 
 
 						<div id="tab2" class="tabcontent">
-							<div class="class-of-student">
+							<div class="class-of-Parent">
 
 							</div>
 						</div>
@@ -284,7 +305,6 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 											</td>
 
 										</tr>
-
 										<tr>
 											<td>
 												<label for="confirm-password">Nhập lại mật khẩu mới:</label>
@@ -330,17 +350,17 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					<form id="form_edit" name="form_edit" method="post">
 
 
-						<!-- <label for="Student_id">Mã giáo viên: 1</label>
-						<input type="text" id="Student_id" name="Student_id" required> -->
+						<!-- <label for="Parent_id">Mã giáo viên: 1</label>
+						<input type="text" id="Parent_id" name="Parent_id" required> -->
 
 
-						<h1>Sửa thông tin học viên</h1>
+						<h1>Sửa thông tin Phụ huynh</h1>
 
-						<h2 id="Student-id_edit"></h2>
+						<h2 id="parent-id_edit"></h2>
 						<input type="hidden" id="id_edit" name="id_edit">
 
-						<label for="Student_name">Tên học viên: <label id="lb_name_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="sudent_name_edit" name="sudent_name_edit" required>
+						<label for="parent_name">Tên phụ huynh: <label id="lb_name_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
+						<input type="text" id="parent_name_edit" name="parent_name_edit" required>
 
 						<label for="gender">Giới tính:</label>
 						<select id="gender_edit" name="gender_edit">
@@ -354,11 +374,8 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 						<label for="age" style="margin-left: 150px;">Tuổi:</label>
 						<input type="number" id="age_edit" name="age_edit" required> <label id="lb_age_edit" style="color:red; font-size:13px ; font-style: italic "></label>
 						<br>
-						<label for="address">Địa chỉ: <label id="lb_address_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
+						<label for="address_edit">Địa chỉ: <label id="lb_address_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
 						<input type="text" id="address_edit" name="address_edit" required>
-
-						<!-- <label for="education">Trình độ: <label id="lb_education_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="education_edit" name="education_edit" required> -->
 
 						<label for="phone_number">Số điện thoại: <label id="lb_phone_edit" style="color:red; font-size:13px ; font-style: italic "></label></label>
 						<input type="tel" id="phone_number_edit" name="phone_number_edit" required>
@@ -399,7 +416,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 				<button style="background-color:#52a95f; height: 44px;width: 80px" id="delete-cancle">Hủy bỏ</button>
 				<form id="form-delete" action="" method="POST">
-					<input type="hidden" id="mahs_delete" name="mahs_delete">
+					<input type="hidden" id="maph_delete" name="maph_delete">
 					<input type="submit" style="background-color: #d52828;  height: 44px;width: 80px" id="delete" name="delete" value="Xóa"></input>
 				</form>
 			</div>
@@ -436,12 +453,12 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 
 		var stt_select;
-		var ds_hocsinh;
-		var listClass;
+		var ds_phuhuynh;
+		// var listClass;
 
 
 
-		var ds_hocsinh = <?php print_r($jsonListStudent); ?>; //
+		var ds_phuhuynh = <?php print_r($jsonListParent); ?>; //
 
 
 		// khi nhấn vào 1 hàng , hiển thị thông tin chi tiêt
@@ -450,51 +467,53 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 				stt_select = row.cells[0].textContent;
 
-				listClass = row.cells[5].textContent;
-				ds_hocsinh = <?php print_r($jsonListStudent); ?>;
-				ds_ph_hs = <?php print_r($jsonListph_hs); ?>;
+				// listClass = row.cells[5].textContent;
+				ds_phuhuynh = <?php print_r($jsonListParent); ?>;
+				ds_hs_of_ph = <?php print_r($jsonListph_hs); ?>;
 				ds_hs_lop = <?php print_r($jsonLisths_lop); ?>;
-				ds_tk_hs = <?php print_r($jsonListtk_hs); ?>;
+				ds_tk_ph = <?php print_r($jsonListtk_ph); ?>;
 
-				// lay tt phu huynh
-				var phhs = [];
+				//lay tt con cai
+				var hs_of_ph = [];
 				var j = 0;
-				for (var i = 0; i < ds_ph_hs.length; i++) {
-					if (ds_ph_hs[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
-						phhs[j++] = ds_ph_hs[i].TenPH;
+				for (var i = 0; i < ds_hs_of_ph.length; i++) {
+					if (ds_hs_of_ph[i].MaPH === ds_phuhuynh[stt_select - 1].MaPH) {
+						hs_of_ph[j++] = ds_hs_of_ph[i].TenHS;
 					}
 				}
 
-				document.getElementById('Student-name').textContent = ds_hocsinh[stt_select - 1].TenHS;
-				document.getElementById('Student-gender').textContent = ds_hocsinh[stt_select - 1].GioiTinh;
-				document.getElementById('Student-age').textContent = ds_hocsinh[stt_select - 1].Tuoi;
-				document.getElementById('Student-class').textContent = listClass;
-				document.getElementById('Student-id').textContent = ds_hocsinh[stt_select - 1].MaHS;
-				document.getElementById('Student-address').textContent = ds_hocsinh[stt_select - 1].DiaChi;
-				document.getElementById('Student-date').textContent = ds_hocsinh[stt_select - 1].NgaySinh;
-				document.getElementById('Student-phone').textContent = ds_hocsinh[stt_select - 1].SDT;
-				document.getElementById('Student-email').textContent = ds_hocsinh[stt_select - 1].Email;
+				document.getElementById('Parent-name').textContent = ds_phuhuynh[stt_select - 1].TenPH;
+				document.getElementById('Parent-gender').textContent = ds_phuhuynh[stt_select - 1].GioiTinh;
+				document.getElementById('Parent-age').textContent = ds_phuhuynh[stt_select - 1].Tuoi;
+				// document.getElementById('Parent-class').textContent = listClass;
+				document.getElementById('Parent-id').textContent = ds_phuhuynh[stt_select - 1].MaPH;
+				document.getElementById('Parent-address').textContent = ds_phuhuynh[stt_select - 1].DiaChi;
+				document.getElementById('Parent-date').textContent = ds_phuhuynh[stt_select - 1].NgaySinh;
+				document.getElementById('Parent-phone').textContent = ds_phuhuynh[stt_select - 1].SDT;
+				document.getElementById('Parent-email').textContent = ds_phuhuynh[stt_select - 1].Email;
 
 
 
-				phhs.forEach(function(name) {
+				hs_of_ph.forEach(function(name) {
 					const pTag = document.createElement("p"); // Tạo thẻ p mới
 					pTag.innerText = name; // Gán giá trị tên vào thẻ p
-					const tdTag = document.getElementById("Student-parent"); // Lấy đối tượng td có id là Student-parent
+					pTag.classList.add("infor-student");
+
+					const tdTag = document.getElementById("Parent-parent"); // Lấy đối tượng td có id là Parent-parent
 					tdTag.appendChild(pTag);
 
 				});
 
-				// document.getElementById('Student-parent').textContent =
+				// document.getElementById('Parent-parent').textContent =
 
-				document.getElementById('mahs_delete').value = ds_hocsinh[stt_select - 1].MaHS;
+				document.getElementById('maph_delete').value = ds_phuhuynh[stt_select - 1].MaPH;
 
 				var img = document.getElementById("img");
 
-				if (ds_hocsinh[stt_select - 1].GioiTinh == "Nam") {
-					img.src = "../assets/images/Student-male-icon.png";
+				if (ds_phuhuynh[stt_select - 1].GioiTinh == "Nam") {
+					img.src = "../assets/images/Parent-male-icon.png";
 				} else {
-					img.src = "../assets/images/Student-female-icon.png";
+					img.src = "../assets/images/Parent-female-icon.png";
 				}
 
 				document.getElementById("tab1").classList.add("show");
@@ -505,81 +524,82 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				document.getElementById("tb3").classList.remove("active");
 
 				// thong tin lop cua hoc vien
-				var classes = [];
-				var k = 0;
-				for (var i = 0; i < ds_hs_lop.length; i++) {
-					if (ds_hs_lop[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
-						classes[k++] = ds_hs_lop[i];
-					}
-				}
-				
+				// var classes = [];
+				// var k = 0;
+				// for (var i = 0; i < ds_hs_lop.length; i++) {
+				// 	if (ds_hs_lop[i].MaHS === ds_phuhuynh[stt_select - 1].MaHS) {
+				// 		classes[k++] = ds_hs_lop[i];
+				// 	}
+				// }
 
-				var html = '';
 
-				if (classes.length === '0'){
-					html += '<p>Học viên chưa tham gia lớp học nào </p>';
-				}
-				else {
-					html += '<p> Số lớp đã tham gia: ' + classes.length + '</p>';
+				// var html = '';
 
-					for (var i = 0; i < classes.length; i++) {
+				// if (classes.length === '0'){
+				// 	html += '<p>Học viên chưa tham gia lớp học nào </p>';
+				// }
+				// else {
+				// 	html += '<p> Số lớp đã tham gia: ' + classes.length + '</p>';
 
-						html += '<div class="class">' +
-							'<p></p>' +
-							'<table>' +
-							'<tr>' +
+				// 	for (var i = 0; i < classes.length; i++) {
 
-							'<td>' +
-							'<p id="id-class">Mã lớp học:  ' + classes[i]['MaLop'] + '</p>' +
-							'</td>' +
+				// 		html += '<div class="class">' +
+				// 			'<p></p>' +
+				// 			'<table>' +
+				// 			'<tr>' +
 
-							'<td>' +
-							'<p id="num-of-session">Số buổi học:  ' + classes[i]['SoBuoiDaToChuc'] + '/' + classes[i]['SoBuoi'] + ' (Vắng : ' + classes[i]['SoBuoiNghi'] + ') </p>' +
-							'</td>' +
-							'</tr>' +
-							'<tr>' +
+				// 			'<td>' +
+				// 			'<p id="id-class">Mã lớp học:  ' + classes[i]['MaLop'] + '</p>' +
+				// 			'</td>' +
 
-							'<td>' +
-							'<p id="name-class">Tên lớp học:  ' + classes[i]['TenLop'] + '</p>' +
-							'</td>' +
+				// 			'<td>' +
+				// 			'<p id="num-of-session">Số buổi học:  ' + classes[i]['SoBuoiDaToChuc'] + '/' + classes[i]['SoBuoi'] + ' (Vắng : ' + classes[i]['SoBuoiNghi'] + ') </p>' +
+				// 			'</td>' +
+				// 			'</tr>' +
+				// 			'<tr>' +
 
-							'<td>' +
-							'<p id="name =name-teacher">Tên giáo viên:  ' + classes[i]['TenGV'] + '</p>' +
-							'</td>' +
-							'</tr>' +
-							'<tr>' +
+				// 			'<td>' +
+				// 			'<p id="name-class">Tên lớp học:  ' + classes[i]['TenLop'] + '</p>' +
+				// 			'</td>' +
 
-							'<td>' +
-							'<p id="fee-class">Học phí:  ' + classes[i]['HocPhi'] + '/buổi' + '</p>' +
-							'</td>' +
+				// 			'<td>' +
+				// 			'<p id="name =name-teacher">Tên giáo viên:  ' + classes[i]['TenGV'] + '</p>' +
+				// 			'</td>' +
+				// 			'</tr>' +
+				// 			'<tr>' +
 
-							'<td>' +
-							'<p id="de-fee-class">Giảm học phí:  ' + classes[i]['GiamHocPhi'] + '%' + '</p>' +
-							'</td>' +
-							'</tr>' +
-							'<tr>' +
+				// 			'<td>' +
+				// 			'<p id="fee-class">Học phí:  ' + classes[i]['HocPhi'] + '/buổi' + '</p>' +
+				// 			'</td>' +
 
-							'<td>' +
-							'<p id="status-class">Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
-							'</td>' +
-							'</tr>' +
-							'</table>' +
-							'</div>';
-					}
+				// 			'<td>' +
+				// 			'<p id="de-fee-class">Giảm học phí:  ' + classes[i]['GiamHocPhi'] + '%' + '</p>' +
+				// 			'</td>' +
+				// 			'</tr>' +
+				// 			'<tr>' +
 
-					document.querySelector(".class-of-student").innerHTML = html;
+				// 			'<td>' +
+				// 			'<p id="status-class">Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
+				// 			'</td>' +
+				// 			'</tr>' +
+				// 			'</table>' +
+				// 			'</div>';
+				// 	}
 
-				}
+				// 	document.querySelector(".class-of-Parent").innerHTML = html;
 
-				// thong tin tai khoan 
+				// }
+
+				//thong tin tai khoan 
 				var username = '';
 				var pass = '';
-				for (var i = 0; i < ds_tk_hs.length; i++) {
-					if (ds_tk_hs[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
-						username = ds_tk_hs[i]['UserName'];
-						pass = ds_tk_hs[i]['Password']
+				for (var i = 0; i < ds_tk_ph.length; i++) {
+					if (ds_tk_ph[i].MaPH === ds_phuhuynh[stt_select - 1].MaPH) {
+						username = ds_tk_ph[i]['UserName'];
+						pass = ds_tk_ph[i]['Password']
 					}
 				}
+
 				document.getElementById('name-login').textContent = username;
 				document.getElementById('username-login').value = username;
 				document.getElementById('password').value = pass;
@@ -591,11 +611,12 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 			document.getElementById('div-change-pass').style.display = 'none';
 			modalBg.style.display = 'none';
+
 			const paragraphs = document.getElementsByTagName("p");
 			while (paragraphs.length > 0) {
 				paragraphs[0].parentNode.removeChild(paragraphs[0]);
 			}
-			document.querySelector(".class-of-student").innerHTML = '';
+			document.querySelector(".class-of-Parent").innerHTML = '';
 
 		});
 
@@ -614,16 +635,16 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			document.getElementById('lb_name_edit').textContent = "";
 
 			document.getElementById('lb_address_edit').textContent = "";
-			// document.getElementById('lb_education_edit').textContent = "";
+
 			document.getElementById('lb_age_edit').textContent = "";
 			document.getElementById('lb_birthday_edit').textContent = "";
 
 			modalBgEdit.style.display = "block";
 
 
-			document.getElementById('sudent_name_edit').value = ds_hocsinh[stt_select - 1].TenHS;
+			document.getElementById('parent_name_edit').value = ds_phuhuynh[stt_select - 1].TenPH;
 
-			var gt = ds_hocsinh[stt_select - 1].GioiTinh;
+			var gt = ds_phuhuynh[stt_select - 1].GioiTinh;
 			var selectTag = document.getElementById("gender_edit");
 			for (var i = 0; i < selectTag.options.length; i++) {
 				if (selectTag.options[i].value == gt) {
@@ -632,14 +653,14 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				}
 			}
 
-			document.getElementById('birthday_edit').value = ds_hocsinh[stt_select - 1].NgaySinh;
-			document.getElementById('age_edit').value = ds_hocsinh[stt_select - 1].Tuoi;
-			document.getElementById('Student-id_edit').textContent = "Mã Học viên : " + ds_hocsinh[stt_select - 1].MaHS;
-			document.getElementById('address_edit').value = ds_hocsinh[stt_select - 1].DiaChi;
-			document.getElementById('phone_number_edit').value = ds_hocsinh[stt_select - 1].SDT;
-			document.getElementById('email_edit').value = ds_hocsinh[stt_select - 1].Email;
-			// document.getElementById('education_edit').value = ds_hocsinh[stt_select - 1].TrinhDo;
-			document.getElementById('id_edit').value = ds_hocsinh[stt_select - 1].MaHS;
+			document.getElementById('birthday_edit').value = ds_phuhuynh[stt_select - 1].NgaySinh;
+			document.getElementById('age_edit').value = ds_phuhuynh[stt_select - 1].Tuoi;
+			document.getElementById('parent-id_edit').textContent = "Mã Học viên : " + ds_phuhuynh[stt_select - 1].MaPH;
+			document.getElementById('address_edit').value = ds_phuhuynh[stt_select - 1].DiaChi;
+			document.getElementById('phone_number_edit').value = ds_phuhuynh[stt_select - 1].SDT;
+			document.getElementById('email_edit').value = ds_phuhuynh[stt_select - 1].Email;
+
+			document.getElementById('id_edit').value = ds_phuhuynh[stt_select - 1].MaPH;
 		});
 
 		document.querySelector('.cancle-btn').addEventListener('click', () => {
@@ -662,17 +683,17 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			const phone_number = document.getElementById('phone_number_edit').value;
 			const email = document.getElementById('email_edit').value;
 
-			const Student_name = document.getElementById('sudent_name_edit').value;
+			const parent_name = document.getElementById('parent_name_edit').value;
 			const age = document.getElementById('age_edit').value;
 
 			const address = document.getElementById('address_edit').value;
 			// const education = document.getElementById('education_edit').value;
 			const birthday = document.getElementById('birthday_edit').value;
 
-			var erorr_empty = "*Dữ liệu không để trống";
+			var erorr_empty = "*Dữ liệu không được để trống";
 
 			//Kiểm tra dữ liệu nhập vào
-			if (!Student_name) {
+			if (!parent_name) {
 				document.getElementById('lb_name_edit').textContent = erorr_empty;
 				check = false;
 			} else
@@ -736,10 +757,10 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 			event.preventDefault();
 			document.querySelector('.delete-ques').style.display = 'none';
-			if (listClass.length != 0) {
-				document.querySelector('.delete-cant').style.display = 'block';
-				return;
-			}
+			// if (listClass.length != 0) {
+			// 	document.querySelector('.delete-cant').style.display = 'block';
+			// 	return;
+			// }
 
 			document.querySelector('.delete-success').style.display = 'block';
 			setTimeout(function() {
@@ -757,7 +778,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 		// document.getElementById('refesh-btn').addEventListener('click', () => {
 		// 	location.reload();
-		// 	header("Location: manageStudent.php");
+		// 	header("Location: manageParent.php");
 		// });
 
 		// Open detail tab
@@ -816,7 +837,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			var err_pass = '';
 			var err_repass = '';
 			var check_pass = true;
-
+			console.log(pass);
 			if (!pass) {
 				err_pass = '*Bạn chưa nhập mật khẩu';
 				check_pass = false;
@@ -844,8 +865,6 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 			setTimeout(function() {
 				document.querySelector('.change-pass-success').style.display = 'none';
-
-
 				form4.submit();
 			}, 1000);
 		});
@@ -854,10 +873,24 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			document.getElementById('div-change-pass').style.display = 'none';
 
 		});
+
+
+		// hien thi tt hoc sinh
+
+		const infoStudents = document.querySelectorAll(".infor-student");
+		const hiddenDiv = document.getElementById("hidden-div");
+
+		// Bắt sự kiện mouseover trên các thẻ p có class "infor-student"
+		infoStudents.forEach((infoStudent) => {
+			infoStudent.addEventListener("mouseover", () => {
+				hiddenDiv.style.display = "block";
+			});
+		});
+
+		// Bắt sự kiện mouseout để ẩn đi thẻ div
+		hiddenDiv.addEventListener("mouseout", () => {
+			hiddenDiv.style.display = "none";
+		});
 	</script>;
-
-
-
-
 
 </html>

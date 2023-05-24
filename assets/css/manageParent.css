@@ -382,3 +382,31 @@ tbody tr {
 }
 
 
+
+p.infor-student:hover {
+  opacity: 0.7;
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+p.infor-student{
+  width: fit-content;
+    padding: 5px;
+}
+
+
+.div-student-info {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.div-student-info p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.div-student-info strong {
+  font-weight: bold;
+}

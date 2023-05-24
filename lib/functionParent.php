@@ -4,65 +4,65 @@
     $path_dir = __DIR__.'/../lib';
 
     include $path_dir.'/database.php';
-    // select danh sách học viên
-    function listStudent($connection){
-        $sql = "select * from hocsinh";
+    // select danh sách phụ huynh
+    function listParent($connection){
+        $sql = "select * from phuhuynh";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
             $statement-> execute();
 
-            $listStudent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+            $listParent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
 
             $connection = null;
-            return $listStudent;
+            return $listParent;
         } catch (PDOException $e){
             echo $e->getMessage();
         }
     }
 
 
-    //select những lớp mà  học viên học
+    //select những lớp mà  phụ huynh học
 
-    function classOfStudent($connection,$MaHS){
-        $sql = "select * from hs_lop where MaHS = ?";
-        try{
-            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+    // function classOfParent($connection,$MaPH){
+    //     $sql = "select * from hs_lop where MaPH = ?";
+    //     try{
+    //         $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+    //         $statement =  $connection->prepare($sql);
+    //         $statement-> execute([$MaPH]);
 
-            $listClass  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+    //         $listClass  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
 
-            $connection = null;
-            return $listClass;
-        } catch (PDOException $e){
-            echo $e->getMessage();
-        }
-    }
+    //         $connection = null;
+    //         return $listClass;
+    //     } catch (PDOException $e){
+    //         echo $e->getMessage();
+    //     }
+    // }
 
 
-     // select  hoc vien
-     function StudentByMaHS($connection,$MaHS){
-        $sql = "select * from hocsinh where MaHS = ?";
-        try{
-            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+     // select  phu huynh
+    //  function ParentByMaPH($connection,$MaPH){
+    //     $sql = "select * from phuhuynh where MaPH = ?";
+    //     try{
+    //         $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+    //         $statement =  $connection->prepare($sql);
+    //         $statement-> execute([$MaPH]);
 
-            $listStudent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+    //         $listParent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
 
-            $connection = null;
-            return $listStudent;
-        } catch (PDOException $e){
-            echo $e->getMessage();
-        }
-    }
+    //         $connection = null;
+    //         return $listParent;
+    //     } catch (PDOException $e){
+    //         echo $e->getMessage();
+    //     }
+    // }
 
-    // update hoc vien
+    // update phu huynh
 
-    function updateStudentbyID($connection,$MaHS,$ten,$gt,$ns,$tuoi,$dc,$sdt,$email){
+    function updateParentbyID($connection,$MaPH,$ten,$gt,$ns,$tuoi,$dc,$sdt,$email){
 
-        $sql = "update hocsinh set TenHS = ? , GioiTinh = ? , NgaySinh = ?, Tuoi= ?, DiaChi = ?, SDT = ? ,  Email = ?  where MaHS = ?";
+        $sql = "update phuhuynh set TenPH = ? , GioiTinh = ? , NgaySinh = ?, Tuoi= ?, DiaChi = ?, SDT = ? ,  Email = ?  where MaPH = ?";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
@@ -74,7 +74,7 @@
             $statement->bindParam(5, $dc);
             $statement->bindParam(6, $sdt);
             $statement->bindParam(7, $email);
-            $statement->bindParam(8, $MaHS);
+            $statement->bindParam(8, $MaPH);
           
             $statement-> execute();
            
@@ -87,44 +87,44 @@
 
  
 
-    // search Hoc vien
-    function searchStudent($connection,$key){
-        $sql = "select * from hocsinh where MaHS like :key or TenHS like :key or GioiTinh like :key or NgaySinh like :key or Tuoi like :key  or  DiaChi like :key  or  SDT like :key or  Email like :key";
+    // search phu huynh
+    function searchParent($connection,$key){
+        $sql = "select * from phuhuynh where MaPH like :key or TenPH like :key or GioiTinh like :key or NgaySinh like :key or Tuoi like :key  or  DiaChi like :key  or  SDT like :key or  Email like :key";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
             $statement->bindValue(':key', "%$key%", PDO::PARAM_STR);
             $statement->execute();
 
-            $listStudent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+            $listParent  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
 
             $connection = null;
-            return $listStudent;
+            return $listParent;
         } catch (PDOException $e){
             echo $e->getMessage();
         }
     }
 
 
-     // Xoa hoc vien
-     function deleteStudent($connection,$MaHS){
-        $sql = "delete from hocsinh where MaHS = ?";
+     // Xoa phu huynh
+     function deleteParent($connection,$MaPH){
+        $sql = "delete from phuhuynh where MaPH = ?";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+            $statement-> execute([$MaPH]);
             $connection = null;
         } catch (PDOException $e){
             echo $e->getMessage();
         }
     }
     // Xoa hs trong ph_hs
-    function deleteStudent_ph_hs($connection,$MaHS){
-        $sql = "delete from ph_hs where MaHS = ?";
+    function deleteParent_ph_hs($connection,$MaPH){
+        $sql = "delete from ph_hs where MaPH = ?";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+            $statement-> execute([$MaPH]);
             $connection = null;
         } catch (PDOException $e){
             echo $e->getMessage();
@@ -132,13 +132,13 @@
     }
     
 
-    // Xoa  tai khoan hoc vien
-    function deletetk_hs($connection,$MaHS){
-        $sql = "delete from tk_hs where MaHS = ?";
+    // Xoa  tai khoan phu huynh
+    function deletetk_ph($connection,$MaPH){
+        $sql = "delete from tk_ph where MaPH = ?";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+            $statement-> execute([$MaPH]);
             $connection = null;
         } catch (PDOException $e){
             echo $e->getMessage();
@@ -149,24 +149,24 @@
     // select phu huynh cua hoc sinh
 
 
-    function parentOfStudent($connection,$MaHS){
-        $sql = "select * from ph_hs where MaHS = ?";
-        try{
-            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-            $statement =  $connection->prepare($sql);
-            $statement-> execute([$MaHS]);
+    // function parentOfParent($connection,$MaPH){
+    //     $sql = "select * from ph_hs where MaPH = ?";
+    //     try{
+    //         $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+    //         $statement =  $connection->prepare($sql);
+    //         $statement-> execute([$MaPH]);
 
-            $list = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+    //         $list = $statement-> fetchAll(PDO:: FETCH_ASSOC);
 
-            $connection = null;
-            return $list;
-        } catch (PDOException $e){
-            echo $e->getMessage();
-        }
-    }
-        // select ds ph_hs cung tt phu huynh
+    //         $connection = null;
+    //         return $list;
+    //     } catch (PDOException $e){
+    //         echo $e->getMessage();
+    //     }
+    // }
+        // select ds hs_ph cung tt hoc sinh
     function listph_hs($connection){
-        $sql = " SELECT ph_hs.MaHS , ph_hs.MaPH, phuhuynh.TenPH, phuhuynh.GioiTinh, phuhuynh.NgaySinh , phuhuynh.Tuoi , phuhuynh.DiaChi, phuhuynh.SDT , phuhuynh.Email FROM `ph_hs`INNER JOIN phuhuynh WHERE ph_hs.MaPH = phuhuynh.MaPH;";
+        $sql = "SELECT ph_hs.MaHS , MaPH , hocsinh.TenHS, hocsinh.GioiTinh, hocsinh.NgaySinh, hocsinh.Tuoi, hocsinh.DiaChi, hocsinh.SDT , hocsinh.Email FROM `ph_hs` INNER JOIN hocsinh WHERE ph_hs.MaHS =  hocsinh.MaHS;";
 
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
@@ -174,7 +174,6 @@
             $statement-> execute();
 
             $list = $statement-> fetchAll(PDO:: FETCH_ASSOC);
-
             $connection = null;
             return $list;
         } catch (PDOException $e){
@@ -185,7 +184,7 @@
     // select ds hs_lop cung tt lop
     
     function lisths_lop($connection){
-        $sql = "SELECT MaHS, lop.MaLop , lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi, lop.SoBuoi, lop.SoBuoiDaToChuc, lop.TrangThai , hs_lop.SoBuoiNghi , hs_lop.GiamHocPhi , giaovien.TenGV FROM `hs_lop` inner JOIN lop INNER JOIN gv_lop INNER JOIN giaovien WHERE hs_lop.MaLop = lop.MaLop AND lop.MaLop = gv_lop.MaLop AND gv_lop.MAGV = giaovien.MaGV;";
+        $sql = "SELECT MaPH, lop.MaLop , lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi, lop.SoBuoi, lop.SoBuoiDaToChuc, lop.TrangThai , hs_lop.SoBuoiNghi , hs_lop.GiamHocPhi , giaovien.TenGV FROM `hs_lop` inner JOIN lop INNER JOIN gv_lop INNER JOIN giaovien WHERE hs_lop.MaLop = lop.MaLop AND lop.MaLop = gv_lop.MaLop AND gv_lop.MAGV = giaovien.MaGV;";
 
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
@@ -204,9 +203,9 @@
     // select tai khoan
 
 
-    function listtk_hs($connection){
+    function listtk_ph($connection){
 
-        $sql = "select * from tk_hs ";
+        $sql = "select * from tk_ph ";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
@@ -221,10 +220,10 @@
         }
     }
 
-    // update mat khau tk HS
-    function updatePassHS($connection,$username,$pass){
+    // update mat khau tk ph
+    function updatePassPH($connection,$username,$pass){
 
-        $sql = "update tk_hs set Password = ? where  UserName= ?";
+        $sql = "update tk_ph set Password = ? where  UserName= ?";
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
             $statement =  $connection->prepare($sql);
