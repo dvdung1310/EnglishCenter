@@ -4,7 +4,6 @@ $path_dir = __DIR__.'/../lib';
 
 include $path_dir.'/database.php';
 
-
 //  check có trùng user học sinh đã tồn tại hay không ?
 function checkExitUser($user, $connection)
 {

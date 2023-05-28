@@ -1,0 +1,412 @@
+body {
+    background-color: #f2f2f2;
+    position: relative;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-top: 2rem;
+}
+
+table {
+
+    display: table-header-group;
+    margin: auto;
+    border-collapse: collapse;
+    width: 100%;
+    max-width: 1000px;
+    min-width: 800px;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+
+}
+
+thead {
+    background-color: #333;
+    color: white;
+}
+
+th,
+td {
+    padding: 0.8rem;
+    text-align: center;
+}
+
+th {
+    letter-spacing: 0.1rem;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+tr:hover {
+    background-color: #d4e3ff;
+}
+
+button {
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+}
+
+.add-teacher-button {
+    margin: 1rem auto;
+    display: block;
+    width: 200px;
+    margin-right: 20px;
+}
+
+
+tbody {
+    display: block;
+    max-height: 500px;
+    /* set maximum height */
+    overflow-y: auto;
+    /* enable vertical scroll */
+}
+
+thead,
+tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.modal-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    max-width: 800px;
+    width: 100%;
+    max-height: 700px;
+    overflow-y:scroll;
+    height: 95%;
+}
+
+.close-btn {
+    display: block;
+    margin: auto;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+
+
+
+    /* giao diện thông tin chi tiết */
+    
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: white;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+    .header {
+      text-align: center;
+    }
+    .avatar {
+      display: block;
+      margin: 0 auto;
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    }
+    .name {
+      font-size: 28px;
+      font-weight: bold;
+      margin-top: 20px;
+    }
+    .contact-info {
+      margin-top: 20px;
+    }
+    .section {
+      margin-top: 30px;
+    }
+    .section-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .section-content {
+      line-height: 1.5;
+    }
+
+    
+    .container table {
+        margin: auto;
+        border-collapse: collapse;
+        border: 2px solid #ddd;
+        width: 80%;
+    }
+    .container th, .container td {
+        padding: 10px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+    }
+    .container th, .container td {
+        background-color: #ffff;
+    }
+
+    /* CSS sua thong tin */
+    .modal-bg-add, .modal-bg-edit {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: none;
+        z-index: 100;
+    }
+    
+      .modal-content-edit ,.modal-content-add {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        max-width: 800px;
+        width: 100%;
+        max-height: 700px;
+        overflow-y:scroll;
+    }
+
+    .modal-bg-add input[type=text], .modal-bg-edit input[type=text],
+    .modal-bg-add input[type=email], .modal-bg-edit input[type=email],
+    .modal-bg-add input[type=tel], .modal-bg-edit input[type=tel] {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 15px;
+    }
+    
+    .modal-bg-add select, .modal-bg-edit select {
+      width: 100%;
+      padding: 12px 20px;
+      margin: 8px 0;
+      display: inline-block;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    
+    .modal-bg-add input[type=submit], .modal-bg-edit input[type=submit],
+    .modal-bg-add button, .modal-bg-edit button {
+
+      color: white;
+      padding: 14px 20px;
+      margin: 8px 0;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: auto;
+    }
+
+    .modal-bg-add input[type=submit], .modal-bg-edit input[type=submit]{
+        background-color: #4CAF50;
+    margin-right: 70px;
+    float: right;
+  
+
+    }
+
+    .modal-bg-add button , .modal-bg-edit button {
+        background-color: #f83d3d;
+        margin-left: 70px;
+        /* float: left; */
+        font-size: 14px;
+    }
+    
+    .modal-bg-add input[type=submit]:hover, .modal-bg-edit input[type=submit]:hover {
+      background-color: #45a049;
+    }
+
+    .modal-bg-add button:hover , .modal-bg-edit button:hover {
+        background-color: #e35a5a;
+
+    }
+    
+    .modal-bg-add div, .modal-bg-edit div {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+      height: 95%;
+    }
+    
+    .modal-bg-add h1, .modal-bg-edit h1 {
+      text-align: center;
+    }
+
+    .update-success ,.add-success ,
+    .delete-success, .delete-ques, .delete-cant,
+    .change-pass-success{
+        text-align: center;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fe8787;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+        max-width: 200px;
+        width: 100%;
+        max-height: 700px;
+        display: none;
+        z-index:200 ;
+  
+    }
+
+    #div-change-pass{
+      
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #ffff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      max-width: fit-content;
+      width: 100%;
+      max-height: 700px;
+      display: none;
+      z-index:200 ;
+
+    }
+
+  
+
+    
+    .search-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    
+    .search-container input[type="text"],
+    .search-container input[type="submit"],
+    .search-container button {
+      margin: 0;
+    }
+
+ 
+    button:hover{
+      opacity: 0.7;
+      cursor: pointer;
+    }
+
+    .tbody-1 tr:hover{
+      cursor: pointer;
+    }
+
+
+
+  /* detail tab */
+  /* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons inside the tab */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+  color: maroon;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none;
+}
+
+/* Show the tab content */
+.tabcontent.show {
+  display: block;
+}
+
+
+
+p.infor-student:hover {
+  opacity: 0.7;
+  cursor: pointer;
+  background-color: whitesmoke;
+}
+
+p.infor-student{
+  width: fit-content;
+    padding: 5px;
+}
+
+
+.div-student-info {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.div-student-info p {
+  font-size: 16px;
+  margin-bottom: 5px;
+}
+.div-student-info strong {
+  font-weight: bold;
+}

@@ -5,56 +5,7 @@
 	<title>Quản lý hệ thống giáo dục</title>
 	<link rel="stylesheet" href="../assets/css/manage.css">
     <style>
-      /* Định dạng CSS để trang web trông đẹp hơn */
-      body {
-        font-family: Arial, sans-serif;
-        background-color: #f4f4f4;
-      }
-      .container {
-        max-width: 800px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #fff;
-        box-shadow: 0 0 10px rgba(0,0,0,0.2);
-      }
-      h1 {
-        text-align: center;
-        color: #333;
-      }
-      form input[type=text], select {
-        width: 100%;
-        padding: 12px 20px;
-        margin: 8px 0;
-        display: inline-block;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-sizing: border-box;
-      }
-      form input[type=submit] {
-        width: 100%;
-        background-color: #4CAF50;
-        color: #fff;
-        padding: 14px 20px;
-        margin: 8px 0;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-      form input[type=submit]:hover {
-        background-color: #45a049;
-      }
-      table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      th, td {
-        padding: 12px;
-        text-align: left;
-        border-bottom: 1px solid #ddd;
-      }
-      tr:hover {
-        background-color: #f5f5f5;
-      }
+      
     </style>
 </head>
 <body>
@@ -66,7 +17,7 @@
 			<ul>
 				<li><a href="#">Quản lý lớp học</a></li>
 				<li><a href="#">Quản lý học viên</a></li>
-				<li><a href="#">Quản lý giáo viên</a></li>
+				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="#">Quản lý phụ huynh</a></li>
 				<li><a href="#">Quản lý tài khoản</a></li>
 			</ul>

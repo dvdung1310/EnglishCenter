@@ -75,7 +75,7 @@ GioiTinh VARCHAR(5) NOT NULL ,
 NgaySinh DATE NOT NULL , 
 Tuoi INT NOT NULL , 
 DiaChi VARCHAR(100) NOT NULL , 
-SDT VARCHAR(11) NULL , 
+SDT VARCHAR(11) NOT NULL , 
 Email VARCHAR(50) NULL , 
 PRIMARY KEY (MaPH)) 
 
@@ -120,7 +120,7 @@ PRIMARY KEY (UserName));
 --lop
 CREATE TABLE lop 
 (MaLop varchar(20),
- TenLop VARCHAR(100) NOT NULL , 
+ TenLop VARCHAR(100) NOT NULL ,
  LuaTuoi int not null,
  ThoiGian date not null,
  SLHS int not null DEFAULT '0',
@@ -129,7 +129,25 @@ CREATE TABLE lop
  SoBuoi int not null,
  SoBuoiDaToChuc int not null,
  TrangThai varchar(200),
-PRIMARY KEY (MaLop)) 
+PRIMARY KEY (MaLop))
+
+--lich hoc
+CREATE TABLE schedules (
+    idSchedules INT PRIMARY KEY AUTO_INCREMENT,
+    day_of_week VARCHAR(10) NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+);
+
+--lop_lichhoc
+CREATE TABLE schedules_class
+(idSchedules int,
+MaLop varchar(20),
+foreign key (idSchedules) references schedules(idSchedules) ,
+foreign key (MaLop) references lop(MaLop) ,
+PRIMARY KEY (idSchedules,MaLop)) 
+
+
 
 --gv_lop
 CREATE TABLE gv_lop

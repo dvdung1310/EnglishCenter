@@ -142,9 +142,9 @@ if ($check_empty) {
                         <h1>Nhập thông tin cá nhân</h1>
                     </div>
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="name" placeholder="Họ và tên :" value="<?php echo $name ?>">
+                        <input class="login-student-form-input" type="text" name="name" placeholder="Họ và tên :"  value="<?php echo $name ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px" >
                         <?php
                         echo $error_name;
                         ?>
@@ -161,7 +161,7 @@ if ($check_empty) {
                         </div>
 
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px" >
                         <?php
                         echo $error_gender;
                         ?>
@@ -171,35 +171,35 @@ if ($check_empty) {
                         <input class="login-student-form-input" type="date" name="date" placeholder="Ngày sinh :" value="<?php echo $date ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px ">
                         <?php
                         echo $error_date;
                         ?>
                     </p>
-
+                    
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="age" placeholder="Tuổi:" value="<?php echo $age ?>">
+                        <input class="login-student-form-input"  type ="text" name="age" placeholder="Tuổi:"  value="<?php echo $age ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_age;
                         ?>
                     </p>
 
                     <div>
-                        <input name="address" class="login-student-form-input" type="text" placeholder="Địa Chỉ : " value="<?php echo $address ?>">
+                        <input name="address" class="login-student-form-input" type="text" placeholder="Địa Chỉ : "  value="<?php echo $address ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_address;
                         ?>
                     </p>
 
                     <div>
-                        <input name="phone" class="login-student-form-input" type="text" placeholder="Số điện thoại (nếu có) : " value="<?php echo $phone ?>">
+                        <input name="phone" class="login-student-form-input" type="text" placeholder="Số điện thoại(nếu có) : " value="<?php echo $phone ?>">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_phone;
                         ?>
@@ -209,7 +209,7 @@ if ($check_empty) {
                         <input name="email" class="login-student-form-input" type="text" placeholder="Email (nếu có) : " value="<?php echo $email ?>">
                     </div>
 
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         echo $error_email;
                         ?>
@@ -217,14 +217,14 @@ if ($check_empty) {
                     <div>
                         <input name="maph" class="login-student-form-input" type="text" placeholder="Mã phụ huynh (nếu có) : ">
                     </div>
-                    <p style="color:red">
+                    <p style="color:red;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {
                             echo $error_check;
                         }
 
                         ?></p>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red;font-size : 18px ; margin-bottom: 20px;">
                         <?php
                         if (isset($_POST['submit'])) {;
                         }

@@ -6,7 +6,7 @@ $userName = $passWord = $confirmPassword = "";
 $userName_error = $passWord_error = $confirmPassword_error = "";
 $success = "";
 
-echo $_COOKIE['mahs'];
+
 
 if (isset($_POST['submit'])) {
 
@@ -108,7 +108,7 @@ if (isset($_POST['submit'])) {
                     <div class="login-student-form-center">
                         <input class="login-student-form-input" type="text" name="userName" placeholder="Nhập tên đăng nhập:" value="<?php echo $userName ?>">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {
                             echo "$userName_error";
@@ -118,7 +118,7 @@ if (isset($_POST['submit'])) {
                     <div>
                         <input name="passWord" class="login-student-form-input" type="password" placeholder="Nhập mật khẩu : ">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {
                             echo "$passWord_error";
@@ -129,14 +129,14 @@ if (isset($_POST['submit'])) {
                     <div>
                         <input name="confirmpassWord" class="login-student-form-input" type="password" placeholder="Xác nhận mật khẩu : ">
                     </div>
-                    <p style="color:red ; margin-bottom: 20px;">
+                    <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {
                             echo "$confirmPassword_error";
                         }
 
                         ?></p>
-                    <p style="color:lime; margin-bottom: 20px;">
+                    <p style="color:lime; margin-bottom: 20px;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {
                             echo "$success";
