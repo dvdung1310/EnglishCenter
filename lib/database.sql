@@ -171,19 +171,22 @@ PRIMARY KEY (MaHS,MaLop));
 CREATE TABLE diemdanh
 (
 MaLop varchar(20),
-MAHS int, 
+MaHS int, 
 ThoiGian date not null,
 dd boolean not null,
 foreign key (MaHS) references hocsinh(MaHS) , 
 foreign key (MaLop) references lop(MaLop) ,
 PRIMARY KEY (MaHS,MaLop,ThoiGian));
 
---thuhocphi
+--HDHocPhi
 
-CREATE TABLE thuhocphi 
-(MaLop varchar(20) not null,
- MAHS int NOT null,
- ThoiGian date not null,
+CREATE TABLE hdhocphi
+(
+MaHD INT NOT NULL AUTO_INCREMENT,
+TenHD VARCHAR(100) not null,
+MaLop varchar(20) not null,
+ MaHS int NOT null,
+ ThoiGian varchar(50) not null,
  SoTien float NOT null,
  GiamHocPhi float DEFAULT '0',
  SoTienGiam float DEFAULT '0',
@@ -191,14 +194,30 @@ CREATE TABLE thuhocphi
  SoTienDaDong float not null,
  NoPhiConLai float not null,
  TrangThai varchar(50),
- NgayDong date ,
-PRIMARY KEY (MaHS,MaLop,ThoiGian)) 
+ foreign key (MaHS) references hs_lop(MaHS) , 
+foreign key (MaLop) references hs_lop(MaLop) ,
+PRIMARY KEY (MaHD) )
 
+---Lịch sử thu hoc phi
 
+CREATE TABLE lsthp
+(
+MaGD int NOT NULL AUTO_INCREMENT,
+MaHD INT  not null,
+ThoiGian date not null,
+SoTien float not null,
+foreign key (MaHD) references HDHocPhi(MaHD) ,
+PRIMARY KEY (MaGD) )
 
-
-
-
-
+---Luong giao vien
+CREATE TABLE `englishcenter`.`luonggv` 
+(`MaLuong` INT NOT NULL , 
+`MaGV` INT NOT NULL , 
+`ThoiGian` VARCHAR(20) NOT NULL , 
+`ThoiGianTT` DATE NULL , 
+`SoTien` INT NOT NULL , 
+`TrangThai` INT NOT NULL , 
+`Tên` VARCHAR(100) NOT NULL , 
+PRIMARY KEY (`MaLuong`)) ENGINE = InnoDB;
 
 

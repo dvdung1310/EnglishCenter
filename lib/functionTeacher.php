@@ -182,6 +182,64 @@
         }
     }
 
+    // update mat khau tk gv
+    function updatePassGV($connection,$username,$pass){
+
+        $sql = "update tk_gv set Password = ? where  UserName= ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+
+            $statement->bindParam(1, $pass);
+            $statement->bindParam(2, $username);
+   
+          
+            $statement-> execute();
+           
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+    // select tai khoan
+
+
+    function listtk_gv($connection){
+
+        $sql = "select * from tk_gv ";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute();
+
+            $list = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+
+            $connection = null;
+            return $list;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    // select lop ma gv day
+    function listClassOfTeacher($connection){
+
+        $sql = "SELECT gv_lop.MaLop ,MaGV , gv_lop.TienTraGV, lop.TenLop,lop.LuaTuoi , lop.ThoiGian, lop.SLHS, lop.SLHSToiDa,lop.HocPhi, lop.SoBuoi, lop.SoBuoiDaToChuc, lop.TrangThai FROM `gv_lop` INNER JOIN lop WHERE gv_lop.MaLop = lop.MaLop;";
+
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute();
+
+            $list = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+
+            $connection = null;
+            return $list;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
 
 
 

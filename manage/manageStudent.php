@@ -3,9 +3,7 @@ require '../lib/functionStudent.php';
 
 
 
-// unset($_POST['update']);
-// unset($_POST['add']);
-// unset($_POST['delete']);
+
 
 
 
@@ -90,7 +88,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
-				<li><a href="#">Quản lý tài khoản</a></li>
+				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -106,15 +104,16 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 		</div>
 
-		<table>
+		<table id="table-1">
 			<thead>
 				<tr>
-					<th>STT</th>
-					<th>Tên</th>
-					<th>Giới tính</th>
-					<th>Tuổi</th>
-					<th style="width :200px">Địa chỉ</th>
-					<th>Lớp đang học</th>
+					<th onclick="sortTable(0)">STT</th>
+					<th onclick="sortTable(1)">Mã học viên</th>
+					<th onclick="sortTable(2)">Họ Tên</th>
+					<th onclick="sortTable(3)">Giới tính</th>
+					<th onclick="sortTable(4)">Tuổi</th>
+					<th onclick="sortTable(5)" style="width :200px">Địa chỉ</th>
+					<th onclick="sortTable(6)">Lớp đang học</th>
 					
 
 				</tr>
@@ -127,6 +126,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					foreach ($listStudent as $Student) : ?>
 						<tr>
 							<td><?php echo $i++ ?></td>
+							<td><?php echo $Student['MaHS']; ?></td>
 							<td><?php echo $Student['TenHS']; ?></td>
 							<td><?php echo $Student['GioiTinh']; ?></td>
 							<td><?php echo $Student['Tuoi']; ?></td>
@@ -280,7 +280,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 										</tr>
 										<tr>
 											<td>
-												<p id="err-pass" style="color: red;font-style: italic;  font-size: 14px;"></p>
+												<h5 id="err-pass" style="color: red;font-style: italic;  font-size: 14px;"></h5>
 											</td>
 
 										</tr>
@@ -295,7 +295,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 										</tr>
 										<tr>
 											<td>
-												<p id="err-repass" style="color: red;font-style: italic;  font-size: 14px;"></p>
+												<h5 id="err-repass" style="color: red;font-style: italic;  font-size: 14px;"></h5>
 											</td>
 
 										</tr>
@@ -428,6 +428,17 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 	</footer>
 
 	<script>
+			function convertDateFormat(dateString) {
+			var dateParts = dateString.split("-");
+			var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+			return formattedDate;
+		}
+
+		function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 		const rows = document.querySelectorAll('.tbody-1 tr');
 		const modalBg = document.querySelector('.modal-bg');
 		const modalContent = document.querySelector('.modal-content');
@@ -438,6 +449,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		var stt_select;
 		var ds_hocsinh;
 		var listClass;
+		var student_select;
 
 
 
@@ -448,32 +460,37 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		rows.forEach((row) => {
 			row.addEventListener('click', () => {
 
-				stt_select = row.cells[0].textContent;
+				stt_select = row.cells[1].textContent;
 
-				listClass = row.cells[5].textContent;
+				listClass = row.cells[6].textContent;
 				ds_hocsinh = <?php print_r($jsonListStudent); ?>;
 				ds_ph_hs = <?php print_r($jsonListph_hs); ?>;
 				ds_hs_lop = <?php print_r($jsonLisths_lop); ?>;
 				ds_tk_hs = <?php print_r($jsonListtk_hs); ?>;
 
+				for (var i = 0; i < ds_hocsinh.length; i++) {
+					if (stt_select == ds_hocsinh[i].MaHS)
+						student_select = ds_hocsinh[i];
+				}
+
 				// lay tt phu huynh
 				var phhs = [];
 				var j = 0;
 				for (var i = 0; i < ds_ph_hs.length; i++) {
-					if (ds_ph_hs[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
+					if (ds_ph_hs[i].MaHS === student_select.MaHS) {
 						phhs[j++] = ds_ph_hs[i].TenPH;
 					}
 				}
 
-				document.getElementById('Student-name').textContent = ds_hocsinh[stt_select - 1].TenHS;
-				document.getElementById('Student-gender').textContent = ds_hocsinh[stt_select - 1].GioiTinh;
-				document.getElementById('Student-age').textContent = ds_hocsinh[stt_select - 1].Tuoi;
+				document.getElementById('Student-name').textContent = student_select.TenHS;
+				document.getElementById('Student-gender').textContent = student_select.GioiTinh;
+				document.getElementById('Student-age').textContent = student_select.Tuoi;
 				document.getElementById('Student-class').textContent = listClass;
-				document.getElementById('Student-id').textContent = ds_hocsinh[stt_select - 1].MaHS;
-				document.getElementById('Student-address').textContent = ds_hocsinh[stt_select - 1].DiaChi;
-				document.getElementById('Student-date').textContent = ds_hocsinh[stt_select - 1].NgaySinh;
-				document.getElementById('Student-phone').textContent = ds_hocsinh[stt_select - 1].SDT;
-				document.getElementById('Student-email').textContent = ds_hocsinh[stt_select - 1].Email;
+				document.getElementById('Student-id').textContent = student_select.MaHS;
+				document.getElementById('Student-address').textContent = student_select.DiaChi;
+				document.getElementById('Student-date').textContent = convertDateFormat(student_select.NgaySinh);
+				document.getElementById('Student-phone').textContent = student_select.SDT;
+				document.getElementById('Student-email').textContent = student_select.Email;
 
 
 
@@ -487,11 +504,11 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 				// document.getElementById('Student-parent').textContent =
 
-				document.getElementById('mahs_delete').value = ds_hocsinh[stt_select - 1].MaHS;
+				document.getElementById('mahs_delete').value = student_select.MaHS;
 
 				var img = document.getElementById("img");
 
-				if (ds_hocsinh[stt_select - 1].GioiTinh == "Nam") {
+				if (student_select.GioiTinh == "Nam") {
 					img.src = "../assets/images/Student-male-icon.png";
 				} else {
 					img.src = "../assets/images/Student-female-icon.png";
@@ -508,7 +525,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				var classes = [];
 				var k = 0;
 				for (var i = 0; i < ds_hs_lop.length; i++) {
-					if (ds_hs_lop[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
+					if (ds_hs_lop[i].MaHS === student_select.MaHS) {
 						classes[k++] = ds_hs_lop[i];
 					}
 				}
@@ -550,7 +567,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 							'<tr>' +
 
 							'<td>' +
-							'<p id="fee-class">Học phí:  ' + classes[i]['HocPhi'] + '/buổi' + '</p>' +
+							'<p id="fee-class">Học phí:  ' + numberWithCommas(classes[i]['HocPhi'])+ '/buổi' + '</p>' +
 							'</td>' +
 
 							'<td>' +
@@ -575,7 +592,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				var username = '';
 				var pass = '';
 				for (var i = 0; i < ds_tk_hs.length; i++) {
-					if (ds_tk_hs[i].MaHS === ds_hocsinh[stt_select - 1].MaHS) {
+					if (ds_tk_hs[i].MaHS === student_select.MaHS) {
 						username = ds_tk_hs[i]['UserName'];
 						pass = ds_tk_hs[i]['Password']
 					}
@@ -621,9 +638,9 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			modalBgEdit.style.display = "block";
 
 
-			document.getElementById('sudent_name_edit').value = ds_hocsinh[stt_select - 1].TenHS;
+			document.getElementById('sudent_name_edit').value = student_select.TenHS;
 
-			var gt = ds_hocsinh[stt_select - 1].GioiTinh;
+			var gt = student_select.GioiTinh;
 			var selectTag = document.getElementById("gender_edit");
 			for (var i = 0; i < selectTag.options.length; i++) {
 				if (selectTag.options[i].value == gt) {
@@ -632,14 +649,14 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				}
 			}
 
-			document.getElementById('birthday_edit').value = ds_hocsinh[stt_select - 1].NgaySinh;
-			document.getElementById('age_edit').value = ds_hocsinh[stt_select - 1].Tuoi;
-			document.getElementById('Student-id_edit').textContent = "Mã Học viên : " + ds_hocsinh[stt_select - 1].MaHS;
-			document.getElementById('address_edit').value = ds_hocsinh[stt_select - 1].DiaChi;
-			document.getElementById('phone_number_edit').value = ds_hocsinh[stt_select - 1].SDT;
-			document.getElementById('email_edit').value = ds_hocsinh[stt_select - 1].Email;
-			// document.getElementById('education_edit').value = ds_hocsinh[stt_select - 1].TrinhDo;
-			document.getElementById('id_edit').value = ds_hocsinh[stt_select - 1].MaHS;
+			document.getElementById('birthday_edit').value = student_select.NgaySinh;
+			document.getElementById('age_edit').value = student_select.Tuoi;
+			document.getElementById('Student-id_edit').textContent = "Mã Học viên : " + student_select.MaHS;
+			document.getElementById('address_edit').value = student_select.DiaChi;
+			document.getElementById('phone_number_edit').value = student_select.SDT;
+			document.getElementById('email_edit').value = student_select.Email;
+			// document.getElementById('education_edit').value = student_select.TrinhDo;
+			document.getElementById('id_edit').value = student_select.MaHS;
 		});
 
 		document.querySelector('.cancle-btn').addEventListener('click', () => {
@@ -816,7 +833,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			var err_pass = '';
 			var err_repass = '';
 			var check_pass = true;
-
+			console.log(pass);
 			if (!pass) {
 				err_pass = '*Bạn chưa nhập mật khẩu';
 				check_pass = false;
@@ -832,6 +849,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			document.getElementById('err-pass').textContent = err_pass;
 			document.getElementById('err-repass').textContent = err_repass;
 
+
 			if (!check_pass) {
 				return;
 
@@ -844,7 +862,8 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 			setTimeout(function() {
 				document.querySelector('.change-pass-success').style.display = 'none';
-
+				document.getElementById('err-pass').textContent = '';
+				document.getElementById('err-repass').textContent = '';
 
 				form4.submit();
 			}, 1000);
@@ -852,8 +871,93 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 		document.getElementById('cancle-change-pass').addEventListener('click', () => {
 			document.getElementById('div-change-pass').style.display = 'none';
+			document.getElementById('err-pass').textContent = '';
+			document.getElementById('err-repass').textContent = '';
 
 		});
+
+
+
+		
+		var sortDirection = {}; // Store the current sort direction for each column
+
+		function sortTable(columnIndex) {
+			var table = document.getElementById('table-1');
+			var tbody = table.querySelector('.tbody-1');
+			var rows = Array.from(tbody.getElementsByTagName('tr'));
+			var sttValues = rows.map(function(row) {
+				return parseInt(row.getElementsByTagName('td')[0].innerText.trim());
+			});
+
+			rows.sort(function(a, b) {
+				var aValue = a.getElementsByTagName('td')[columnIndex].innerText.trim();
+				var bValue = b.getElementsByTagName('td')[columnIndex].innerText.trim();
+
+
+				if (sortDirection[columnIndex] === 'asc') {
+					return aValue.localeCompare(bValue);
+				} else {
+					return bValue.localeCompare(aValue);
+				}
+
+
+
+			});
+
+
+
+			rows.forEach(function(row, index) {
+				var sttCell = row.getElementsByTagName('td')[0];
+				sttCell.innerText = sttValues[index];
+			});
+
+			rows.forEach(function(row) {
+				tbody.appendChild(row);
+			});
+
+
+			// Reverse the sort direction for the clicked column
+			if (sortDirection[columnIndex] === 'asc') {
+				sortDirection[columnIndex] = 'desc';
+			} else {
+				sortDirection[columnIndex] = 'asc';
+			}
+
+			// Update the sort icon in the column header
+			updateSortIcon(columnIndex);
+
+
+
+		}
+
+
+
+
+		function updateSortIcon(columnIndex) {
+			var table = document.getElementById('table-1');
+			var headers = table.querySelectorAll('th');
+
+			headers.forEach(function(header) {
+				// Remove the sort icon from all column headers
+				var icon = header.querySelector('img');
+				if (icon) {
+					header.removeChild(icon);
+				}
+			});
+
+			// Add the sort icon to the clicked column header
+			var clickedHeader = headers[columnIndex];
+			var sortIcon = document.createElement('img');
+			sortIcon.src = '../assets/images/arrow-up-down-bold-icon.png';
+			sortIcon.style.width = '20px';
+			sortIcon.style.backgroundColor = 'white';
+			sortIcon.style.borderRadius = '30px';
+			if (sortDirection[columnIndex] === 'asc') {
+				sortIcon.style.transform = 'rotate(180deg)';
+			}
+			clickedHeader.appendChild(sortIcon);
+		}
+
 	</script>;
 
 

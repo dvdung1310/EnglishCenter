@@ -1,7 +1,7 @@
 <?php
 define("DATABASE_SEVER","localhost");
 define("DATABASE_USER","root");
-define("DATABASE_PASSWORD","Toiladung123");
+define("DATABASE_PASSWORD","");
 define("DATABASE_NAME","englishCenter");
 $connection = null ;
     try{
