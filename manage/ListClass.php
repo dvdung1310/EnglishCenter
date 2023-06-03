@@ -2,10 +2,19 @@
 include "../lib/FunctionClass.php";
 
 $listClass = listClass($connection);
-$listClassOn = dataClassOn($connection);
-$listClassOff = dataClassOff($connection);
 $result = listSchedules($connection);
 $listTeacher = listTeacher($connection);
+$dataClassOnOff = dataClassOnOff(1,$connection);
+// lịch của giáo viên
+$timeTeacher = timeTeacher($connection);
+// $arrTime = array();
+// $i = 0 ;
+// foreach ($listClass as $dataCodeClass) {
+// 	$arrTime[$i] = $dataCodeClass;
+// 	$i++;
+// };
+$listtimeTeacher = json_encode($timeTeacher);
+
 $arr = array();
 $dem = 0;
 foreach ($listClass as $dataCodeClass) {
@@ -13,16 +22,9 @@ foreach ($listClass as $dataCodeClass) {
 	$dem++;
 };
 $listClassJson = json_encode($arr);
+
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-	if (isset($_POST['keyword'])) {
-		$key = $_POST['keyword'];
-		$listClassOn = searchClass($key, $connection);
-	}
-
-	if (isset($_POST['refesh'])) {
-		$listClassOn = dataClassOn($connection);
-	}
 	if (isset($_POST['classcode'])) {
 		$classcode = trim($_POST['classcode']);
 		$classname = trim($_POST['classname']);
@@ -45,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$price = trim($_POST['price']);
 		$numberlessons = trim($_POST['numberlessons']);
 		$students = trim($_POST['students']);
+
 		$teachers = $_POST['teachers'];
 		$maLop = CreateClass($classcode, $classname, $classAge, $classTimeOpen, 0, $students, $price, $numberlessons, 0, $condition, $connection);
 		if ($maLop != null) {
@@ -55,14 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if ($schedules2 != "schedules2") {
 				$schedulesClass2 = CreateSchedules_Class($schedules2, $maLop, $connection);
 			}
-
-			$teacherClass = CreateTeacher_Class($teachers, $maLop, $connection);
+			$tientraGV = $_POST['TeacherSalarie'];
+			$teacherClass = CreateTeacher_Class($teachers, $maLop, $tientraGV, $connection);
 			header("Location: ListClass.php");
 			exit();
 		}
 	}
 }
+
+
 ?>
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -72,6 +78,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	<title>Quản lý hệ thống giáo dục</title>
 	<link rel="stylesheet" href="../assets/css/manage.css">
 	<link rel="stylesheet" href="../assets/css/manageClass.css">
+	<script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+	<script src="../assets/js/ajaxListClass.js"></script>
 	<style>
 		button {
 			border: none;
@@ -86,10 +94,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</div>
 		<nav>
 			<ul>
-				<li><a style="color: #0088cc;" href="../manage/ManageClass.php">Quản lý lớp học</a></li>
-				<li><a href="#">Quản lý học viên</a></li>
+				<li><a style="color: #0088cc;" href="../manage/ListClass.php">Quản lý lớp học</a></li>
+				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="manageTeacher.php">Quản lý giáo viên</a></li>
-				<li><a href="#">Quản lý phụ huynh</a></li>
+				<li><a href="manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="#">Quản lý tài khoản</a></li>
 			</ul>
 		</nav>
@@ -99,27 +107,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			<button id="open-btn">Thêm lớp</button>
 		</div>
 		<div>
-			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
-				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
-				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
-			</form>
+
+		<div class="searchClass" id="searchClass">
+            <div>
+				<input type="text" class="timkiem" placeholder="Tìm kiếm...">
+			</div>
+		</div>
+			
 			<div>
-				<h1 style="color: #0088cc;">Danh sách lớp học</h1>
+					<select name="province" id="province">
+						<option  value="1">Lớp đang mở</option>
+						<option value="0">Lớp chưa mở </option>
+						<option value="2">Lớp đang đóng</option>
+					</select>
 			</div>
-
-			<p>Danh sách lớp đang học :</p>
-			<div class="class-container">
-
+			<h1 style="color: #0088cc;">Danh sách lớp học</h1>
+			<!-- lớp on -->
+			<div class="class-container" id="district">
 				<?php
-				if ($listClassOn != null) :
-					foreach ($listClassOn as $datas) :
+				if ($dataClassOnOff != null) :
+					foreach ($dataClassOnOff as $datas) :
 						$maLop = $datas['MaLop'];
-						$nameTeacher = dataTeacherByMaLop($datas['MaLop'], $connection);
-						$schedules = dataSchedulesByMaLop($datas['MaLop'], $connection); ?>
+						$nameTeacher = dataTeacherByMaLop($maLop, $connection);
+						$schedules = dataSchedulesByMaLop($maLop, $connection); ?>
 						<a class='class' href='DetailsClass.php?maLop=<?php echo $maLop ?>'>
 							<div>
-								<div class='class-code'>
+								<div class='class-code1'>
 									<?php echo $datas['MaLop'] ?>
 								</div>
 								<div class='info'>
@@ -159,20 +172,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php endif ?>
 			</div>
 
-
-
-			<p>Danh sách lớp chưa mở :</p>
-			<div class="class-container">
-
+			<!-- lớp ảo ma ca na da  -->
+			<div class="" id="district">
 				<?php
-				if ($listClassOff!= null) :
-					foreach ($listClassOff as $datas) :
+				if ($dataClassOnOff != null) :
+					foreach ($dataClassOnOff as $datas) :
 						$maLop = $datas['MaLop'];
-						$nameTeacher = dataTeacherByMaLop($datas['MaLop'], $connection);
-						$schedules = dataSchedulesByMaLop($datas['MaLop'], $connection); ?>
+						$nameTeacher = dataTeacherByMaLop($maLop, $connection);
+						$schedules = dataSchedulesByMaLop($maLop, $connection); ?>
 						<a class='class' href='DetailsClass.php?maLop=<?php echo $maLop ?>'>
 							<div>
-								<div class='class-codeOff'>
+								<div class='class-code1'>
 									<?php echo $datas['MaLop'] ?>
 								</div>
 								<div class='info'>
@@ -211,10 +221,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					<?php endforeach ?>
 				<?php endif ?>
 			</div>
-
-
-
-
 
 			<div id="overlay">
 				<div id="box">
@@ -302,6 +308,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 <script>
+	var listtimeTeacher = <?php echo $listtimeTeacher ?>;
 	// hiển thị box chính
 	const openBtn = document.getElementById('open-btn');
 	const overlay = document.getElementById('overlay');
@@ -388,6 +395,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		const numberlessons = document.getElementById('numberlessons').value;
 		const students = document.getElementById('students').value;
 		const teachers = document.getElementById('teachers').value;
+		const teacherSalarie = document.getElementById('TeacherSalarie').value
 
 		// trạng thái
 		const condition = document.getElementById('SelectCondition').value;
@@ -407,6 +415,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		var erorr_empty = "*Dữ liệu không để trống";
 
+		const teacherScheduleArray = [{
+				idSchedules: idSchedules0,
+				MAGV: teachers
+			},
+			{
+				idSchedules: idSchedules1,
+				MAGV: teachers
+			},
+			{
+				idSchedules: idSchedules2,
+				MAGV: teachers
+			}
+		];
+
+		function hasDuplicateElements(arr1, arr2) {
+			for (let i = 0; i < arr1.length; i++) {
+				for (let j = 0; j < arr2.length; j++) {
+					if (arr1[i].MAGV === arr2[j].MAGV && arr1[i].idSchedules === arr2[j].idSchedules) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		const hasDuplicates = hasDuplicateElements(teacherScheduleArray, listtimeTeacher);
 		//Kiểm tra dữ liệu nhập vào
 
 		if (!classcode) {
@@ -438,7 +472,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			return;
 		} else
 			document.getElementById('lbclassTimeOpen').textContent = "";
-			
+
 		if (idSchedules0 === idSchedules1 || idSchedules0 === idSchedules2 || idSchedules2 === idSchedules1) {
 			document.getElementById('lbschedules').textContent = '*Lịch học trùng nhau';
 			return;
@@ -470,12 +504,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		} else
 			document.getElementById('lbteacher').textContent = "";
 
+		if (!teacherSalarie) {
+			document.getElementById('lbTeacherSalarie').textContent = erorr_empty;
+			return;
+		} else
+			document.getElementById('lbTeacherSalarie').textContent = "";
 		if (!condition) {
 			document.getElementById('lbcondition').textContent = erorr_empty;
 			return;
 		} else
 			document.getElementById('lbcondition').textContent = "";
 
+		// lịch học giáo viên 
+		if (hasDuplicates) {
+			document.getElementById('lbschedules').textContent = '*Lịch học của giáo viên đã tồn tại ';
+			return;
+		} else {
+			document.getElementById('lbschedules').textContent = "";
+		}
 
 
 		document.querySelector('.add-success').style.display = 'block';
@@ -488,6 +534,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// Gửi form đi nếu tất cả dữ liệu hợp lệ
 		// form2.submit();
 	});
+
+// 	$(document).ready(function () {
+//     $('.timkiem').keyup(function(){
+//         var txt = $('.timkiem').val();
+//         $.post('ajax_get_listClass.php',{data:txt},function(data){
+//              $('.class-container').html(data);
+//         })
+//     })
+// })
 </script>
 
 

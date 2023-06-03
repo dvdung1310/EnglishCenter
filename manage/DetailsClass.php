@@ -6,7 +6,7 @@ $dataClass = dataClassById($malop, $connection);
 $dataSchedules = dataSchedulesByMaLop($malop, $connection);
 $nameTeacher = dataTeacherByMaLop($malop, $connection);
 $result = listSchedules($connection);
-$nameCondition = ''; 
+$nameCondition = '';
 if ($dataClass['TrangThai'] == 0) {
     $nameCondition = 'Chưa mở';
 } else if ($dataClass['TrangThai'] == 1) {
@@ -14,6 +14,7 @@ if ($dataClass['TrangThai'] == 0) {
 } else {
     $nameCondition = 'Đã đóng';
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['deleteClass'])) {
@@ -31,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $price = trim($_POST['price']);
         $numberlessons = trim($_POST['numberlessons']);
         $students = trim($_POST['students']);
+        $SelectCondition = $_POST['SelectCondition'];
         updateClassbyID(
             $classcode,
             $classname,
@@ -41,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $price,
             $numberlessons,
             0,
-            0,
+            $SelectCondition,
             $connection
         );
         $schedules0 = $_POST['schedules0'];
@@ -78,15 +80,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
         // kiem tra giao vien cos trungf vs giaos vien dc sua ko 
-        $newTeacher = $_POST['teachers'];
+        if (isset($_POST['teachers'])) {
+            $newTeacher = $_POST['teachers'];
+        }
         foreach ($nameTeacher as $nameTeachers) {
             $teacher =  $nameTeachers['MaGV'];
+            $TeacherSalarie = $nameTeachers['TienTraGV'];
         };
 
-        if ($newTeacher != $teacher) {
-            updateClass_TeacherByID($malop, $teacher, $newTeacher, $connection);
+        if (isset($_POST['TeacherSalarie'])) {
+            $newTeacherSalarie = $_POST['TeacherSalarie'];
         }
 
+        updateClass_TeacherByID($malop, $teacher, $newTeacher, $TeacherSalarie, $newTeacherSalarie, $connection);
 
         header("Location: DetailsClass.php?maLop=$classcode");
         exit();
@@ -102,12 +108,74 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <title>Chi tiết lớp học</title>
     <link rel="stylesheet" href="../assets/css/manage.css">
     <link rel="stylesheet" href="../assets/css/manageClass.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
     <style>
-        
+        /* .checkbox 
+  display: none; /* Ẩn checkbox gốc */
+        .checkbox {
+            display: none;
+        }
+
+        .checkbox+label {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #999;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .green+label {
+            background-color: #3cb371;
+            /* Màu xanh */
+            border-color: #3cb371;
+        }
+
+        .green+label::before {
+            content: "\2713";
+            /* Dấu tích unicode */
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        label::before {
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .red+label {
+            background-color: #ff0000;
+            /* Màu đỏ */
+            border-color: #ff0000;
+        }
+
+        .red+label::before {
+            content: "\2717";
+            /* Dấu tích unicode */
+            color: #fff;
+            font-size: 14px;
+            text-align: center;
+            line-height: 20px;
+        }
+
+        .squaredcheck {
+            display: flex;
+            align-items: center;
+        }
+
+        */
     </style>
 </head>
 
 <body>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
     <header>
         <div class="logo">
             <img src="../assets/images/Apollo-Logo.png" alt="Logo">
@@ -145,7 +213,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                             <tr>
                                 <th>Thời gian tạo lớp:</th>
-                                <td id="teacher-date" contenteditable="false"><?php echo $dataClass['ThoiGian']; ?></td>
+                                <td id="teacher-date" contenteditable="false"><?php echo convertDateFormat($dataClass['ThoiGian']); ?></td>
                             </tr>
                             <tr>
                                 <th>Lịch học:</th>
@@ -160,7 +228,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                             <tr>
                                 <th>Học phí:</th>
-                                <td id="teacher-qq" contenteditable="false"><?php echo $dataClass['HocPhi']; ?>VND</td>
+                                <td id="teacher-qq" contenteditable="false"><?php echo numberWithCommas($dataClass['HocPhi']); ?>VND</td>
                             </tr>
                             <tr>
                                 <th>Tổng số buổi đã dạy:</th>
@@ -186,6 +254,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                         echo $nameTeachers['TenGV'];
                                     };
+                                    ?>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>Lương giáo viên/buổi :</th>
+                                <td>
+                                    <?php
+                                    foreach ($nameTeacher as $nameTeachers) {
+                                        $TeacherSalarie = $nameTeachers['TienTraGV'];
+                                    };
+
+                                    echo numberWithCommas($TeacherSalarie);
                                     ?>
                                 </td>
                             </tr>
@@ -256,7 +336,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" id="students" name="students" value="<?php echo $dataClass['SLHSToiDa']; ?>">
 
                         <label for="teacher">Giáo viên:<label id="lbteacher" style="color:red; font-size:13px ; font-style: italic "></label></label>
-                        <select name="teachers" id="teachers">
+                        <br><select name="teachers" id="teachers">
                             <option value="<?php
                                             foreach ($nameTeacher as $nameTeachers) {
                                                 echo $nameTeachers['MaGV'];
@@ -275,6 +355,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </option>
                             <?php endforeach; ?>
                         </select>
+                        <br>
+                        <label for="TeacherSalarie">Lương giáo viên:<label id="lbTeacherSalarie" style="color:red; font-size:13px ; font-style: italic "></label></label>
+                        <input type="text" id="TeacherSalarie" name="TeacherSalarie" value="<?php
+                                                                                            foreach ($nameTeacher as $nameTeachers) {
+                                                                                                $TeacherSalarie = $nameTeachers['TienTraGV'];
+                                                                                            };
+
+                                                                                            echo $TeacherSalarie;
+                                                                                            ?>">
                         <br>
                         <label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
                         <br><select name="SelectCondition" id="SelectCondition">
@@ -318,7 +407,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <?php foreach ($listStudents as $data) : ?>
                                 <tr>
                                     <td><?php echo $data['TenHS'] ?></td>
-                                    <td><?php echo $data['NgaySinh'] ?></td>
+                                    <td><?php echo convertDateFormat($data['NgaySinh']) ?></td>
                                     <td><?php echo $data['GioiTinh'] ?></td>
                                     <td><?php echo $data['DiaChi'] ?></td>
                                     <td><?php echo $data['SDT'] ?></td>
@@ -347,7 +436,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <th>STT</th>
                                 <th>Thời gian</th>
                                 <th>Sỉ số</th>
-
                             </tr>
                         </thead>
                         <tbody>
@@ -356,10 +444,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             $j = 1;
                             ?>
                             <?php foreach ($listTime as $data) : ?>
-                                
                                 <tr id='time<?php echo $j ?>' onclick="showDetails(<?php echo $j; ?>)">
                                     <td><?php echo $j++ ?></td>
-                                    <td><?php echo $data['ThoiGian'] ?></td>
+                                    <td><?php echo convertDateFormat($data['ThoiGian']) ?></td>
                                     <td><?php
                                         $totalStudent = TotalStudentByTime($data['ThoiGian'], $connection);
                                         echo $totalStudent['total'] . '/' . $dataClass['SLHS']  ?></td>
@@ -371,44 +458,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </table>
 
                     <!-- hiện ra box của time chi tiết -->
-                    <?php $j = 1; 
-                    foreach($listTime as $data) :
+                    <?php $j = 1;
+                    foreach ($listTime as $data) :
+                        $maTime = $data['ThoiGian'];
                     ?>
-                    <div class="detailTimeAttendance" id="details-<?php echo $j ?>">
-                                <div id="boxTime<?php echo $j ?>">
+                        <div class="detailTimeAttendance" id="details-<?php echo $j ?>">
+                            <div id="boxTime<?php echo $j ?>">
                                 <button id="closebtnboxTime<?php echo $j ?>">&times;</button>
-                                    <div class="">
+                                <div class="">
                                     <h1>Chi tiết điểm danh của ngày </h1>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>STT</th>
-                                            <th>Mã học sinh</th>
-                                            <th>Tên học sinh</th>
-                                            <th>Tham gia lớp học</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                           <td><?php echo $j ?></td>
-                                           <td>CT</td>
-                                           <td>D</td>
-                                           <td>OKE</td>
-                                        </tr>
+                                    <h2><?php echo $data['ThoiGian']; ?></h2>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>STT</th>
+                                                <th>Mã học sinh</th>
+                                                <th>Tên học sinh</th>
+                                                <th>Tham gia lớp học</th>
+                                            </tr>
+                                        </thead>
+                                        <form id="dd" name="dd" method="post">
+                                            <tbody>
+                                                <?php $k = 1;
+                                                $getCodeStudentByTimeandCodeClass = getCodeStudentByTimeandCodeClass($malop, $maTime, $connection);
+                                                foreach ($getCodeStudentByTimeandCodeClass as $dataStudentTime) : ?>
+                                                    <tr>
+                                                        <td><?php echo $k++ ?></td>
+                                                        <td><?php echo $dataStudentTime['MAHS'] ?></td>
+                                                        <td><?php echo  getStudentByid($dataStudentTime['MAHS'], $connection)['TenHS']; ?></td>
+                                                        <td>
+                                                            <div class="squaredcheck">
+                                                                <input onclick="showCheckBox(<?php echo $dataStudentTime['MAHS']; ?>)" <?php echo ($dataStudentTime['dd'] == 1) ? 'checked' : ''; ?> type="checkbox" id="squaredcheck<?php echo $dataStudentTime['MAHS'] ?>" id="<?php echo $dataStudentTime['MAHS']; ?>" name="<?php echo $dataStudentTime['MAHS']; ?>" value="<?php echo $dataStudentTime['dd']; ?>" class="checkbox <?php echo ($dataStudentTime['dd'] == 1) ? 'green' : 'red'; ?>">
+                                                                <?php echo ($dataStudentTime['dd'] == 1) ? 'có' : 'không'; ?>
+                                                                <label for="squaredcheck<?php echo $dataStudentTime['MAHS'] ?>"></label>
 
-                                        <tr>
-                                           <td><?php echo $j ?></td>
-                                           <td>CT</td>
-                                           <td>D</td>
-                                           <td>OKE</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                                    </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach ?>
+                                            </tbody>
+                                            <?php
+                                            $arr = array();
+                                            $dem = 0;
+                                            foreach ($getCodeStudentByTimeandCodeClass as $dataTime) {
+                                                $arr[$dem] = $dataTime['MAHS'];
+                                                $dem++;
+                                            }
+                                            $listDD = json_encode($arr);
+                                            ?>
+                                            <input type="submit" id="submitDiemDanh" value="Sửa" name="submitDiemDanh">
+                                        </form>
+                                    </table>
                                 </div>
-                                </div>
-                                <?php $j++ ?>
-                     <?php endforeach ?>
+                            </div>
+                        </div>
+                        <?php $j++ ?>
+                    <?php endforeach ?>
                 </div>
             </div>
         </div>
@@ -416,6 +521,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     </main>
+    <!-- thống kê -->
+    <div id="piechart_3d" style="width: 100%; height: 500px;"></div>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load("current", {
+            packages: ["corechart"]
+        });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Đi học', 'Nghỉ học'],
+                <?php $a = getCountDD(1,$malop, $connection);
+                $b = getCountDD(0,$malop, $connection)
+                ?>
+                ['Đi học', <?php echo $a['dihoc'] ?>],
+                ['Nghỉ học',<?php echo $b['dihoc'] ?> ],
+            ]);
+
+            var options = {
+                title: 'Thống kê tỉ lệ học sinh đi học của lớp <?php echo $malop?>',
+                is3D: true,
+            };
+
+            var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
+            chart.draw(data, options);
+        }
+    </script>
     <footer>
         <p>© 2023 Hệ thống quản lý giáo dục. All rights reserved.</p>
     </footer>
@@ -439,15 +572,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
     function showDetails(id) {
         var detailsBox = document.getElementById('details-' + id);
-        const boxTime = document.getElementById('boxTime'+ id);
+        const boxTime = document.getElementById('boxTime' + id);
         detailsBox.classList.add('active');
         boxTime.classList.add('active');
 
-     const closebtnboxTime = document.getElementById('closebtnboxTime'+id);
-     closebtnboxTime.addEventListener('click', () => {
-        detailsBox.classList.remove('active');
-        boxTime.classList.remove('active'); 
-    });
+        const closebtnboxTime = document.getElementById('closebtnboxTime' + id);
+        closebtnboxTime.addEventListener('click', () => {
+            detailsBox.classList.remove('active');
+            boxTime.classList.remove('active');
+        });
+    }
+
+    function showCheckBox(id) {
+        var checkbox = document.getElementById('squaredcheck' + id);
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                this.classList.add('green');
+            } else {
+                this.classList.remove('green');
+            }
+        });
+
     }
 </script>
 
