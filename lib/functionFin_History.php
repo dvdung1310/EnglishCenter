@@ -135,11 +135,13 @@ include $path_dir . '/database.php';
 //     }
 // }
 
-//search  LuongGV x giaovien
-function searchLuongGV($connection, $key)
+
+//select ls thu chi 
+function searchHistory($connection, $key)
 {
-    $sql = "SELECT luonggv.MaGV , MaLuong, TenHD ,ThoiGian, Lop,ThoiGianTT, SoTien, TrangThai, giaovien.TenGV, giaovien.TenGV, giaovien.GioiTinh, giaovien.NgaySinh, giaovien.Tuoi, giaovien.QueQuan, giaovien.DiaChi, giaovien.TrinhDo, giaovien.SDT, giaovien.Email  FROM luonggv INNER JOIN giaovien WHERE luonggv.MaGV =  giaovien.MaGV and
-         (MaLuong like :key or luonggv.MaGV like :key or giaovien.TenGV like :key or ThoiGian like :key or ThoiGianTT like :key or Lop like :key  or TenHD like :key)";
+        $sql = ' SELECT * FROM (SELECT TenHD, hocsinh.TenHS AS "DoiTuong", "thu" AS "Loai", "Học phí" AS LoaiHD, lsthp.ThoiGian AS "ThoiGianTT", lsthp.SoTien FROM lsthp INNER JOIN hdhocphi ON lsthp.MaHD = hdhocphi.MaHD INNER JOIN hocsinh ON hdhocphi.MaHS = hocsinh.MaHS UNION SELECT TenHD, giaovien.TenGV AS "DoiTuong", "chi" AS "Loai", "Lương giáo viên" AS LoaiHD, ThoiGianTT, SoTien FROM luonggv INNER JOIN giaovien ON luonggv.MaGV = giaovien.MaGV WHERE ThoiGianTT IS NOT NULL UNION SELECT TenHD, NULL AS "DoiTuong", "chi" AS "Loai", LoaiHD, ThoiGianTT, SoTien FROM chiphikhac WHERE ThoiGianTT IS NOT NULL ) AS combined_result
+
+where TenHD like :key or DoiTuong like :key or LoaiHD like :key or ThoiGianTT like :key or SoTien like :key ORDER BY ThoiGianTT DESC';
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement =  $connection->prepare($sql);
@@ -155,167 +157,279 @@ function searchLuongGV($connection, $key)
     }
 }
 
+
+//search  LuongGV x giaovien
+// function searchChiPhiKhac($connection, $key)
+// {
+//     $sql = "SELECT MaHD, TenHD, LoaiHD, ThoiGian, SoTien, ThoiGianTT, TrangThai  FROM chiphikhac WHERE  
+//          MaHD like :key or TenHD like :key or LoaiHD like :key or ThoiGian like :key or SoTien like :key or ThoiGianTT like :key  or TrangThai like :key";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement->bindValue(':key', "%$key%", PDO::PARAM_STR);
+//         $statement->execute();
+
+//         $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+
+// // // insert chi phi khac
+// function insertChiPhiKhac($connection, $tenHD, $loaiHD, $tg, $st, $tgtt,$tt)
+// {
+    
+//     $sql = "insert into  chiphikhac (TenHD, LoaiHD, ThoiGian, SoTien, ThoiGianTT, TrangThai) values(?,?,?,?,?,?)";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+
+//         $statement->bindParam(1, $tenHD);
+//         $statement->bindParam(2, $loaiHD);
+//         $statement->bindParam(3, $tg);
+//         $statement->bindParam(4, $st);
+//         $statement->bindParam(5, $tgtt);
+//         $statement->bindParam(6, $tt);
+
+//         $statement->execute();
+
+
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+
+// // // update trang thai luonggv
+// function updateStatusChiPhiKhac($connection, $tt, $tg,$mal)
+// {
+
+//     $sql = "update chiphikhac set  TrangThai = ?  , ThoiGianTT = ? where MaHD = ?";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+
+//         $statement->bindParam(1, $tt);
+//         $statement->bindParam(2, $tg);
+//         $statement->bindParam(3, $mal);
+
+
+//         $statement->execute();
+
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+// // update chi phi khac
+// function updateChiPhiKhac($connection, $tenhd, $loaiHD,$tg , $st , $tt, $tg_tt, $mahd)
+// {
+
+//     $sql = "update chiphikhac set TenHD = ?, LoaiHD = ?, ThoiGian = ?, SoTien = ?,  TrangThai = ?  , ThoiGianTT = ? where MaHD = ?";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+
+//         $statement->bindParam(1, $tenhd);
+//         $statement->bindParam(2, $loaiHD);
+//         $statement->bindParam(3, $tg);
+//         $statement->bindParam(4, $st);
+//         $statement->bindParam(5, $tt);
+//         $statement->bindParam(6, $tg_tt);
+//         $statement->bindParam(7, $mahd);
+        
+
+
+//         $statement->execute();
+
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+// //  //Xoa chi phi khac
+// function deleteChiPhiKhac($connection, $mahd)
+// {
+//     $sql = "delete from chiphikhac where MaHD = ?";
+//     try {
+//         $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement-> execute([$mahd]);
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+
+// }
+
 //select  gv_lop x lop
 
-function select_gv_LopxLop($connection)
-{
-    $sql = "SELECT gv_lop.MaLop , MaGV, TienTraGV, lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi,lop.SoBuoi,lop.SoBuoiDaToChuc,lop.TrangThai  FROM gv_lop INNER JOIN lop WHERE gv_lop.MaLop = lop.MaLop AND lop.TrangThai = 'Đang mở';";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
-        $statement->execute();
+// function select_gv_LopxLop($connection)
+// {
+//     $sql = "SELECT gv_lop.MaLop , MaGV, TienTraGV, lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi,lop.SoBuoi,lop.SoBuoiDaToChuc,lop.TrangThai  FROM gv_lop INNER JOIN lop WHERE gv_lop.MaLop = lop.MaLop AND lop.TrangThai = 'Đang mở';";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement->execute();
 
-        $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+//         $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $connection = null;
-        return $list;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
 
-function select_gv_LopxDD($connection)
-{
-    $sql = "SELECT gv_lop.MaGV ,giaovien.TenGV ,gv_lop.MaLop , b2.ThoiGian FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop AND gv_lop.MaGV = giaovien.MaGV;";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
-        $statement->execute();
+// function select_gv_LopxDD($connection)
+// {
+//     $sql = "SELECT gv_lop.MaGV ,giaovien.TenGV ,gv_lop.MaLop , b2.ThoiGian FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop AND gv_lop.MaGV = giaovien.MaGV;";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement->execute();
 
-        $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+//         $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $connection = null;
-        return $list;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
 
-// select so buoi day
+// // select so buoi day
 
-function selectSoBuoiDay($connection, $month, $year,$magv)
-{
-    $begin = date("$year-$month-01");
+// function selectSoBuoiDay($connection, $month, $year,$magv)
+// {
+//     $begin = date("$year-$month-01");
 
-    $finish = date("Y-m-t", strtotime($begin));
+//     $finish = date("Y-m-t", strtotime($begin));
 
-    $sql = 'SELECT gv_lop.MaGV ,gv_lop.MaLop ,gv_lop.TienTraGV,count(DISTINCT b2.ThoiGian) "SoBuoiDay" FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop and gv_lop.MaGV = ? AND b2.ThoiGian BETWEEN ? AND ? group By gv_lop.MaGV , gv_lop.MaLop, gv_lop.TienTraGV;';
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(2, $begin);
-        $statement->bindParam(3, $finish);
-        $statement->bindParam(1, $magv);
-        $statement->execute();
+//     $sql = 'SELECT gv_lop.MaGV ,gv_lop.MaLop ,gv_lop.TienTraGV,count(DISTINCT b2.ThoiGian) "SoBuoiDay" FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop and gv_lop.MaGV = ? AND b2.ThoiGian BETWEEN ? AND ? group By gv_lop.MaGV , gv_lop.MaLop, gv_lop.TienTraGV;';
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement = $connection->prepare($sql);
+//         $statement->bindParam(2, $begin);
+//         $statement->bindParam(3, $finish);
+//         $statement->bindParam(1, $magv);
+//         $statement->execute();
 
-        $list = $statement->fetchAll(PDO::FETCH_ASSOC);
+//         $list = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        $connection = null;
-        return $list;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
 
-}
+// }
 
-// insert Luong gv
-function insertluongGV($connection, $tenHD, $magv, $lop, $tg, $st)
-{
-    $s = 'Chưa thanh toán';
-    $sql = "insert into  luonggv (TenHD, MaGV, Lop, ThoiGian, SoTien, TrangThai) values(?,?,?,?,?,?)";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
+// // insert Luong gv
+// function insertluongGV($connection, $tenHD, $magv, $lop, $tg, $st)
+// {
+//     $s = 'Chưa thanh toán';
+//     $sql = "insert into  luonggv (TenHD, MaGV, Lop, ThoiGian, SoTien, TrangThai) values(?,?,?,?,?,?)";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
 
-        $statement->bindParam(1, $tenHD);
-        $statement->bindParam(2, $magv);
-        $statement->bindParam(3, $lop);
-        $statement->bindParam(4, $tg);
-        $statement->bindParam(5, $st);
-        $statement->bindParam(6, $s);
+//         $statement->bindParam(1, $tenHD);
+//         $statement->bindParam(2, $magv);
+//         $statement->bindParam(3, $lop);
+//         $statement->bindParam(4, $tg);
+//         $statement->bindParam(5, $st);
+//         $statement->bindParam(6, $s);
 
-        $statement->execute();
-
-
-        $connection = null;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
-//select danhs sach giao vien
-function selectTeacher($connection)
-{
-    $sql = "select * from giaovien";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
-        $statement->execute();
-
-        $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
-
-        $connection = null;
-        return $list;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
+//         $statement->execute();
 
 
-// update trang thai luonggv
-function updateStatusLuonggv($connection, $tt, $tg,$mal)
-{
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
 
-    $sql = "update luonggv set  TrangThai = ?  , ThoiGianTT = ? where MaLuong = ?";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
+// //select danhs sach giao vien
+// function selectTeacher($connection)
+// {
+//     $sql = "select * from giaovien";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement->execute();
 
-        $statement->bindParam(1, $tt);
-        $statement->bindParam(2, $tg);
-        $statement->bindParam(3, $mal);
+//         $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-
-        $statement->execute();
-
-        $connection = null;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-
- //Xoa hoa don hoc phi
-function deleteLuongGV($connection, $mahd)
-{
-    $sql = "delete from luonggv where MaLuong = ?";
-    try {
-        $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
-        $statement-> execute([$mahd]);
-        $connection = null;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
 
 
-//select danhs sach day hoc
-function selectSoBuoiDayAll($connection)
-{
-    $sql = "SELECT b3.MaGV,b3.MaLop ,b3.TienTraGV ,MONTH(b3.ThoiGian) \"Thang\" ,year(b3.ThoiGian) \"Nam\" , COUNT(DISTINCT b3.ThoiGian) AS SoBuoiDay FROM (SELECT gv_lop.MaGV ,gv_lop.MaLop ,gv_lop.TienTraGV, b2.ThoiGian FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop)b3 GROUP by b3.MaGV,b3.MaLop, b3.TienTraGV ,MONTH(b3.ThoiGian) ,year(b3.ThoiGian);";
-    try {
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sql);
-        $statement->execute();
+// // update trang thai luonggv
+// function updateStatusLuonggv($connection, $tt, $tg,$mal)
+// {
 
-        $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+//     $sql = "update luonggv set  TrangThai = ?  , ThoiGianTT = ? where MaLuong = ?";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
 
-        $connection = null;
-        return $list;
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
+//         $statement->bindParam(1, $tt);
+//         $statement->bindParam(2, $tg);
+//         $statement->bindParam(3, $mal);
+
+
+//         $statement->execute();
+
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+//  //Xoa hoa don hoc phi
+// function deleteLuongGV($connection, $mahd)
+// {
+//     $sql = "delete from luonggv where MaLuong = ?";
+//     try {
+//         $connection -> setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement-> execute([$mahd]);
+//         $connection = null;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
+
+
+// //select danhs sach day hoc
+// function selectSoBuoiDayAll($connection)
+// {
+//     $sql = "SELECT b3.MaGV,b3.MaLop ,b3.TienTraGV ,MONTH(b3.ThoiGian) \"Thang\" ,year(b3.ThoiGian) \"Nam\" , COUNT(DISTINCT b3.ThoiGian) AS SoBuoiDay FROM (SELECT gv_lop.MaGV ,gv_lop.MaLop ,gv_lop.TienTraGV, b2.ThoiGian FROM gv_lop INNER JOIN (SELECT DISTINCT MaLop , ThoiGian FROM diemdanh)b2 INNER JOIN giaovien WHERE gv_lop.MaLop = b2.MaLop)b3 GROUP by b3.MaGV,b3.MaLop, b3.TienTraGV ,MONTH(b3.ThoiGian) ,year(b3.ThoiGian);";
+//     try {
+//         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+//         $statement =  $connection->prepare($sql);
+//         $statement->execute();
+
+//         $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+//         $connection = null;
+//         return $list;
+//     } catch (PDOException $e) {
+//         echo $e->getMessage();
+//     }
+// }
 
 
 // select hs_lop hocsinh
@@ -519,7 +633,5 @@ function selectSoBuoiDayAll($connection)
 //     }
 
 // }
-
-
 
 

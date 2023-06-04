@@ -42,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$mahs = $_POST['mahs_delete'];
 		deletetk_hs($connection, $mahs);
 		deleteStudent_ph_hs($connection, $mahs);
+		deleteNgaydk($connection,$mahs);
 		deleteStudent($connection, $mahs);
 		header("Location: manageStudent.php");
 	}

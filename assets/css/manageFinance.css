@@ -149,7 +149,7 @@ button {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     max-width: 800px;
     width: 100%;
-    max-height: 700px;
+    max-height: 770px;
     overflow-y:scroll;
     height: 95%;
 }
@@ -315,7 +315,7 @@ button {
     .modal-bg-add div, .modal-bg-edit div {
       border-radius: 5px;
       background-color: #f2f2f2;
-      padding: 20px;
+      /* padding: 20px; */
       height: 95%;
     }
     

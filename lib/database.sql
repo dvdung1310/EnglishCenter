@@ -214,6 +214,7 @@ CREATE TABLE `englishcenter`.`luonggv`
 (`MaLuong` INT NOT NULL , 
 `MaGV` INT NOT NULL , 
 `ThoiGian` VARCHAR(20) NOT NULL , 
+`Lop` varchar(1000),
 `ThoiGianTT` DATE NULL , 
 `SoTien` INT NOT NULL , 
 `TrangThai` INT NOT NULL , 
@@ -221,3 +222,14 @@ CREATE TABLE `englishcenter`.`luonggv`
 PRIMARY KEY (`MaLuong`)) ENGINE = InnoDB;
 
 
+-- chi phi khac
+
+CREATE TABLE `englishcenter`.`chiphikhac` 
+(`MaHD` INT AUTO_INCREMENT  , 
+`TenHD` varchar(500) NOT NULL , 
+`LoaiHD` VARCHAR(500) NOT NULL , 
+`ThoiGian` varchar(50),
+`ThoiGianTT` DATE NULL , 
+`SoTien` INT NOT NULL , 
+`TrangThai` INT NOT NULL , 
+PRIMARY KEY (`MaHD`)) ENGINE = InnoDB;

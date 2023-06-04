@@ -223,8 +223,9 @@ $jslistDD =  json_encode($listDD);
 				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
-				<li><a href="../manage/Parent.php">Quản lý phụ huynh</a></li>
-				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
+				<li><a href="../manage/manageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -233,14 +234,14 @@ $jslistDD =  json_encode($listDD);
 		<div class="tab">
 			<button class="tablinks" id='btn-tab1'>Thu học phí</button>
 			<button class="tablinks" id='btn-tab2'>Chi phí</button>
-			<button class="tablinks" id='btn-tab3'>Tổng hợp thu chi</button>
+			<button class="tablinks" id='btn-tab3'>Lịch sử thu chi</button>
 			<button class="tablinks" id='btn-tab4'>Tab4</button>
 			<button class="tablinks" id='btn-tab5'>Tab5</button>
 		</div>
 		<div id="nav-container-Tab2">
 
 			<a href="./manageFinance_wageTea.php" id="btn-tab-luongGV">Lương giáo viên</a>
-			<a href="#" id="btn-tab-chiPhiKhac">Chi phí khác</a>
+			<a href="./manageFinance_OtherFee.php" id="btn-tab-chiPhiKhac">Chi phí khác</a>
 			<a href="#">Điều hướng 3</a>
 
 		</div>
@@ -253,16 +254,18 @@ $jslistDD =  json_encode($listDD);
 					<input type="submit" name="search" id="search" value="Tìm kiếm" style="width: 100px">
 					<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 				</form>
-				<div>
-					<select style=" border: groove;background-color: beige;font-size: 14px;" id="select-status">
-						<option value="Chưa đóng">Chưa đóng</option>
+				<div style="display:inline-flex">
+                    <h3 style="margin-right:5px">Trạng thái :</h3>
+                    <select style=" border: groove;background-color: beige;font-size: 14px;padding:0; width:200px;height:50px" id="select-status">
+                        <option value="">...</option>
+					<option value="Chưa đóng">Chưa đóng</option>
 						<option value="Còn nợ">Còn nợ</option>
 						<option value="Hoàn thành">Hoàn thành</option>
 					</select>
 				</div>
 				<div>
 
-					<button class="add-bill-button">Thêm hóa đơn</button>
+					<button class="add-bill-button">+ Thêm hóa đơn</button>
 				</div>
 			</div>
 
@@ -299,21 +302,25 @@ $jslistDD =  json_encode($listDD);
 
 
 					</tbody>
+
+					</tbody>
+
+<tbody class="tbody-5">
 				</table>
 			</div>
 			<!-- Them hoa don -->
 			<div class="modal-bg-add">
 				<div class="modal-content-add" style="height :fit-content">
 					<div class="tab-add" style="display:inline-flex; padding-bottom:0;padding-left:0">
-						<button class="tablinks-add" id='btn-tab1-add' onclick="openTab_add(event, 'Tab1-add')">Thêm hóa đơn tháng</button>
+						<button class="tablinks-add" id='btn-tab1-add' onclick="openTab_add(event, 'Tab1-add')">Thêm hóa đơn học phí tháng</button>
 						<button class="tablinks-add" id='btn-tab2-add' onclick="openTab_add(event, 'Tab2-add')">Thênm hóa đơn cá nhân</button>
-						<button class="tablinks-add" id='btn-tab3-add' onclick="openTab_add(event, 'Tab3-add')">Thêm hóa </button>
-						<button class="tablinks-add" id='btn-tab4-add' onclick="openTab_add(event, 'Tab4-add')">Tab4</button>
+						<!-- <button class="tablinks-add" id='btn-tab3-add' onclick="openTab_add(event, 'Tab3-add')">Thêm hóa </button> -->
+						
 					</div>
 
 					<div id="Tab1-add" class="tabcontent-add">
 						<div>
-							<h1>Tạo hóa đơn</h1>
+							<h1> Tạo hóa đơn</h1>
 							<form id="form-add-bill" name="form-add-bill" method="post">
 
 
@@ -323,7 +330,7 @@ $jslistDD =  json_encode($listDD);
 									<tbody style="max-height:fit-content; overflow:unset">
 										<td>
 											<label for="bill-name-add">Tên hóa đơn : <label id="lb-name-add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-											<input type="text" id="bill-name-add" name="bill-name-add">
+											<input type="text" id="bill-name-add" name="bill-name-add" placeholder="Nhập tên hóa đơn">
 										</td>
 
 
@@ -403,7 +410,7 @@ $jslistDD =  json_encode($listDD);
 							<form id="form-add-bill-ps" name="form-add-bill-ps" method="post">
 
 								<label for="bill-name-add-ps">Tên hóa đơn : <label id="lb-name-add-ps" style="color:red; font-size:13px ; font-style: italic "></label></label>
-								<input type="text" id="bill-name-add-ps" name="bill-name-add-ps">
+								<input type="text" id="bill-name-add-ps" name="bill-name-add-ps" placeholder="Nhập tên hóa đơn">
 								<label>Thời gian : <label id="lb-time-add-ps" style="color:red; font-size:13px ; font-style: italic "></label></label>
 								<br>
 								<label style="margin-left: 100px" for="bill-month-add-ps">Tháng :</label>
@@ -509,7 +516,7 @@ $jslistDD =  json_encode($listDD);
 				<div class="btn-tab-3">
 					<button class="tablinks-3" id="btn-tab-3-1" onclick="openTab_3(event, 'tab-3-1')">Thông tin hóa đơn</button>
 					<button class="tablinks-3" id="btn-tab-3-2" onclick="openTab_3(event, 'tab-3-2')">Lịch sử thanh toán</button>
-					<button class="tablinks-3" id="btn-tab-3-3" onclick="openTab_3(event, 'tab-3-3')">Tài khoản</button>
+					
 				</div>
 
 				<div id="tab-3-1" class="tabcontent-3">
@@ -638,35 +645,7 @@ $jslistDD =  json_encode($listDD);
 							<br>
 							<label>Thời gian : <label id="lb-time-add-trans" style="color:red; font-size:13px ; font-style: italic "></label></label>
 
-							<!-- <label style="margin-left:10px" for="day-add-trans">Ngày:</label>
-							<select style="width:fit-content" id="day-add-trans" name="day-add-trans"></select>
-							<label for="month-add-trans">Tháng :</label>
-							<select style="width:fit-content" name="month-add-trans" id="month-add-trans" onchange="checkDays()">
-								<option value="">Chọn tháng</option>
-								<option value="1">Tháng 1</option>
-								<option value="2">Tháng 2</option>
-								<option value="3">Tháng 3</option>
-								<option value="4">Tháng 4</option>
-								<option value="5">Tháng 5</option>
-								<option value="6">Tháng 6</option>
-								<option value="7">Tháng 7</option>
-								<option value="8">Tháng 8</option>
-								<option value="9">Tháng 9</option>
-								<option value="10">Tháng 10</option>
-								<option value="11">Tháng 11</option>
-								<option value="12">Tháng 12</option>
-							</select>
-
-							<label for="year-add-trans">Năm :</label>
-							<select style="width:fit-content" name="year-add-trans" id="year-add-trans" onchange="checkDays()">
-
-								<option value="">Chọn năm</option>
-								<?php for ($i = 2020; $i <= 2100; $i++) { ?>
-									<option value="<?php echo $i ?>">
-										<?php echo $i ?>
-									</option>
-								<?php } ?>
-							</select> -->
+							
 
 							<input style="font-size: 16px;" type="date" id="date-add-trans" name="date-add-trans" required>
 							<br>

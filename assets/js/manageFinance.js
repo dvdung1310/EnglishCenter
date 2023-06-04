@@ -32,8 +32,9 @@ function hienthids(status) {
         });
     }
 
-    var html = '';
+    var html = ''; var html_last = '';
     var color = '';
+    var tongSoTien = 0; var tongSoTienGiam = 0; var tongSoTienDaDong = 0; var tongSoTienPhaiDong = 0;  
     if (filteredData.length != 0) {
         for (var i = 0; i < filteredData.length; i++) {
             if (filteredData[i]['TrangThai'] === 'Hoàn thành') {
@@ -60,8 +61,30 @@ function hienthids(status) {
 
             html += '</tr>';
 
+            tongSoTien += filteredData[i]['SoTien'];
+            tongSoTienGiam += filteredData[i]['SoTienGiam'];
+            tongSoTienPhaiDong += filteredData[i]['SoTienPhaiDong'];
+            tongSoTienDaDong += filteredData[i]['SoTienDaDong'];
+
         }
+            html_last += '<tr">';
+            html_last += '<td style="width:20px ;  ">'  + '</td>';
+            html_last += '<td >' +  '</td>';
+            html_last += '<td >' +  '</td>';
+            html_last += '<td >' +  '</td>';
+            html_last += '<td >' +  '</td>';
+            html_last += '<td >' + 'Tổng : </td>';
+            html_last += '<td >' + numberWithCommas(tongSoTien) + '</td>';
+            html_last += '<td >' + ((tongSoTienGiam/tongSoTien)*100).toFixed(2) + '%</td>';
+            html_last += '<td >' + numberWithCommas(tongSoTienGiam )+ '</td>';
+            html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong) + '</td>';
+            html_last += '<td >' + numberWithCommas(tongSoTienDaDong) + '</td>';
+            html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong-tongSoTienDaDong) + '</td>';
+            html_last += '<td >'  + '</td>';
+            html_last += '</tr>';
         document.querySelector(".tbody-1").innerHTML = html;
+        document.querySelector(".tbody-5").innerHTML = html_last;
+
     }
 }
 
@@ -1200,3 +1223,14 @@ document.getElementById('nav-container-Tab2').addEventListener('mouseenter', () 
 document.getElementById('nav-container-Tab2').addEventListener('mouseleave', () => {
     document.getElementById('nav-container-Tab2').style.display = 'none';
 });
+
+
+document.getElementById('btn-tab1').addEventListener('click' , ()=>{
+    window.location.href = "./manageFinance.php";
+});
+
+document.getElementById('btn-tab3').addEventListener('click', () => {
+    window.location.href = "./manageHistoryFinance.php";
+
+});
+

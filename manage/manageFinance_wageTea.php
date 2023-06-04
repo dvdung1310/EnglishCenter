@@ -7,10 +7,7 @@ $listBill = searchLuongGV($connection, '');
 $listgv_lopxlop = select_gv_LopxLop($connection);
 $listgv_lopxdd = select_gv_LopxDD($connection);
 $listTeacher = selectTeacher($connection);
-// $listStudent = listStudent($connection);
-// $listClassOpen = listClassOpen($connection);
-// $lisths_lopxHS = lisths_lopxHS($connection);
-// $listLSTHP = listLSTHP($connection);
+$listSoBuoiDayAll =  selectSoBuoiDayAll($connection);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -35,7 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$listBDay = selectSoBuoiDay($connection, $thang, $nam, $t);
 			for ($i = 0; $i < count($listBDay); $i++) {
 
-				if ($i == count($listBDay)) {
+				if ($i == count($listBDay) - 1) {
 					$lop .= $listBDay[$i]['MaLop'];
 				} else {
 					$lop .= $listBDay[$i]['MaLop'] . ', ';
@@ -47,79 +44,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			insertluongGV($connection, $ten, $t, $lop, $thoiGian, $st);
 			header("Location: manageFinance_wageTea.php");
 		}
+	}
+
+	if (isset($_POST['status-detail'])) {
+
+		
+		$tt = $_POST['status-detail'];
+		$maL = $_POST['id-wage'];
+		
+		if($tt == 'Đã thanh toán'){
+			$tg = date('Y-m-d');
+		}
+		else
+		$tg = null;
+		updateStatusLuonggv($connection,$tt,$tg,$maL);
 
 
-		// foreach ($listDD as $dd) {
-		// 	foreach ($listHS_GHP as $ghp) {
-		// 		foreach ($arrayClass as $a) {
-		// 			if (($dd['MaHS'] === $ghp['MaHS']) && ($dd['MaLop'] === $ghp['MaLop']) && ($dd['MaLop'] === $a)) {
-
-		// 				$soTien = $dd['SoBuoiDiemDanh'] * $ghp['HocPhi'];
-		// 				$soTienGiam = round($soTien * $ghp['GiamHocPhi'] / 100);
-		// 				$SoTienPhaiDong = $soTien - $soTienGiam;
-		// 				insertHDHocPhi($connection, $ten, $dd['MaLop'], $dd['MaHS'], $thoiGian, $soTien, $ghp['GiamHocPhi'], $soTienGiam, $SoTienPhaiDong);
-		// 			}
-		// 		}
-		// 	}
-		// }
-		// header("Location: manageFinance.php");
+		header("Location: manageFinance_wageTea.php");
 	}
 
 
-	// 	if (isset($_POST['id-bill-edit'])) {
 
-	// 		$mahd = $_POST['id-bill-edit'];
-	// 		$ten = trim($_POST['name-bill-edit']);
-	// 		$thang = $_POST['month-bill-edit'];
-	// 		$nam = $_POST['year-bill-edit'];
-	// 		$tt = $_POST['status-bill-edit'];
+	if (isset($_POST['bill-name-add-ps'])) {
 
+		$ten = trim($_POST['bill-name-add-ps']);
+		$magv = $_POST['name-teacher-s'];
+		$soTien =  $_POST['money-add-bill'];
+		$soTien =  str_replace(',', '', $soTien);
 
-	// 		$thoiGian = $thang . "/" . $nam;
+		$thoiGian = date('n/Y');
+		echo $magv;
 
-
-	// 		updateHoaDonHocPhi($connection, $ten, $thoiGian, $tt, $mahd);
-
-
-	// 		header("Location: manageFinance.php");
-	// 	}
-
-	// 	if (isset($_POST['bill-name-add-ps'])) {
-
-	// 		$ten = trim($_POST['bill-name-add-ps']);
-	// 		$thang = $_POST['bill-month-add-ps'];
-	// 		$nam = $_POST['bill-year-add-ps'];
-	// 		$mahs = $_POST['name-student-add-bill'];
-	// 		$malop = $_POST['bill-class-add-ps'];
-	// 		$thoiGian = $thang . "/" . $nam;
+		insertluongGV($connection, $ten, $magv, '', $thoiGian, $soTien);
 
 
-
-	// 		$listDD = attendOfMonth($connection, $thang, $nam);
-	// 		$listHS_GHP = selecths_hocPhi($connection);
-
-
-	// 		foreach ($listDD as $dd) {
-	// 			if (($dd['MaHS'] == $mahs) && ($dd['MaLop'] == $malop)) {
-	// 				$diemDanh = $dd['SoBuoiDiemDanh'];
-	// 			}
-	// 		}
-	// 		foreach ($listHS_GHP as $aa) {
-	// 			if (($aa['MaHS'] == $mahs) && ($aa['MaLop'] == $malop)) {
-	// 				$hocPhi = $aa['HocPhi'];
-	// 				$giamHocPhi = $aa['GiamHocPhi'];
-	// 			}
-	// 		}
-	// 		$soTien = $diemDanh * $hocPhi;
-	// 		$soTienGiam = round($soTien * $giamHocPhi / 100);
-	// 		$SoTienPhaiDong = $soTien - $soTienGiam;
-
-
-	// 		insertHDHocPhi($connection, $ten, $malop, $mahs, $thoiGian, $soTien, $giamHocPhi, $soTienGiam, $SoTienPhaiDong);
-
-
-	// 		header("Location: manageFinance.php");
-	// 	}
+		header("Location: manageFinance_wageTea.php");
+		
+	}
 
 	if (isset($_POST['refesh'])) {
 		header("Location: manageFinance_wageTea.php");
@@ -130,84 +91,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$listBill = searchLuongGV($connection, $key);
 	}
 
-	// 	if (isset($_POST['mahd-delete'])) {
+		if (isset($_POST['mahd-delete'])) {
 
-	// 		$mahd = $_POST['mahd-delete'];
-	// 		echo $mahd;
-	// 		deleteHDHocPhi($connection, $mahd);
-	// 		header("Location: manageFinance.php");
-	// 	}
+			$mahd = $_POST['mahd-delete'];
+			
+			deleteLuongGV($connection, $mahd);
+			header("Location: manageFinance_wageTea.php");
+		}
 
-	// 	if (isset($_POST['mahd-delete-2'])) {
+		if (isset($_POST['mahd-delete-2'])) {
 
-	// 		$mahd = $_POST['mahd-delete-2'];
-	// 		deleteLSTHPbyMaHD($connection, $mahd);
-	// 		deleteHDHocPhi($connection, $mahd);
+			$mahd = $_POST['mahd-delete-2'];
+		
+			deleteLuongGV($connection, $mahd);
 
-	// 		header("Location: manageFinance.php");
-	// 	}
+			header("Location: manageFinance_wageTea.php");
+		}
 
-	// 	if (isset($_POST['money-add-trans'])) {
-
-	// 		$mahd = $_POST['id-add-trans'];
-
-	// 		$soTien = $_POST['money-add-trans'];
-
-	// 		$date = $_POST['date-add-trans'];
-
-
-	// 		$listss = selectSTPD_NPCL($connection, $mahd);
-	// 		$soTienDaDong = $listss[0]['SoTienDaDong'];
-	// 		$SoTienPhaiDong = $listss[0]['SoTienPhaiDong'];
-	// 		$NoPhiConLai  = $listss[0]['NoPhiConLai'];
-
-	// 		$soTien =  str_replace(',', '', $soTien);
-	// 		$stdd = $soTienDaDong + $soTien;
-	// 		$npcl = $SoTienPhaiDong - $stdd;
-	// 		if ($npcl == 0) {
-	// 			$tt = 'Hoàn thành';
-	// 		} else {
-	// 			$tt = 'Còn nợ';
-	// 		}
-	// 		insertlsthp($mahd, $date, $soTien, $connection);
-	// 		updateHDTHP_addLSTHP($connection, $stdd, $npcl, $tt, $mahd);
-
-	// 		header("Location: manageFinance.php");
-	// 	}
-	// 	if (isset($_POST['totalAmount'])) {
-
-	// 		$updatedData = json_decode($_POST['updatedData'], true);
-	// 		$totalAmount = $_POST['totalAmount'];
-	// 		$remainingFee = $_POST['remainingFee'];
-
-	// 		$mahd = $_POST['maHD'];
-
-	// 		$listTHPbyMaHD = selectLSTHPbyMaHD($connection, $mahd);
-
-	// 		foreach ($listTHPbyMaHD as $a) {
-	// 			$check = true;
-	// 			foreach ($updatedData as $data) {
-	// 				$maGD = $data['maGD'];
-	// 				$ngay = $data['ngay'];
-	// 				$soTien = $data['soTien'];
-	// 				if ($a['MaGD'] == $maGD) {
-	// 					updateLSTHP($connection, $ngay, $soTien, $maGD);
-	// 					$check = false;
-	// 				}
-	// 			}
-	// 			if ($check) {
-	// 				deleteLSTHPbyMaGD($connection, $a['MaGD']);
-	// 			}
-	// 		}
-	// 		if ($remainingFee == 0 || $remainingFee < 0) {
-	// 			$tt = 'Hoàn thành';
-	// 		} else {
-	// 			$tt = 'Còn nợ';
-	// 		}
-	// 		updateHDTHP_addLSTHP($connection, $totalAmount, $remainingFee, $tt, $mahd);
-
-	// 		header("Location: manageFinance.php");
-	// 	}
+	
 }
 
 $jslistBill = json_encode($listBill);
@@ -215,12 +116,9 @@ $jslistgv_lopxlop = json_encode($listgv_lopxlop);
 $jslistgv_lopxdd = json_encode($listgv_lopxdd);
 
 $jslistTeacher = json_encode($listTeacher);
- 
-// $jslisths_lopxHS = json_encode($lisths_lopxHS);
+$jslistSoBuoiDayAll = json_encode($listSoBuoiDayAll);
 
-// $jslistStudent = json_encode($listStudent);
-// $jslistClassOpen = json_encode($listClassOpen);
-// $jslistLSTHP = json_encode($listLSTHP);
+
 
 
 ?>
@@ -249,7 +147,7 @@ $jslistTeacher = json_encode($listTeacher);
 				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
-				<li><a href="../manage/Parent.php">Quản lý phụ huynh</a></li>
+				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
 			</ul>
 		</nav>
@@ -266,7 +164,7 @@ $jslistTeacher = json_encode($listTeacher);
 		<div id="nav-container-Tab2">
 
 			<a href="./manageFinance_wageTea.php" id="btn-tab-luongGV">Lương giáo viên</a>
-			<a href="#" id="btn-tab-chiPhiKhac">Chi phí khác</a>
+			<a href="./manageFinance_OtherFee.php" id="btn-tab-chiPhiKhac">Chi phí khác</a>
 			<a href="#">Điều hướng 3</a>
 
 		</div>
@@ -279,9 +177,11 @@ $jslistTeacher = json_encode($listTeacher);
 					<input type="submit" name="search" id="search" value="Tìm kiếm" style="width: 100px">
 					<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 				</form>
-				<div>
-					<select style=" border: groove;background-color: beige;font-size: 14px;" id="select-status">
-						<option value="Chưa thanh toán">Chưa thanh toán</option>
+				<div style="display:inline-flex">
+                    <h3 style="margin-right:5px">Trạng thái :</h3>
+                    <select style=" border: groove;background-color: beige;font-size: 14px;padding:0; width:200px;height:50px" id="select-status">
+                        <option value="">...</option>
+					<option value="Chưa thanh toán">Chưa thanh toán</option>
 						<option value="Đã thanh toán">Đã thanh toán</option>
 					</select>
 				</div>
@@ -320,6 +220,12 @@ $jslistTeacher = json_encode($listTeacher);
 
 
 					</tbody>
+					<tbody class="tbody-5">
+
+
+
+					</tbody>
+
 				</table>
 			</div>
 			<!-- Them hoa don -->
@@ -328,8 +234,7 @@ $jslistTeacher = json_encode($listTeacher);
 					<div class="tab-add" style="display:inline-flex; padding-bottom:0;padding-left:0">
 						<button class="tablinks-add" id='btn-tab1-add' onclick="openTab_add(event, 'Tab1-add')">Thêm hóa đơn tháng</button>
 						<button class="tablinks-add" id='btn-tab2-add' onclick="openTab_add(event, 'Tab2-add')">Thênm hóa đơn cá nhân</button>
-						<button class="tablinks-add" id='btn-tab3-add' onclick="openTab_add(event, 'Tab3-add')">Thêm hóa </button>
-						<button class="tablinks-add" id='btn-tab4-add' onclick="openTab_add(event, 'Tab4-add')">Tab4</button>
+					
 					</div>
 
 					<div id="Tab1-add" class="tabcontent-add">
@@ -337,14 +242,11 @@ $jslistTeacher = json_encode($listTeacher);
 							<h1>Tạo hóa đơn lương giáo viên</h1>
 							<form id="form-add-bill" name="form-add-bill" method="post">
 
-
-								<!-- <label for="teacher_id">Mã giáo viên: 1</label>
-						<input type="text" id="teacher_id" name="teacher_id" required> -->
 								<table>
 									<tbody style="max-height:fit-content; overflow:unset">
 										<td>
 											<label for="bill-name-add">Tên hóa đơn : <label id="lb-name-add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-											<input type="text" id="bill-name-add" name="bill-name-add">
+											<input type="text" id="bill-name-add" name="bill-name-add" placeholder="Nhập tên hóa đơn">
 										</td>
 
 
@@ -425,15 +327,15 @@ $jslistTeacher = json_encode($listTeacher);
 							<form id="form-add-bill-ps" name="form-add-bill-ps" method="post">
 
 								<label for="bill-name-add-ps">Tên hóa đơn : <label id="lb-name-add-ps" style="color:red; font-size:13px ; font-style: italic "></label></label>
-								<input type="text" id="bill-name-add-ps" name="bill-name-add-ps">
+								<input type="text" id="bill-name-add-ps" name="bill-name-add-ps" placeholder="Nhập tên hóa đơn">
 
 								<label for="bill-teacher-add-ps">Giáo viên : <label id="lb-class-add-ps" style="color:red; font-size:13px ; font-style: italic "></label></label>
 								<br>
 								<input type="text" id="name-teacher-add-bill" name="name-teacher-add-bill" oninput="filterTeachers()" placeholder="Nhập tên giáo viên">
 								<ul id="teacher-list">
-				
-								</ul>
 
+								</ul>
+								<input type="hidden" id="name-teacher-s" name="name-teacher-s">
 								<!-- <select style="width: 50%;" name="bill-teacher-add-ps" id="bill-teacher-add-ps">
 
 									<option value="">Chọn giáo viên</option>
@@ -452,7 +354,7 @@ $jslistTeacher = json_encode($listTeacher);
 								<label for="money-add-bill">Số tiền : <label id="lb-money-add-ps" style="color:red; font-size:13px ; font-style: italic "></label></label>
 
 								<br>
-								<input type="text" style="width: 50%;" id="money-add-bill" name="money-add-bill" pattern="[0-9,]+" oninput="formatNumber(this)">
+								<input type="text" style="width: 50%;" id="money-add-bill" name="money-add-bill" pattern="[0-9,]+" oninput="formatNumber(this)" placeholder="Nhập số tiền">
 								<br>
 
 
@@ -483,40 +385,16 @@ $jslistTeacher = json_encode($listTeacher);
 
 
 		</div>
-		<!-- Tab 2 -Chi phi -->
-
-
-
-
-		<!-- <div id="Tab3" class="tabcontent">
-			<h3>Tổng hợp thu chi</h3>
-			<p>Content of Tab 3</p>
-		</div>
-
-		<div id="Tab4" class="tabcontent">
-			<h3>Tab4</h3>
-			<p>Content of Tab 4</p>
-		</div>
-
-		<div id="Tab5" class="tabcontent">
-			<h3>Tab5</h3>
-			<p>Content of Tab 5</p>
-		</div> -->
-
-		<!-- Thong tin chi tiet hoa don hoc phi -->
+	
 		<div class="modal-bg">
 			<div class="modal-content">
 
 				<div class="btn-tab-3">
-					<button class="tablinks-3" id="btn-tab-3-1" onclick="openTab_3(event, 'tab-3-1')">Thông tin hóa đơn</button>
-					<button class="tablinks-3" id="btn-tab-3-2" onclick="openTab_3(event, 'tab-3-2')">Lịch sử thanh toán</button>
-					<button class="tablinks-3" id="btn-tab-3-3" onclick="openTab_3(event, 'tab-3-3')">Tài khoản</button>
+					<button class="tablinks-3" id="btn-tab-3-1" >Thông tin hóa đơn</button>
 				</div>
 
 				<div id="tab-3-1" class="tabcontent-3">
-					<h2>Thông tin hóa đơn</h2>
-					<button id="edit-button" style="position: absolute;top: 75px;right: 60px;">Sửa</button>
-
+					<h2>Thông tin hóa đơn lương giáo viên</h2>
 					<button id="btn-delete-bill" style="position: absolute;top: 75px;right: 11px; background-color: #e90000">Xóa</button>
 
 					<div class="container">
@@ -537,19 +415,19 @@ $jslistTeacher = json_encode($listTeacher);
 										<th class="lb-detail-bill">Tên hóa dơn :</th>
 										<td id="name-bill-detail"></td>
 									</tr>
+
 									<tr>
-										<th class="lb-detail-bill"> Lớp :</th>
-										<td id="class-bill-detail"></td>
-									</tr>
-									<tr>
-										<th class="lb-detail-bill">Mã học viên :</th>
+										<th class="lb-detail-bill">Mã giáo viên :</th>
 										<td id="id-st-detail"></td>
 									</tr>
 									<tr>
-										<th class="lb-detail-bill">Tên học viên :</th>
+										<th class="lb-detail-bill">Tên giáo viên :</th>
 										<td id="name-st-bill-detail"></td>
 									</tr>
-
+									<tr>
+										<th class="lb-detail-bill"> Lớp :</th>
+										<td style="line-height: 30px;" id="class-bill-detail"></td>
+									</tr>
 									<tr>
 										<th class="lb-detail-bill">Thời gian :</th>
 										<td id="time-bill-detail"></td>
@@ -559,33 +437,26 @@ $jslistTeacher = json_encode($listTeacher);
 										<th class="lb-detail-bill">Số tiền :</th>
 										<td id="st-bill-detail"></td>
 									</tr>
-
 									<tr>
-										<th class="lb-detail-bill">Giảm học phí :</th>
-										<td id="ghp-bill-detail"></td>
-									</tr>
-
-									<tr>
-										<th class="lb-detail-bill">Số tiền giảm : </th>
-										<td id="stg-bill-detail"></td>
-									</tr>
-
-									<tr>
-										<th class="lb-detail-bill">Số tiền phải đóng :</th>
-										<td id="stpd-bill-detail"></td>
-									</tr>
-									<tr>
-										<th class="lb-detail-bill">Số tiền đã đóng :</th>
-										<td id="stdd-bill-detail"></td>
-									</tr>
-									<tr>
-										<th class="lb-detail-bill">Nợ phí còn lại :</th>
-										<td id="npcl-bill-detail"></td>
-									</tr>
+                                        <th class="lb-detail-bill">Thời gian thanh toán :</th>
+                                        <td id="time-tt-bill-detail"></td>
+                                    </tr>
 									<tr>
 										<th class="lb-detail-bill">Trạng thái:</th>
-										<td id="status-bill-detail"></td>
+										<!-- <td id="status-bill-detail"></td> -->
+										<form action="" id='form-update-status' method="post">
+											<td><select name="status-detail" id="status-detail" style="width: 50%;">
+													<option style="color: green;" value="Đã thanh toán">Đã thanh toán</option>
+													<option style="color: red;" value="Chưa thanh toán">Chưa thanh toán</option>
+
+												</select>
+												<input type="hidden" id="id-wage" name ="id-wage">
+												<input type="submit" id="update-tt" name='update-tt' value="Cập nhật" style="margin-left:100px">
+											</td>
+
+										</form>
 									</tr>
+
 								</tbody>
 							</table>
 
@@ -595,228 +466,12 @@ $jslistTeacher = json_encode($listTeacher);
 						</div>
 					</div>
 				</div>
-				<!-- lich su thanh toan hoa don -->
-				<div id="tab-3-2" class="tabcontent-3">
-
-					<h2>Lịch sử thanh toán hóa đơn</h2>
-
-					<h3>Mã hóa đơn : <strong id="id-bill-lsthp"></strong></h3>
-					<div style="display: flex; margin-bottom: 20px;">
-						<p style="margin-right: 20px;">Số tiền phải đóng:
-						<p id="stpd-lsthp"></p>
-						</p>
-					</div>
-					<button id="btn-add-trans" style="margin-bottom:5px">+ Thêm giao dịch</button>
-					<form action="" method="POST" id="form-edit-trans"></form>
-					<table>
-						<thead style="background-color:#b9b5b5; color:black">
-
-							<tr>
-								<th>STT</th>
-								<th>Mã giao dịch</th>
-								<th>Thời gian</th>
-								<th>Số tiền</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody id="tbody-lsthp">
-
-
-						</tbody>
-					</table>
-
-
-					<!-- Them giao dich -->
-					<div id="div-add-trans">
-						<h1>Thêm giao dịch</h1>
-						<form id="form-add-trans" name="form-add-trans" method="post">
-							<input type="hidden" id="id-add-trans" name="id-add-trans">
-
-							<br>
-							<label>Thời gian : <label id="lb-time-add-trans" style="color:red; font-size:13px ; font-style: italic "></label></label>
-
-							<!-- <label style="margin-left:10px" for="day-add-trans">Ngày:</label>
-							<select style="width:fit-content" id="day-add-trans" name="day-add-trans"></select>
-							<label for="month-add-trans">Tháng :</label>
-							<select style="width:fit-content" name="month-add-trans" id="month-add-trans" onchange="checkDays()">
-								<option value="">Chọn tháng</option>
-								<option value="1">Tháng 1</option>
-								<option value="2">Tháng 2</option>
-								<option value="3">Tháng 3</option>
-								<option value="4">Tháng 4</option>
-								<option value="5">Tháng 5</option>
-								<option value="6">Tháng 6</option>
-								<option value="7">Tháng 7</option>
-								<option value="8">Tháng 8</option>
-								<option value="9">Tháng 9</option>
-								<option value="10">Tháng 10</option>
-								<option value="11">Tháng 11</option>
-								<option value="12">Tháng 12</option>
-							</select>
-
-							<label for="year-add-trans">Năm :</label>
-							<select style="width:fit-content" name="year-add-trans" id="year-add-trans" onchange="checkDays()">
-
-								<option value="">Chọn năm</option>
-								<?php for ($i = 2020; $i <= 2100; $i++) { ?>
-									<option value="<?php echo $i ?>">
-										<?php echo $i ?>
-									</option>
-								<?php } ?>
-							</select> -->
-
-							<input style="font-size: 16px;" type="date" id="date-add-trans" name="date-add-trans" required>
-							<br>
-							<br>
-							<label for="money-add-trans">Số tiền : </label>
-							<input style="height: 30px; font-size: 15px; width:50%" type="text" id="money-add-trans" name="money-add-trans" pattern="[0-9,]+" oninput="formatNumber(this)">
-							<br>
-							<label id="lb-money-add-trans" style="color:red; font-size:13px ; font-style: italic "></label>
-							<br>
-							<button type="button" style=" background-color: teal;margin: 25px 0px 8px; padding: 15px 20px;margin-left: 50px;" id="canle-add-trans">Huỷ bỏ</button>
-
-							<input style="font-size: 14px;background-color: teal; margin-top: 25px;width: fit-content;margin-left: 120px;  padding: 15px 25px;" type="submit" id="submit-add-trans" value="Thêm">
-
-						</form>
-					</div>
-				</div>
-				<div id="tab-3-3" class="tabcontent-3">3</div>
+				
+				
 				<button class="close-btn">Đóng</button>
 			</div>
 		</div>
 
-		<!-- Sua thong tin -->
-		<div class="modal-bg-edit">
-			<div class="modal-content-edit">
-				<div>
-					<form id="form-edit-bill" name="form-edit-bill" method="post">
-
-						<h1>Sửa thông tin hóa đơn</h1>
-
-						<table>
-							<tr>
-								<td>
-									<label>Mã hóa đơn : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="id-bill-edit" name="id-bill-edit" readonly>
-
-								</td>
-								<td>
-									<label>Tên hóa đơn : <strong id="err-name-bill-edit" style="color: #e90000; font-weight: inherit;font-size: small;"></strong></label>
-									<input type="text" id="name-bill-edit" name="name-bill-edit">
-
-								</td>
-
-							</tr>
-
-							<tr>
-								<td>
-									<label>Mã học viên : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="id-st-bill-edit" name="id-st-bill-edit" readonly>
-								</td>
-								<td>
-									<label>Tên học viên : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="name-st-bill-edit" name="name-st-bill-edit" readonly>
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-									<label>Lớp: <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="class-bill-edit" name="clas-bill-edit" readonly>
-								</td>
-								<td>
-									<label>Số tiền : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="st-bill-edit" name="st-bill-edit" readonly>
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-									<label>Thời gian : <strong id="err-time-bill-edit" style="color: #e90000; font-weight: inherit;font-size: small;"></strong></label></label>
-									<br>
-
-									<label style="margin-left: 100px" for="month-bill-edit">Tháng :</label>
-									<select style="width:fit-content" name="month-bill-edit" id="month-bill-edit">
-										<option value="">Chọn tháng</option>
-										<option value="1">Tháng 1</option>
-										<option value="2">Tháng 2</option>
-										<option value="3">Tháng 3</option>
-										<option value="4">Tháng 4</option>
-										<option value="5">Tháng 5</option>
-										<option value="6">Tháng 6</option>
-										<option value="7">Tháng 7</option>
-										<option value="8">Tháng 8</option>
-										<option value="9">Tháng 9</option>
-										<option value="10">Tháng 10</option>
-										<option value="11">Tháng 11</option>
-										<option value="12">Tháng 12</option>
-									</select>
-
-									<label style="margin-left: 100px" for="year-bill-edit">Năm :</label>
-									<select style="width:fit-content" name="year-bill-edit" id="year-bill-edit">
-
-										<option value="">Chọn năm</option>
-										<?php for ($i = 2020; $i <= 2100; $i++) { ?>
-											<option value="<?php echo $i ?>">
-												<?php echo $i ?>
-											</option>
-										<?php } ?>
-									</select>
-
-								</td>
-							</tr>
-
-							<tr>
-								<td>
-									<label>Giảm học phí: <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="ghp-bill-edit" name="ghp-bill-edit" readonly>
-								</td>
-								<td>
-									<label>Số tiền giảm : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="stg-bill-edit" name="stg-bill-edit" readonly>
-								</td>
-							</tr>
-
-
-
-							<tr>
-								<td>
-									<label>Số tiền phải đóng : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="stpd-bill-edit" name="stpd-bill-edit" readonly>
-								</td>
-								<td>
-									<label>Số tiền đã đóng : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="stdd-bill-edit" name="stdd-bill-edit" readonly>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<label> Nợ phí còn lại : <strong style="color: #ff1ace; font-weight: inherit;font-size: small;">(Không thể sửa)</strong></label>
-									<input type="text" id="npcl-bill-edit" name="npcl-bill-edit" readonly>
-								</td>
-								<td>
-									<label> Trạng thái : </label>
-									<select id="status-bill-edit" name="status-bill-edit">
-										<option value="Chưa đóng">Chưa đóng</option>
-										<option value="Còn nợ">Còn nợ</option>
-										<option value="Hoàn thành">Hoàn thành</option>
-									</select>
-								</td>
-							</tr>
-
-						</table>
-
-
-
-
-
-						<input type="submit" id='update-bill-edit' name="update-bill-edit" value="Cập nhật">
-
-					</form>
-					<button id="btn-cancle-edit-bill">Hủy bỏ</button>
-				</div>
-			</div>
-		</div>
 
 
 		<!-- thong bao -->
@@ -841,7 +496,7 @@ $jslistTeacher = json_encode($listTeacher);
 
 		<div class="delete-bill-ques-2">
 			<img src="../assets/images/warning-icon.png" alt="" style=" width: 40px;">
-			<h4>Hóa đơn đã có dữ liệu đóng tiền</h4>
+			<h4>Hóa đơn đã có dữ liệu thanh toán</h4>
 			<h4>Bạn chắc chắn muốn xóa?</h4>
 			<div style="display:flex ;justify-content: space-evenly;align-items: center">
 
@@ -899,9 +554,7 @@ $jslistTeacher = json_encode($listTeacher);
 	var dsgv_lop = <?php print_r($jslistgv_lopxlop); ?>;
 	var dsgv_lopxdd = <?php print_r($jslistgv_lopxdd); ?>;
 	var dsgv = <?php print_r($jslistTeacher); ?>;
-
-	
-
+	var dssoBuoiDay = <?php print_r($jslistSoBuoiDayAll); ?>;
 </script>
 
 <script src="../assets/js/manageFinance_wageTea.js"></script>

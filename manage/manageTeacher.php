@@ -453,7 +453,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 
 
 						<label for="teacher_name">Tên giáo viên: <label id="lb_name_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="teacher_name_add" name="teacher_name_add" required>
+						<input type="text" id="teacher_name_add" name="teacher_name_add" required placeholder="Nhập tên giáo viên">
 
 						<label for="gender">Giới tính:</label>
 						<select id="gender_add" name="gender_add">
@@ -468,19 +468,19 @@ $jsonListClass = json_encode($listClassOfTeacher);
 						<input type="number" id="age_add" name="age_add" required> <label id="lb_age_add" style="color:red; font-size:13px ; font-style: italic "></label>
 						<br>
 						<label for="hometown">Quê quán: <label id="lb_hometown_add" style="color:red; font-size:13px ; font-style: italic "></label> </label>
-						<input type="text" id="hometown_add" name="hometown_add" required>
+						<input type="text" id="hometown_add" name="hometown_add" required placeholder="Nhập quê quán">
 
 						<label for="address">Địa chỉ: <label id="lb_address_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="address_add" name="address_add" required>
+						<input type="text" id="address_add" name="address_add" required placeholder="Nhập địa chỉ">
 
 						<label for="education">Trình độ: <label id="lb_education_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="education_add" name="education_add" required>
+						<input type="text" id="education_add" name="education_add" required placeholder="Nhập tên trình độ">
 
 						<label for="phone_number">Số điện thoại: <label id="lb_phone_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="tel" id="phone_number_add" name="phone_number_add" required>
+						<input type="tel" id="phone_number_add" name="phone_number_add" required placeholder="Nhập số diện thoại"> 
 
 						<label for="email">Email: <label id="lb_email_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="email" id="email_add" name="email_add" required>
+						<input type="email" id="email_add" name="email_add" required placeholder="Nhập email">
 
 
 						<input type="submit" id='add' name="add" value="Thêm">
@@ -816,6 +816,36 @@ $jsonListClass = json_encode($listClassOfTeacher);
 		// Huy bo 
 		document.querySelector('.cancle-btn-add').addEventListener('click', () => {
 			modalBgAdd.style.display = 'none';
+
+			 document.getElementById('phone_number_add').value ='';
+			document.getElementById('email_add').value ='';
+			document.getElementById('teacher_name_add').value ='';
+			 document.getElementById('age_add').value ='';
+			document.getElementById('hometown_add').value ='';
+			document.getElementById('address_add').value ='';
+			 document.getElementById('education_add').value ='';
+			 document.getElementById('birthday_add').value ='';
+
+			
+				document.getElementById('lb_name_add').textContent = "";
+
+				document.getElementById('lb_birthday_add').textContent = "";
+
+				document.getElementById('lb_age_add').textContent = "";
+
+			
+				document.getElementById('lb_hometown_add').textContent = "";
+
+			
+				document.getElementById('lb_address_add').textContent = "";
+			
+				document.getElementById('lb_education_add').textContent = "";
+			
+				document.getElementById('lb_phone_add').textContent = "";
+
+			
+				document.getElementById('lb_email_add').textContent = "";
+
 		});
 
 		// Khi nhấn Thêm
