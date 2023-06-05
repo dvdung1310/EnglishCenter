@@ -1,13 +1,10 @@
 <?php
 require '../lib/functionParent.php';
 
-
-
 $listParent = listParent($connection);
 $listph_hs = listph_hs($connection);
-// $lisths_lop = lisths_lop($connection);
-$listtk_ph =  listtk_ph($connection);
-
+$lisths_lop = listLopOfchid($connection);
+$listtk_ph = listtk_ph($connection);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['parent_name_edit'])) {
@@ -23,7 +20,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		updateParentbyID($connection, $maph, $ten, $gt, $ns, $tuoi, $dc, $sdt, $email);
 		header("Location: manageParent.php");
 	}
-
 
 	if (isset($_POST['refesh'])) {
 		header("Location: manageParent.php");
@@ -51,12 +47,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	}
 }
 
-
 $jsonListParent = json_encode($listParent);
 $jsonListph_hs = json_encode($listph_hs);
 $jsonLisths_lop = json_encode($lisths_lop);
-$jsonListtk_ph =  json_encode($listtk_ph);
-
+$jsonListtk_ph = json_encode($listtk_ph);
 
 ?>
 
@@ -84,7 +78,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
-				<li><a href="#">Quản lý tài khoản</a></li>
+				<li><a href="../manage/ManageFinance.php">Quản lý tài khoản</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -92,7 +86,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 
 		<h1>Quản lý Phụ huynh</h1>
 		<div class="search-container">
-			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
+			<form id="form-search" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
 				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
 				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
 				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
@@ -100,26 +94,28 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 
 		</div>
 
-		<table>
+		<table id="table-1">
 			<thead>
 				<tr>
-					<th>STT</th>
-					<th>Tên</th>
-					<th>Giới tính</th>
-					<th>Tuổi</th>
-					<th style="width :200px">Địa chỉ</th>
-					<th>Phụ huynh của</th>
+					<th onclick="sortTable(0)">STT</th>
+					<th onclick="sortTable(1)">Mã Giáo viên</th>
+					<th onclick="sortTable(2)">Họ tên</th>
+					<th onclick="sortTable(3)">Giới tính</th>
+					<th onclick="sortTable(4)">Tuổi</th>
+					<th onclick="sortTable(5)" style="width :200px">Địa chỉ</th>
+					<th onclick="sortTable(6)">Phụ huynh của</th>
 
 				</tr>
 			</thead>
 			<tbody class="tbody-1">
 				<?php $i = 1;
-				if (!$listParent)
+				if (!$listParent) {
 					echo ' <h2>Không tìm thấy kết quả phù hợp "' . $_POST['keyword'] . '"</h2>';
-				else {
+				} else {
 					foreach ($listParent as $Parent) : ?>
 						<tr>
 							<td><?php echo $i++ ?></td>
+							<td><?php echo $Parent['MaPH']; ?></td>
 							<td><?php echo $Parent['TenPH']; ?></td>
 							<td><?php echo $Parent['GioiTinh']; ?></td>
 							<td><?php echo $Parent['Tuoi']; ?></td>
@@ -166,7 +162,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 
 						<div class="tab">
 							<button class="tablinks" id="tb1" onclick="openTab(event, 'tab1')">Chung</button>
-							<button class="tablinks" id="tb2" onclick="openTab(event, 'tab2')"> Lớp học</button>
+							<button class="tablinks" id="tb2" onclick="openTab(event, 'tab2')">Học viên liên kết</button>
 							<button class="tablinks" id="tb3" onclick="openTab(event, 'tab3')">Tài khoản</button>
 						</div>
 
@@ -195,10 +191,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 									<td id="Parent-address" contenteditable="false"></td>
 								</tr>
 
-								<!-- <tr>
-									<th>Lớp đang học</th>
-									<td id="Parent-class" contenteditable="false"></td>
-								</tr> -->
+
 
 								<tr>
 									<th>Phụ huynh của học viên:</th>
@@ -217,36 +210,21 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 							</table>
 
 
-							<div class="div-student-info">
-								<table>
-									<tr>
-										<td style="unset">
-											<p><strong>Tên:</strong> John Doe</p>
-										</td>
-										<td>
-											<p><strong>Tuổi:</strong> 25</p>
-										</td>
-									</tr>
-									<tr>
-										<td>
-											<p><strong>Giới tính:</strong> Nam</p>
-										</td>
-										<td>
-											<p><strong>Ngày sinh:</strong> 01/01/1998</p>
-										</td>
-									</tr>
-								</table>
-								<p><strong>Số điện thoại:</strong> 0123456789</p>
-								<p><strong>Email:</strong> johndoe@example.com</p>
-								<p><strong>Lớp đang học:</strong> Lập trình web cơ bản</p>
-							</div>
+
 						</div>
 
 
+
+
+
 						<div id="tab2" class="tabcontent">
-							<div class="class-of-Parent">
+							<div id="child-infor">
+
 
 							</div>
+
+
+
 						</div>
 
 						<div id="tab3" class="tabcontent">
@@ -301,7 +279,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 										</tr>
 										<tr>
 											<td>
-												<p id="err-pass" style="color: red;font-style: italic;  font-size: 14px;"></p>
+												<h5 id="err-pass" style="color: red;font-style: italic;  font-size: 14px;"></h5>
 											</td>
 
 										</tr>
@@ -315,7 +293,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 										</tr>
 										<tr>
 											<td>
-												<p id="err-repass" style="color: red;font-style: italic;  font-size: 14px;"></p>
+												<h5 id="err-repass" style="color: red;font-style: italic;  font-size: 14px;"></h5>
 											</td>
 
 										</tr>
@@ -445,6 +423,16 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 	</footer>
 
 	<script>
+
+function convertDateFormat(dateString) {
+			var dateParts = dateString.split("-");
+			var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
+			return formattedDate;
+		}
+
+		function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 		const rows = document.querySelectorAll('.tbody-1 tr');
 		const modalBg = document.querySelector('.modal-bg');
 		const modalContent = document.querySelector('.modal-content');
@@ -454,7 +442,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 
 		var stt_select;
 		var ds_phuhuynh;
-		// var listClass;
+		var parent_select;
 
 
 
@@ -465,7 +453,7 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 		rows.forEach((row) => {
 			row.addEventListener('click', () => {
 
-				stt_select = row.cells[0].textContent;
+				stt_select = row.cells[1].textContent;
 
 				// listClass = row.cells[5].textContent;
 				ds_phuhuynh = <?php print_r($jsonListParent); ?>;
@@ -473,44 +461,51 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 				ds_hs_lop = <?php print_r($jsonLisths_lop); ?>;
 				ds_tk_ph = <?php print_r($jsonListtk_ph); ?>;
 
+				for (var i = 0; i < ds_phuhuynh.length; i++) {
+					if (stt_select == ds_phuhuynh[i].MaPH)
+						parent_select = ds_phuhuynh[i];
+				}
 				//lay tt con cai
 				var hs_of_ph = [];
 				var j = 0;
 				for (var i = 0; i < ds_hs_of_ph.length; i++) {
-					if (ds_hs_of_ph[i].MaPH === ds_phuhuynh[stt_select - 1].MaPH) {
+					if (ds_hs_of_ph[i].MaPH === parent_select.MaPH) {
 						hs_of_ph[j++] = ds_hs_of_ph[i].TenHS;
 					}
 				}
 
-				document.getElementById('Parent-name').textContent = ds_phuhuynh[stt_select - 1].TenPH;
-				document.getElementById('Parent-gender').textContent = ds_phuhuynh[stt_select - 1].GioiTinh;
-				document.getElementById('Parent-age').textContent = ds_phuhuynh[stt_select - 1].Tuoi;
+				document.getElementById('Parent-name').textContent = parent_select.TenPH;
+				document.getElementById('Parent-gender').textContent = parent_select.GioiTinh;
+				document.getElementById('Parent-age').textContent = parent_select.Tuoi;
 				// document.getElementById('Parent-class').textContent = listClass;
-				document.getElementById('Parent-id').textContent = ds_phuhuynh[stt_select - 1].MaPH;
-				document.getElementById('Parent-address').textContent = ds_phuhuynh[stt_select - 1].DiaChi;
-				document.getElementById('Parent-date').textContent = ds_phuhuynh[stt_select - 1].NgaySinh;
-				document.getElementById('Parent-phone').textContent = ds_phuhuynh[stt_select - 1].SDT;
-				document.getElementById('Parent-email').textContent = ds_phuhuynh[stt_select - 1].Email;
+				document.getElementById('Parent-id').textContent = parent_select.MaPH;
+				document.getElementById('Parent-address').textContent = parent_select.DiaChi;
+				document.getElementById('Parent-date').textContent =  convertDateFormat(parent_select.NgaySinh);
+				document.getElementById('Parent-phone').textContent = parent_select.SDT;
+				document.getElementById('Parent-email').textContent = parent_select.Email;
 
 
-
+				var html_hs = '';
 				hs_of_ph.forEach(function(name) {
-					const pTag = document.createElement("p"); // Tạo thẻ p mới
-					pTag.innerText = name; // Gán giá trị tên vào thẻ p
-					pTag.classList.add("infor-student");
-
-					const tdTag = document.getElementById("Parent-parent"); // Lấy đối tượng td có id là Parent-parent
-					tdTag.appendChild(pTag);
-
+					// const pTag = document.createElement("h4"); // Tạo thẻ p mới
+					// pTag.innerText = name; // Gán giá trị tên vào thẻ p
+					// pTag.classList.add("infor-student");
+					html_hs += '<p class ="infor-student">' + name + '</p>';
+					// tdTag.appendChild(pTag);
 				});
+				const tdTag = document.getElementById("Parent-parent"); // Lấy đối tượng td có id là Parent-parent
+				tdTag.innerHTML = html_hs;
+
+
+
 
 				// document.getElementById('Parent-parent').textContent =
 
-				document.getElementById('maph_delete').value = ds_phuhuynh[stt_select - 1].MaPH;
+				document.getElementById('maph_delete').value = parent_select.MaPH;
 
 				var img = document.getElementById("img");
 
-				if (ds_phuhuynh[stt_select - 1].GioiTinh == "Nam") {
+				if (parent_select.GioiTinh == "Nam") {
 					img.src = "../assets/images/Parent-male-icon.png";
 				} else {
 					img.src = "../assets/images/Parent-female-icon.png";
@@ -523,78 +518,103 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 				document.getElementById("tb2").classList.remove("active");
 				document.getElementById("tb3").classList.remove("active");
 
-				// thong tin lop cua hoc vien
-				// var classes = [];
-				// var k = 0;
-				// for (var i = 0; i < ds_hs_lop.length; i++) {
-				// 	if (ds_hs_lop[i].MaHS === ds_phuhuynh[stt_select - 1].MaHS) {
-				// 		classes[k++] = ds_hs_lop[i];
-				// 	}
-				// }
+				//thong tin con cua phu huynh
+				var child = [];
+				var k = 0;
+				for (var i = 0; i < ds_hs_of_ph.length; i++) {
+					if (ds_hs_of_ph[i].MaPH === parent_select.MaPH) {
+						child[k++] = ds_hs_of_ph[i];
+					}
+				}
 
 
-				// var html = '';
 
-				// if (classes.length === '0'){
-				// 	html += '<p>Học viên chưa tham gia lớp học nào </p>';
-				// }
-				// else {
-				// 	html += '<p> Số lớp đã tham gia: ' + classes.length + '</p>';
 
-				// 	for (var i = 0; i < classes.length; i++) {
 
-				// 		html += '<div class="class">' +
-				// 			'<p></p>' +
-				// 			'<table>' +
-				// 			'<tr>' +
 
-				// 			'<td>' +
-				// 			'<p id="id-class">Mã lớp học:  ' + classes[i]['MaLop'] + '</p>' +
-				// 			'</td>' +
+				var html = '';
 
-				// 			'<td>' +
-				// 			'<p id="num-of-session">Số buổi học:  ' + classes[i]['SoBuoiDaToChuc'] + '/' + classes[i]['SoBuoi'] + ' (Vắng : ' + classes[i]['SoBuoiNghi'] + ') </p>' +
-				// 			'</td>' +
-				// 			'</tr>' +
-				// 			'<tr>' +
+				if (child.length === '0') {
+					html += '<p> Phụ huynh này chưa liên kết với học viên</p>';
+				} else {
+					html += '<p> Số học viên liên kết : ' + child.length + '</p>';
 
-				// 			'<td>' +
-				// 			'<p id="name-class">Tên lớp học:  ' + classes[i]['TenLop'] + '</p>' +
-				// 			'</td>' +
+					for (var i = 0; i < child.length; i++) {
 
-				// 			'<td>' +
-				// 			'<p id="name =name-teacher">Tên giáo viên:  ' + classes[i]['TenGV'] + '</p>' +
-				// 			'</td>' +
-				// 			'</tr>' +
-				// 			'<tr>' +
 
-				// 			'<td>' +
-				// 			'<p id="fee-class">Học phí:  ' + classes[i]['HocPhi'] + '/buổi' + '</p>' +
-				// 			'</td>' +
 
-				// 			'<td>' +
-				// 			'<p id="de-fee-class">Giảm học phí:  ' + classes[i]['GiamHocPhi'] + '%' + '</p>' +
-				// 			'</td>' +
-				// 			'</tr>' +
-				// 			'<tr>' +
+						html += '<div class="child">' +
+							'<p></p>' +
+							'<table>' +
+							'<tr>' +
 
-				// 			'<td>' +
-				// 			'<p id="status-class">Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
-				// 			'</td>' +
-				// 			'</tr>' +
-				// 			'</table>' +
-				// 			'</div>';
-				// 	}
+							'<td>' +
+							'<p ><strong> Họ tên :</strong>' + '   ' + child[i]['TenHS'] + '</p>' +
+							'</td>' +
 
-				// 	document.querySelector(".class-of-Parent").innerHTML = html;
+							'<td>' +
+							'<p ><strong> Tuổi :</strong>' + '   ' + child[i]['Tuoi'] + '</p>' +
+							'</td>' +
 
-				// }
+							'</tr>' +
 
-				//thong tin tai khoan 
+
+							'<tr>' +
+
+							'<td>' +
+							'<p ><strong> Giới tính :</strong>' + '   ' + child[i]['GioiTinh'] + '</p>' +
+							'</td>' +
+
+							'<td>' +
+							'<p ><strong> Ngày sinh :</strong>' + '   ' + convertDateFormat(child[i]['NgaySinh']) + '</p>' +
+							'</td>' +
+							'</tr>' +
+							'<tr>' +
+
+							'<td>' +
+							'<p ><strong>Số điện thoại :</strong>' + '   ' + child[i]['SDT'] + '</p>' +
+							'</td>' +
+
+							'<td>' +
+							'<p ><strong>Email :</strong>' + '   ' + child[i]['Email'] + '</p>' +
+							'</td>' +
+							'</tr>' +
+							'<tr>' +
+
+							'<td>' +
+							'<p ><strong> Lớp học :</strong>' + '   ';
+
+						var k=true;
+						for (var j = 0; j < ds_hs_lop.length; j++) {
+							if (ds_hs_lop[j].MaHS === child[i]['MaHS']) {
+								html += ds_hs_lop[j].MaLop + ' ;  ';
+								k=false;
+							}
+						}
+						if(k){
+							html +="(Chưa tham gia lớp học nào)"
+						}
+
+
+
+
+						html += '</p>' +
+							'</td>' +
+							'</tr>' +
+
+							'</table>' +
+							'</div>';
+					}
+
+					document.querySelector("#child-infor").innerHTML = html;
+
+				}
+
+				//thong tin tai khoan
 				var username = '';
 				var pass = '';
 				for (var i = 0; i < ds_tk_ph.length; i++) {
-					if (ds_tk_ph[i].MaPH === ds_phuhuynh[stt_select - 1].MaPH) {
+					if (ds_tk_ph[i].MaPH === parent_select.MaPH) {
 						username = ds_tk_ph[i]['UserName'];
 						pass = ds_tk_ph[i]['Password']
 					}
@@ -611,12 +631,12 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 
 			document.getElementById('div-change-pass').style.display = 'none';
 			modalBg.style.display = 'none';
-
+			document.getElementById('err-pass').textContent = '';
+			document.getElementById('err-repass').textContent = '';
 			const paragraphs = document.getElementsByTagName("p");
 			while (paragraphs.length > 0) {
 				paragraphs[0].parentNode.removeChild(paragraphs[0]);
 			}
-			document.querySelector(".class-of-Parent").innerHTML = '';
 
 		});
 
@@ -642,9 +662,9 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 			modalBgEdit.style.display = "block";
 
 
-			document.getElementById('parent_name_edit').value = ds_phuhuynh[stt_select - 1].TenPH;
+			document.getElementById('parent_name_edit').value = parent_select.TenPH;
 
-			var gt = ds_phuhuynh[stt_select - 1].GioiTinh;
+			var gt = parent_select.GioiTinh;
 			var selectTag = document.getElementById("gender_edit");
 			for (var i = 0; i < selectTag.options.length; i++) {
 				if (selectTag.options[i].value == gt) {
@@ -653,14 +673,14 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 				}
 			}
 
-			document.getElementById('birthday_edit').value = ds_phuhuynh[stt_select - 1].NgaySinh;
-			document.getElementById('age_edit').value = ds_phuhuynh[stt_select - 1].Tuoi;
-			document.getElementById('parent-id_edit').textContent = "Mã Học viên : " + ds_phuhuynh[stt_select - 1].MaPH;
-			document.getElementById('address_edit').value = ds_phuhuynh[stt_select - 1].DiaChi;
-			document.getElementById('phone_number_edit').value = ds_phuhuynh[stt_select - 1].SDT;
-			document.getElementById('email_edit').value = ds_phuhuynh[stt_select - 1].Email;
+			document.getElementById('birthday_edit').value = parent_select.NgaySinh;
+			document.getElementById('age_edit').value = parent_select.Tuoi;
+			document.getElementById('parent-id_edit').textContent = "Mã Học viên : " + parent_select.MaPH;
+			document.getElementById('address_edit').value = parent_select.DiaChi;
+			document.getElementById('phone_number_edit').value = parent_select.SDT;
+			document.getElementById('email_edit').value = parent_select.Email;
 
-			document.getElementById('id_edit').value = ds_phuhuynh[stt_select - 1].MaPH;
+			document.getElementById('id_edit').value = parent_select.MaPH;
 		});
 
 		document.querySelector('.cancle-btn').addEventListener('click', () => {
@@ -853,6 +873,8 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 			document.getElementById('err-pass').textContent = err_pass;
 			document.getElementById('err-repass').textContent = err_repass;
 
+		
+
 			if (!check_pass) {
 				return;
 
@@ -870,27 +892,90 @@ $jsonListtk_ph =  json_encode($listtk_ph);
 		});
 
 		document.getElementById('cancle-change-pass').addEventListener('click', () => {
+			document.getElementById('err-pass').textContent = '';
+			document.getElementById('err-repass').textContent = '';
 			document.getElementById('div-change-pass').style.display = 'none';
 
 		});
 
 
-		// hien thi tt hoc sinh
+		// sap xep bang
 
-		const infoStudents = document.querySelectorAll(".infor-student");
-		const hiddenDiv = document.getElementById("hidden-div");
 
-		// Bắt sự kiện mouseover trên các thẻ p có class "infor-student"
-		infoStudents.forEach((infoStudent) => {
-			infoStudent.addEventListener("mouseover", () => {
-				hiddenDiv.style.display = "block";
+
+		var sortDirection = {}; // Store the current sort direction for each column
+
+		function sortTable(columnIndex) {
+			var table = document.getElementById('table-1');
+			var tbody = table.querySelector('.tbody-1');
+			var rows = Array.from(tbody.getElementsByTagName('tr'));
+			var sttValues = rows.map(function(row) {
+				return parseInt(row.getElementsByTagName('td')[0].innerText.trim());
 			});
-		});
 
-		// Bắt sự kiện mouseout để ẩn đi thẻ div
-		hiddenDiv.addEventListener("mouseout", () => {
-			hiddenDiv.style.display = "none";
-		});
+			rows.sort(function(a, b) {
+				var aValue = a.getElementsByTagName('td')[columnIndex].innerText.trim();
+				var bValue = b.getElementsByTagName('td')[columnIndex].innerText.trim();
+
+
+
+				if (sortDirection[columnIndex] === 'asc') {
+					return aValue.localeCompare(bValue);
+				} else {
+					return bValue.localeCompare(aValue);
+				}
+
+			});
+			rows.forEach(function(row, index) {
+				var sttCell = row.getElementsByTagName('td')[0];
+				sttCell.innerText = sttValues[index];
+			});
+
+			rows.forEach(function(row) {
+				tbody.appendChild(row);
+			});
+
+
+			// Reverse the sort direction for the clicked column
+			if (sortDirection[columnIndex] === 'asc') {
+				sortDirection[columnIndex] = 'desc';
+			} else {
+				sortDirection[columnIndex] = 'asc';
+			}
+
+			// Update the sort icon in the column header
+			updateSortIcon(columnIndex);
+
+
+
+		}
+
+		function updateSortIcon(columnIndex) {
+			var table = document.getElementById('table-1');
+			var headers = table.querySelectorAll('th');
+
+			headers.forEach(function(header) {
+				// Remove the sort icon from all column headers
+				var icon = header.querySelector('img');
+				if (icon) {
+					header.removeChild(icon);
+				}
+			});
+
+			// Add the sort icon to the clicked column header
+			var clickedHeader = headers[columnIndex];
+			var sortIcon = document.createElement('img');
+			sortIcon.src = '../assets/images/arrow-up-down-bold-icon.png';
+			sortIcon.style.width = '20px';
+			sortIcon.style.backgroundColor = 'white';
+			sortIcon.style.borderRadius = '30px';
+			if (sortDirection[columnIndex] === 'asc') {
+				sortIcon.style.transform = 'rotate(180deg)';
+			}
+			clickedHeader.appendChild(sortIcon);
+		}
+
+	
 	</script>;
 
 </html>

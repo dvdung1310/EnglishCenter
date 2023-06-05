@@ -201,6 +201,26 @@ function registerAcountStudent($userName, $passWord, $MaHS, $connection)
     }
 }
 
+
+function insertNgayDK($mahs, $date, $connection)
+{
+    $sql = "insert into ngaydkhs values(?,?)";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $mahs);
+        $statement->bindParam(2, $date);
+
+        $student = $statement->execute();
+        if ($student) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+}
+
 // đăng kí thông tin Phụ Huynh
 function registerTableParents($name, $gender, $date, $age, $address, $phone, $email, $connection)
 {

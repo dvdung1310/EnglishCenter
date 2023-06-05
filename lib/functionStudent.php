@@ -106,6 +106,19 @@
     }
 
 
+    function deleteNgaydk($connection,$MaHS){
+        $sql = "delete from ngaydkhs where MaHS = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$MaHS]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
      // Xoa hoc vien
      function deleteStudent($connection,$MaHS){
         $sql = "delete from hocsinh where MaHS = ?";

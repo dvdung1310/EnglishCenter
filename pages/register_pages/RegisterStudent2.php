@@ -43,6 +43,7 @@ if (isset($_POST['submit'])) {
             $maHS = registerTableStudent($_COOKIE['name'], $_COOKIE['gender'], $_COOKIE['date'], $_COOKIE['age'], $_COOKIE['address'], $_COOKIE['phone'], $_COOKIE['email'], $connection);
             registerAcountStudent($userName, $passWord, $maHS, $connection);
             
+            insertNgayDK($maHS,date('Y-m-d'),$connection);
     
             if ($_COOKIE['maph']!=' ') {
                 createTablPH_HS($maHS, $_COOKIE['maph'], $connection);

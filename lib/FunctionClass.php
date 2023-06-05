@@ -70,13 +70,14 @@ function deleteClass($malop,$connection){
     }
 }
 // tạo class_gv
-function CreateTeacher_Class($magv,$MaLop,$connection)
+function CreateTeacher_Class($magv,$MaLop,$TienTraGV,$connection)
 {
-    $sql = "insert into gv_lop values(?,?)";
+    $sql = "insert into gv_lop values(?,?,?)";
     try {
         $statement = $connection->prepare($sql);
         $statement->bindParam(1, $magv);
         $statement->bindParam(2, $MaLop);
+         $statement->bindParam(3, $TienTraGV);
         $teacherClass = $statement->execute();
         if ($teacherClass) {
             return true;
@@ -151,9 +152,9 @@ function dataSchedulesByMaLop($malop,$connection){
     return null;
 }
 
-// truy vấn dữ liệu ra giáo viên với mã lớp
+// truy vấn dữ liệu ra giáo viên từ mã lớp
 function dataTeacherByMaLop($malop,$connection){
-    $sql = "SELECT giaovien.*
+    $sql = "SELECT giaovien.* , gv_lop.TienTraGV
     from gv_lop
     INNER JOIN giaovien on gv_lop.MAGV = giaovien.MaGV
     INNER JOIN lop on lop.MaLop = gv_lop.MaLop
@@ -170,25 +171,12 @@ function dataTeacherByMaLop($malop,$connection){
     return null;
 }
 
-// truy vấn ra dữ liệu lớp học có trạng thái là 1 ;
-function dataClassOn($connection){
-    $sql = "select * from lop where trangthai = '1' ";
+// truy vấn ra dữ liệu lớp học có trạng thái là 1 0 2;
+function dataClassOnOff($trangthai,$connection){
+    $sql = "select * from lop where trangthai = ? ";
     try{
        $statement = $connection->prepare($sql);
-       $statement->execute();
-       $data = $statement->fetchAll(PDO::FETCH_ASSOC);
-       return $data;
-    }catch(PDOException $e){
-       $e->getMessage();
-    }
-    return null;
-}
-
-// truy vấn ra dữ liệu lớp học có trạng thái là 0 ;
-function dataClassOff($connection){
-    $sql = "select * from lop where trangthai = '0' ";
-    try{
-       $statement = $connection->prepare($sql);
+       $statement->bindParam(1, $trangthai);
        $statement->execute();
        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
        return $data;
@@ -236,9 +224,10 @@ function updateClassbyID($MaLop, $TenLop, $LuaTuoi,
  $SoBuoi,$SoBuoiDaToChuc,$TrangThai,$connection){
 
     $sql = "update lop set TenLop = ? , LuaTuoi = ?, ThoiGian= ?, SLHS= ? , 
-    SLHSToiDa = ?, HocPhi = ?,SoBuoi = ?, SoBuoiDaToChuc = ? ,  TrangThai = ?  where MaLop = ?";
+    SLHSToiDa = ?, HocPhi = ?,SoBuoi = ?,
+     SoBuoiDaToChuc = ? ,  TrangThai = ? 
+      where MaLop = ?";
     try{
-        $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
         $statement =  $connection->prepare($sql);
         $statement->bindParam(1, $TenLop);
         $statement->bindParam(2, $LuaTuoi);
@@ -251,7 +240,6 @@ function updateClassbyID($MaLop, $TenLop, $LuaTuoi,
         $statement->bindParam(9, $TrangThai);
         $statement->bindParam(10, $MaLop);
         $statement-> execute();
-        $connection = null;
     } catch (PDOException $e){
         echo $e->getMessage();
     }
@@ -279,18 +267,21 @@ function updateClass_SchedulesByID($malop,$idSchedules,$newIdSchedules,$connecti
 }
 
 // update lop_teacher
-function updateClass_TeacherByID($malop,$idTeacher,$newIdteacher,$connection){
-    $sql = "delete from gv_lop where MAGV = ? and MaLop = ?";
-    $sql2 = "insert into gv_lop values(?,?)";
+function updateClass_TeacherByID($malop,$idTeacher,$newIdteacher,$TeacherSalarie,$newTeacherSalarie,$connection){
+    $sql = "delete from gv_lop where MAGV = ? and MaLop = ? and TienTraGV = ?";
+    $sql2 = "insert into gv_lop values(?,?,?)";
     try{
      $statement1 = $connection->prepare($sql);
      $statement2 = $connection->prepare($sql2);
 
      $statement1->bindParam(1, $idTeacher);
      $statement1->bindParam(2, $malop);
+     $statement1->bindParam(3, $TeacherSalarie);
 
      $statement2->bindParam(1, $newIdteacher);
      $statement2->bindParam(2, $malop);
+     $statement2->bindParam(3, $newTeacherSalarie);
+
     
      $statement1-> execute();
      $statement2-> execute();
@@ -300,26 +291,27 @@ function updateClass_TeacherByID($malop,$idTeacher,$newIdteacher,$connection){
     }
 }
 
-function searchClass($key,$connection){
+function searchClassOn($key,$connection){
     $sql = "select * from lop  where 
-    MaLop like :key
+    trangthai = 1 and
+    (MaLop like :key
     or TenLop like :key 
     or LuaTuoi like :key 
     or ThoiGian like :key 
     or SLHS like :key 
     or SLHSToiDa like :key 
     or  HocPhi like :key 
-    or  SoBuoi like :key  
+    or  SoBuoi like :key ) 
     ";
-    $sql1 = "select * FROM schedules WHERE
-    day_of_week LIKE :key OR
-    start_time LIKE :key OR
-    end_time LIKE :key";
+    // $sql1 = "select * FROM schedules WHERE
+    // day_of_week LIKE :key OR
+    // start_time LIKE :key OR
+    // end_time LIKE :key";
 
-    $sql2 = "select * FROM giaovien WHERE
-    TenGV LIKE :key";
+    // $sql2 = "select * FROM giaovien WHERE
+    // TenGV LIKE :key";
 
-    $sqlCombined=$sql;
+    // $sqlCombined=$sql;
     // if($sql == ""){
     //     $sqlCombined = $sql1;
     // }else if($sql1 == ""){
@@ -328,7 +320,49 @@ function searchClass($key,$connection){
 
     try{
         $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
-        $statement =  $connection->prepare($sqlCombined);
+        $statement =  $connection->prepare($sql);
+        $statement->bindValue(':key', "%$key%", PDO::PARAM_STR);
+        $statement->execute();
+        
+        $listClass  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+
+        $connection = null;
+        return $listClass;
+    } catch (PDOException $e){
+        echo $e->getMessage();
+    }
+}
+
+function searchClassOff($key,$connection){
+    $sql = "select * from lop  where 
+    trangthai = 0 and
+    (MaLop like :key
+    or TenLop like :key 
+    or LuaTuoi like :key 
+    or ThoiGian like :key 
+    or SLHS like :key 
+    or SLHSToiDa like :key 
+    or  HocPhi like :key 
+    or  SoBuoi like :key ) 
+    ";
+    // $sql1 = "select * FROM schedules WHERE
+    // day_of_week LIKE :key OR
+    // start_time LIKE :key OR
+    // end_time LIKE :key";
+
+    // $sql2 = "select * FROM giaovien WHERE
+    // TenGV LIKE :key";
+
+    // $sqlCombined=$sql;
+    // if($sql == ""){
+    //     $sqlCombined = $sql1;
+    // }else if($sql1 == ""){
+    //     $sqlCombined =$sql2 ;
+    // }
+
+    try{
+        $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+        $statement =  $connection->prepare($sql);
         $statement->bindValue(':key', "%$key%", PDO::PARAM_STR);
         $statement->execute();
         
@@ -402,5 +436,83 @@ function TotalStudentByTime($time,$connection){
         echo $e->getMessage();
     }     
 }
+
+
+    // thêm dấu phẩy nhé
+    function numberWithCommas($x) {
+        return preg_replace('/\B(?=(\d{3})+(?!\d))/', ',', strval($x));
+    }
+
+    // đổi ngày 
+    function convertDateFormat($dateString) {
+        $dateObject = date_create_from_format('Y-m-d', $dateString);
+        $formattedDate = date_format($dateObject, 'd-m-Y');
+        return $formattedDate;
+    }
+
+    // truy vấn ra giáo viên đã dạy trong thời gian nào 
+    function timeTeacher($connection){
+        $sql="select schedules_class.idSchedules ,gv_lop.MAGV
+        FROM schedules_class
+        inner JOIN lop on schedules_class.MaLop = lop.MaLop
+        INNER JOIN gv_lop on gv_lop.MaLop = lop.MaLop
+        WHERE gv_lop.MAGV in (SELECT giaovien.MaGV from giaovien )";
+        try{
+            $statement = $connection->prepare($sql);
+            $statement->execute();
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }   
+    }
+
+
+    // truy vấn ra danh sách mã sv điểm danh của ngày hôm đó 
+    function getCodeStudentByTimeandCodeClass($malop,$time,$connection){
+        $sql = "select MAHS , dd from diemdanh where MaLop = ? and ThoiGian = ?";
+        try{
+            $statement = $connection->prepare($sql);
+            $statement->bindParam(1,$malop);
+            $statement->bindParam(2,$time);
+            $statement->execute();
+            $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+            return $data;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }   
+
+    }
+
+     // truy vẫn hs từ mã hs
+     function getStudentByid($mahs,$connection){
+        $sql = "select * from hocsinh where MAHS = ?";
+        try{
+            $statement = $connection->prepare($sql);
+            $statement->bindParam(1,$mahs);
+            $statement->execute();
+            $data = $statement->fetch(PDO::FETCH_ASSOC);
+            return $data;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        }   
+
+    }
+
+    // số lượng điểm danh của 1 lớp 
+    function getCountDD($dd,$malop,$connection){
+        $sql = "SELECT count(dd) as 'dihoc' FROM `diemdanh` WHERE dd = ? and MaLop = ?";
+        try{
+            $statement = $connection->prepare($sql);
+            $statement->bindParam(1,$dd);
+            $statement->bindParam(2,$malop);
+            $statement->execute();
+            $data = $statement->fetch(PDO::FETCH_ASSOC);
+            return $data;
+        }catch(PDOException $e){
+            echo $e->getMessage();
+        } 
+    }
+
   
 ?>

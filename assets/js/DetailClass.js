@@ -55,6 +55,7 @@
         const numberlessons = document.getElementById('numberlessons').value;
         const students = document.getElementById('students').value;
         const teachers = document.getElementById('teachers').value;
+        const TeacherSalarie = document.getElementById('TeacherSalarie').value;
 
         const element0 = document.getElementById('schedules0');
         console.log(element0);
@@ -125,6 +126,13 @@
             return;
         } else
             document.getElementById('lbteacher').textContent = "";
+        
+            if (!TeacherSalarie) {
+                document.getElementById('lbTeacherSalarie').textContent = erorr_empty;
+                return;
+            } else
+                document.getElementById('lbTeacherSalarie').textContent = "";
+         
 
         document.querySelector('.update-success').style.display = 'block';
         document.querySelector('#overlay').style.position = 'fixed';
@@ -168,3 +176,9 @@
         overlayAttendance.classList.remove('active');
         boxAttendance.classList.remove('active');
     });
+
+
+    // thêm dấu phẩy nhé
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
