@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../../assets/css/personal.css"/>
+    <link rel="stylesheet" href="../../assets/fonts/themify-icons/themify-icons.css">
+    <link rel="stylesheet" href="../../assets/css/home.css"/>
+
+    <title>Thông tin cá nhân</title>
+</head>
+<body>
+    <div class="personal-wrap">
+        <div id="menu-bar"></div>
+
+            <div class="personal-bg-wrap"></div>
+            <div class="personal-inner">
+                <div class="personal-avt-wrap">
+                    <img src="../../assets/images/Student-male-icon.png" alt="" class="personal-avt">
+                </div>
+                <div class="personal-inner-name"></div>
+                <div class="personal-inner-info">
+                    <div class="edit-div">
+                        <button class="edit-wrap edit-info">
+                            <i class="ti-pencil-alt edit-icon"></i>
+                        </button>
+                    </div>
+                    <div class=" personal-inner-item personal-inner-item-first">
+                        <div class="personal-inner-key">Tên:</div>
+                        <div id="name" class="personal-inner-value personal-inner-value-info">Long</div>
+                    </div>
+                    <input id="name-input" class="personal-inner-edit-range personal-inner-edit-range-info" type="tetxt" placeholder="Nhập tên"></input>
+                    <div class="personal-inner-item">
+                        <div class="personal-inner-key">Email:</div>
+                        <div id="email" class="personal-inner-value personal-inner-value-info">Longabc@gmail.com</div>
+                    </div>
+                    <input id="email-input" class="personal-inner-edit-range personal-inner-edit-range-info" type="tetxt" placeholder="Nhập Email"></input>
+                    <div class="personal-inner-item">
+                        <div class="personal-inner-key">Số điện thoại:</div>
+                        <div id="phone" class="personal-inner-value personal-inner-value-info">01234567</div>
+                    </div>
+                    <input id="phone-input" class="personal-inner-edit-range personal-inner-edit-range-info" type="tetxt" placeholder="Nhập số điện thoại"></input>
+                    <div class="personal-inner-control control-info">
+                        <button class="personal-btn personal-cancel info-cancel">Huỷ</button>
+                        <button class="personal-btn personal-accept info-accept">Lưu</button>
+                    </div>
+                </div>
+                <div class="personal-inner-info personal-inner-password">
+                    <div class="edit-div">
+                        <button class="edit-wrap edit-pass">
+                            <i class="ti-pencil-alt edit-icon"></i>
+                        </button>
+                    </div>
+                    <div class="personal-inner-item personal-inner-item-first">
+                        <div class="personal-inner-key">Mật khẩu:</div>
+                        <div class="personal-inner-value personal-inner-value-pass">********</div>
+                    </div>
+                    <input  class="personal-inner-edit-range personal-inner-edit-range-pass" type="password" placeholder="Nhập mật khẩu mới"></input>
+                    <!-- <div class="personal-inner-item personal-inner-item-first">
+                        <div class="personal-inner-key">Nhập lại Mật khẩu:</div>
+                        <div class="personal-inner-value">********</div>
+                    </div>
+                    <input class="personal-inner-edit-range" type="password"></input> -->
+                    <div class="personal-inner-control control-pass">
+                        <button class="personal-btn personal-cancel password-cancel">Hủy</button>
+                        <button class="personal-btn personal-accept password-accept">Lưu</button>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+    <script src="./personal.js"></script>
+    <script src="../common/menubar.js"></script>
+</body>
+</html>

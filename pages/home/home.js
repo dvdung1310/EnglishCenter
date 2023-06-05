@@ -74,6 +74,17 @@ $('.instructNavigation').slick({
   prevArrow: $('.instruct-control-prev'),
   nextArrow: $(".instruct-control-next-wrap"),
 });
+
+$('.courseSlider').slick({
+  slidesToShow: 3,
+  slidesToScroll: 1,
+  arrows: false,
+  fade: true,
+  asNavFor: '.instructNavigation',
+  prevArrow: $('.course-control-prev'),
+  nextArrow: $(".course-control-next-wrap"),
+
+});
 // initial setup
 var $ = document.querySelector.bind(document)
 var $$ = document.querySelectorAll.bind(document)
