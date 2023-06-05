@@ -14,18 +14,33 @@ body {
 }
 
 #contain{
-    height: 100vh;
+    height: auto;
     display: flex;
     justify-content: space-around;
     align-items: center;
+}
+#contain-login{
+  height: 97vh;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
 }
 .login-star img{
     position: absolute;
     top: 0;
     left: 0;
     width: 25%;
-    height: 100vh;
+    height: 97vh;
     z-index: 2;
+}
+
+#contain .login-star img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 25%;
+  height: auto;
+  z-index: 2;
 }
 
 .login-student{

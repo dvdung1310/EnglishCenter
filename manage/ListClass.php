@@ -4,7 +4,7 @@ include "../lib/FunctionClass.php";
 $listClass = listClass($connection);
 $result = listSchedules($connection);
 $listTeacher = listTeacher($connection);
-$dataClassOnOff = dataClassOnOff(1,$connection);
+$dataClassOnOff = dataClassOnOff('Đang mở',$connection);
 // lịch của giáo viên
 $timeTeacher = timeTeacher($connection);
 // $arrTime = array();
@@ -118,62 +118,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 					<select name="province" id="province">
 						<option  value="1">Lớp đang mở</option>
 						<option value="0">Lớp chưa mở </option>
-						<option value="2">Lớp đang đóng</option>
+						<option value="2">Lớp đã đóng</option>
 					</select>
 			</div>
 			<h1 style="color: #0088cc;">Danh sách lớp học</h1>
 			<!-- lớp on -->
 			<div class="class-container" id="district">
-				<?php
-				if ($dataClassOnOff != null) :
-					foreach ($dataClassOnOff as $datas) :
-						$maLop = $datas['MaLop'];
-						$nameTeacher = dataTeacherByMaLop($maLop, $connection);
-						$schedules = dataSchedulesByMaLop($maLop, $connection); ?>
-						<a class='class' href='DetailsClass.php?maLop=<?php echo $maLop ?>'>
-							<div>
-								<div class='class-code1'>
-									<?php echo $datas['MaLop'] ?>
-								</div>
-								<div class='info'>
-									<h2>
-										<?php echo  $datas['TenLop'] ?>
-									</h2>
-									<p>Giảng viên:
-										<?php foreach ($nameTeacher as $nameTeachers) {
-											echo	 $nameTeachers['TenGV'];
-										} ?>
-									</p>
-									<div class='column'>
-										<p>Thời gian:
-										</p>
-										<div class='center'>
-											<?php
-											foreach ($schedules as $listschedules) {
-
-												echo $listschedules['day_of_week'] . ' - ' . $listschedules['start_time'] . '-' . $listschedules['end_time'];
-												echo "<br>";
-											}
-											?>
-										</div>
-									</div>
-
-									<p>Lứa tuổi:
-										<?php echo  $datas['LuaTuoi'] ?>
-									</p>
-									<p>Số lượng học sinh:
-										<?php echo $datas['SLHS'] . ' / ' . $datas['SLHSToiDa'] ?>
-									</p>
-								</div>
-							</div>
-							<div class='details'>Xem chi tiết</div>
-						</a>
-					<?php endforeach ?>
-				<?php endif ?>
-			</div>
-
-			<!-- lớp ảo ma ca na da  -->
-			<div class="" id="district">
 				<?php
 				if ($dataClassOnOff != null) :
 					foreach ($dataClassOnOff as $datas) :
@@ -282,9 +232,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br><select name="SelectCondition" id="SelectCondition">
 								<option value="">Trạng thái</option>
-								<option value="0">Chưa mở</option>
-								<option value="1">Đang mở</option>
-								<option value="2">Đã đóng</option>
+								<option value="Chưa mở">Chưa mở</option>
+								<option value="Đang mở">Đang mở</option>
+								<option value="Đã đóng">Đã đóng</option>
 							</select>
 
 

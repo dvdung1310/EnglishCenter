@@ -58,7 +58,7 @@ if ($test) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Apollo-login</title>
-    <link rel="stylesheet" href="/assets/css/login.css">
+    <link rel="stylesheet" href="../../assets/css/login.css">
 </head>
 
 <body>
@@ -67,13 +67,13 @@ if ($test) {
     </div>
 
     <div class="login-star">
-        <img src="/assets/images/login_stars.png" alt="">
+        <img src="../../assets/images/login_stars.png" alt="">
     </div>
-    <div id="contain">
+    <div id="contain-login">
 
         <div class="login-student">
             <div class="login-student-img">
-                <img src="/assets/images/Apollo-Logo.png" alt="">
+                <img src="../../assets/images/Apollo-Logo.png" alt="">
             </div>
 
             <div class="login-student-form">
@@ -115,10 +115,10 @@ if ($test) {
         </div>
 
         <div class="login-slogan">
-            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="/assets/images/LoginSlogan.png" alt="">
+            <img style="width: 350px; height: 125px; margin-bottom: 10px;" src="../../assets/images/LoginSlogan.png" alt="">
             <div>
-                <a href=""><img style="width: 150px;" src="/assets/images/app-store-badge.png" alt=""></a>
-                <a href=""><img style="width:170px" src="/assets/images/google-play-badge.png" alt=""></a>
+                <a href=""><img style="width: 150px;" src="../../assets/images/app-store-badge.png" alt=""></a>
+                <a href=""><img style="width:170px" src="../../assets/images/google-play-badge.png" alt=""></a>
             </div>
         </div>
     </div>
