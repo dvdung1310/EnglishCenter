@@ -32,10 +32,12 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 //Hiẹn thị bảng
-var filteredData = dsHoaDon;
-hienthids('', '');
-function hienthids(status, kind) {
-
+var filteredData_ds = dsHoaDon;
+hienthids('', '',filteredData_ds);
+function hienthids(status, kind,filteredData) {
+    filteredData_ds = [];
+    document.querySelector(".tbody-1").innerHTML = '';
+    document.querySelector(".tbody-5").innerHTML = '';
     if (status && kind) {
 
         filteredData_1 = dsHoaDon.filter(function (hoaDon) {
@@ -57,8 +59,16 @@ function hienthids(status, kind) {
                 return hoaDon['TrangThai'] === status;
             });
         }
+        
     }
 
+  
+    if(filteredData.length ==0)
+    {
+        document.querySelector(".tbody-1").innerHTML = 'Không có dữ liệu phù hợp';
+        return;
+    }
+    filteredData_ds = filteredData;
     var html = '';var html_last = '';
     var color = '';
     var tongSoTien = 0; 
@@ -121,7 +131,7 @@ var selectedStatus = '';
 selectStatus.addEventListener('change', function () {
     selectedStatus = selectStatus.value;
 
-    hienthids(selectedStatus, selectedKind);
+    hienthids(selectedStatus, selectedKind,filteredData_ds);
 
 });
 
@@ -129,7 +139,7 @@ selectStatus.addEventListener('change', function () {
 selectKind.addEventListener('change', function () {
     selectedKind = selectKind.value;
 
-    hienthids(selectedStatus, selectedKind);
+    hienthids(selectedStatus, selectedKind, filteredData_ds);
 });
 
 // sap xep bang
@@ -420,7 +430,7 @@ function handleRowClick(index) {
     // Xử lý sự kiện khi bấm vào một dòng
     // var selectedRow = rows[index].cells[1];
 
-    var selectedRow = filteredData[index];
+    var selectedRow = filteredData_ds[index];
 
 
     document.getElementById("btn-tab-3-1").classList.add("active");

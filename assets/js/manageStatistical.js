@@ -526,61 +526,13 @@ document.getElementById("btn-tab1").classList.add("active");
 
 
 
-
-
-// var a = Math.round(203000/100*24.123);
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
-//Hiẹn thị bảng
-// var filteredData = dsHoaDon;
-
-
-
-
-
-function formatNumber(input) {
-    let value = input.value;
-    // Xóa tất cả ký tự không phải là số và dấu phẩy
-    value = value.replace(/[^\d,]/g, '');
-    // Xóa dấu phẩy hiện có
-    value = value.replace(/,/g, '');
-    // Thêm dấu phẩy sau mỗi ba chữ số
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    input.value = value;
-}
-
-
-
-///////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////////////////////
-
-// document.getElementById('btn-tab2').addEventListener('mouseenter', () => {
-//     document.getElementById('nav-container-Tab2').style.display = 'block';
-// });
-// document.getElementById('btn-tab2').addEventListener('mouseleave', () => {
-//     document.getElementById('nav-container-Tab2').style.display = 'none';
-// });
-// document.getElementById('nav-container-Tab2').addEventListener('mouseenter', () => {
-//     document.getElementById('nav-container-Tab2').style.display = 'block';
-// });
-// document.getElementById('nav-container-Tab2').addEventListener('mouseleave', () => {
-//     document.getElementById('nav-container-Tab2').style.display = 'none';
-// });
-
-
-
 document.getElementById('btn-tab2').addEventListener('click', () => {
     window.location.href = "./manageStatisticalFinance.php";
 
 });
 
 
-// document.getElementById('btn-tab3').addEventListener('click', () => {
-//     window.location.href = "./manageHistoryFinance.php";
+document.getElementById('btn-tab1').addEventListener('click', () => {
+    window.location.href = "./manageStatistical.php";
 
-// });
-
+});

@@ -4,9 +4,11 @@ require '../lib/functionStatisticalFinance.php';
 
 $listCountThu = listCountThu($connection);
 $listCountChi = listCountChi($connection);
-// $listCountPHlk = listCountPHlk($connection);
-// $listClassActive = listLopHDTheoThang($connection);
-// $listCountClassAcitve = listSoLopHD($connection);
+$listDTTheoThang = listDTTheoThang($connection);
+$listThuTheoNam = listThuTheoNam($connection);
+$listChiTheoNam = listChiTheoNam($connection);
+
+
 // $listCountGender = listSoNamNu($connection);
 // $listCountAge = listHSTheoTuoi($connection);
 // $listHSDangKyHoc = listHSDangKyHoc($connection);
@@ -20,7 +22,10 @@ $listCountChi = listCountChi($connection);
 
 $jslistCountThu  = json_encode($listCountThu);
 $jslistCountChi  = json_encode($listCountChi);
-// $jslistCountPHlk  = json_encode($listCountPHlk);
+$jslistDTTheoThang = json_encode($listDTTheoThang);
+$jslistChiTheoNam = json_encode($listChiTheoNam);
+$jslistThuTheoNam = json_encode($listThuTheoNam);
+
 // $jslistClassActive  = json_encode($listClassActive);
 // $jslistCountClassAcitve = json_encode($listCountClassAcitve);
 // $jslistCountGender = json_encode($listCountGender);
@@ -69,7 +74,7 @@ $jslistCountChi  = json_encode($listCountChi);
                 <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
                 <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
                 <li><a href="../manage/manageFinance.php">Quản lý tài chính</a></li>
-                <li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+                <li><a  style="color: #0088cc;"href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
             </ul>
         </nav>
     </header>
@@ -77,9 +82,7 @@ $jslistCountChi  = json_encode($listCountChi);
         <div class="tab">
             <button class="tablinks" id='btn-tab1'>Thống kê tổng quan</button>
             <button class="tablinks" id='btn-tab2'>Thống kê tài chính</button>
-            <button class="tablinks" id='btn-tab3'>Tổng hợp thu chi</button>
-            <button class="tablinks" id='btn-tab4'>Tab4</button>
-            <button class="tablinks" id='btn-tab5'>Tab5</button>
+            
         </div>
 
         <div style="display: flex;flex-direction: column;" id="content">
@@ -94,15 +97,43 @@ $jslistCountChi  = json_encode($listCountChi);
                     <?php } ?>
                 </select>
 
-                <canvas id="chart-1" style="max-height:500px ; max-width: 1500px"></canvas>
+                <canvas id="chart-1" style="max-height:700px ; max-width: 1500px"></canvas>
 
             </div>
+            <div>
+                <select id="select-year-2" style="width:100px">
+                    <option value="">Chọn năm</option>
+                    <?php for ($i = 2020; $i <= 2100; $i++) { ?>
+
+                        <option value="<?php echo $i ?>" <?php if ($i == date("Y")) echo 'selected' ?>>
+                            <?php echo $i ?>
+                        </option>
+                    <?php } ?>
+                </select>
 
 
+                <div id="chart-2"></div>
+                <h3 style="margin-left:35%">Biểu đồ tổng doanh thu và tỉ lệ lợi nhuận </h3>
+            
+            </div>
+
+            <div style="margin-left: 30%;">
+                <select id="select-year-3" style="width:100px">
+                    <option value="">Chọn năm</option>
+                    <?php for ($i = 2020; $i <= 2100; $i++) { ?>
+
+                        <option value="<?php echo $i ?>" <?php if ($i == date("Y")) echo 'selected' ?>>
+                            <?php echo $i ?>
+                        </option>
+                    <?php } ?>
+                </select>
+               
+                <canvas  id="chart-3" style="max-width:500px;max-height:500px"></canvas>
+            </div>
 
         </div>
 
-        <div></div>
+
 
 
 
@@ -118,7 +149,10 @@ $jslistCountChi  = json_encode($listCountChi);
 
 <script>
     var ds_countThu = <?php print_r($jslistCountThu); ?>;
-    var  ds_countChi = <?php print_r($jslistCountChi); ?>;
+    var ds_countChi = <?php print_r($jslistCountChi); ?>;
+    var ds_DTTheoThang = <?php print_r($jslistDTTheoThang); ?>;
+    var ds_Thu = <?php print_r($jslistThuTheoNam); ?>;
+    var ds_Chi = <?php print_r($jslistChiTheoNam); ?>;
 </script>
 
 

@@ -34,9 +34,13 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 //Hiẹn thị bảng
-var filteredData = dsHoaDon;
-hienthids('');
-function hienthids(status) {
+var filteredData_ds = dsHoaDon;
+hienthids('', filteredData_ds);
+
+function hienthids(status,filteredData) {
+    filteredData_ds = [];
+    document.querySelector(".tbody-1").innerHTML = '';
+    document.querySelector(".tbody-5").innerHTML = '';
     // var filteredData = dsHoaDon;
     if (status) {
         // filteredData = dsHoaDon.filter(function (hoaDon) {
@@ -46,6 +50,11 @@ function hienthids(status) {
             return hoaDon['TrangThai'] === status;
         });
     }
+    if(filteredData.length ==0)
+    {
+        document.querySelector(".tbody-1").innerHTML = 'Không có dữ liệu phù hợp';
+    }
+    filteredData_ds = filteredData;
 
     var html = ''; var html_last = '';
     var color = '';
@@ -104,7 +113,7 @@ function hienthids(status) {
 var selectStatus = document.getElementById('select-status');
 selectStatus.addEventListener('change', function () {
     var selectedStatus = selectStatus.value;
-    hienthids(selectedStatus);
+    hienthids(selectedStatus, filteredData_ds);
 });
 
 

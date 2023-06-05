@@ -20,7 +20,7 @@ function parseCustomDateFormat(dateString, format) {
 
 // Mặc định hiển thị tab đầu tiên
 document.getElementById("Tab1").style.display = "block";
-document.getElementById("btn-tab2").classList.add("active");
+document.getElementById("btn-tab3").classList.add("active");
 
 
 

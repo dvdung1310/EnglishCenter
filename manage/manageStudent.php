@@ -86,10 +86,11 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		<nav>
 			<ul>
 				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
-				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
+				<li><a style="color: #0088cc;"href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -98,7 +99,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		<h1>Quản lý Học viên</h1>
 		<div class="search-container">
 			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
+				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if(isset($_POST['keyword'])) echo  $_POST['keyword']?>">
 				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
 				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 			</form>
@@ -533,7 +534,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 				
 
 				var html = '';
-
+				var color = '';
 				if (classes.length === '0'){
 					html += '<p>Học viên chưa tham gia lớp học nào </p>';
 				}
@@ -541,6 +542,16 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					html += '<p> Số lớp đã tham gia: ' + classes.length + '</p>';
 
 					for (var i = 0; i < classes.length; i++) {
+
+						if(classes[i]['TrangThai'] == 'Đang mở'){
+							color = '#00c608';
+						}
+						else if(classes[i]['TrangThai'] == 'Chưa mở'){
+							color = '#ad9d0b';
+						}
+						else{
+							color = '#ad0b0b';
+						}
 
 						html += '<div class="class">' +
 							'<p></p>' +
@@ -578,7 +589,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 							'<tr>' +
 
 							'<td>' +
-							'<p id="status-class">Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
+							'<p id="status-class" style ="color:' +color+ '" >Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
 							'</td>' +
 							'</tr>' +
 							'</table>' +

@@ -24,12 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 $jslistBill = json_encode($listBill);
-// $jslistgv_lopxlop = json_encode($listgv_lopxlop);
-// $jslistgv_lopxdd = json_encode($listgv_lopxdd);
-
-// $jslistTeacher = json_encode($listTeacher);
-// $jslistSoBuoiDayAll = json_encode($listSoBuoiDayAll);
-
 
 
 
@@ -60,7 +54,8 @@ $jslistBill = json_encode($listBill);
                 <li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
                 <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
                 <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
-                <li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+                <li><a  style="color: #0088cc;"href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+                <li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
             </ul>
         </nav>
     </header>
@@ -70,14 +65,13 @@ $jslistBill = json_encode($listBill);
             <button class="tablinks" id='btn-tab1'>Thu học phí</button>
             <button class="tablinks" id='btn-tab2'>Chi phí</button>
             <button class="tablinks" id='btn-tab3'>Tổng hợp thu chi</button>
-            <button class="tablinks" id='btn-tab4'>Tab4</button>
-            <button class="tablinks" id='btn-tab5'>Tab5</button>
+           
         </div>
         <div id="nav-container-Tab2">
 
             <a href="./manageFinance_wageTea.php" id="btn-tab-luongGV">Lương giáo viên</a>
             <a href="./manageFinance_OtherFee.php" id="btn-tab-chiPhiKhac">Chi phí khác</a>
-            <a href="#">Điều hướng 3</a>
+          
 
         </div>
   
@@ -86,7 +80,7 @@ $jslistBill = json_encode($listBill);
             <h1>Lịch sử thu chi</h1>
             <div class="search-container">
                 <form id="form-search" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 45%; margin: unset;display: inline-flex;" autocomplete="off">
-                    <input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
+                    <input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if(isset($_POST['keyword'])) echo  $_POST['keyword']?>">
                     <input type="submit" name="search" id="search" value="Tìm kiếm" style="width: 100px">
                     <button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
                 </form>

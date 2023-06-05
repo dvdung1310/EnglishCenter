@@ -19,9 +19,12 @@ function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 //Hiẹn thị bảng
-var filteredData = dsHoaDon;
-hienthids('');
-function hienthids(status) {
+var filteredData_ds = dsHoaDon;
+hienthids('', filteredData_ds);
+function hienthids(status, filteredData) {
+    filteredData_ds = [];
+    document.querySelector(".tbody-1").innerHTML = '';
+    document.querySelector(".tbody-5").innerHTML = '';
     // var filteredData = dsHoaDon;
     if (status) {
         // filteredData = dsHoaDon.filter(function (hoaDon) {
@@ -31,10 +34,15 @@ function hienthids(status) {
             return hoaDon['TrangThai'] === status;
         });
     }
+    if(filteredData.length ==0)
+    {
+        document.querySelector(".tbody-1").innerHTML = 'Không có dữ liệu phù hợp';
+    }
+    filteredData_ds = filteredData;
 
     var html = ''; var html_last = '';
     var color = '';
-    var tongSoTien = 0; var tongSoTienGiam = 0; var tongSoTienDaDong = 0; var tongSoTienPhaiDong = 0;  
+    var tongSoTien = 0; var tongSoTienGiam = 0; var tongSoTienDaDong = 0; var tongSoTienPhaiDong = 0;
     if (filteredData.length != 0) {
         for (var i = 0; i < filteredData.length; i++) {
             if (filteredData[i]['TrangThai'] === 'Hoàn thành') {
@@ -67,21 +75,21 @@ function hienthids(status) {
             tongSoTienDaDong += filteredData[i]['SoTienDaDong'];
 
         }
-            html_last += '<tr">';
-            html_last += '<td style="width:20px ;  ">'  + '</td>';
-            html_last += '<td >' +  '</td>';
-            html_last += '<td >' +  '</td>';
-            html_last += '<td >' +  '</td>';
-            html_last += '<td >' +  '</td>';
-            html_last += '<td >' + 'Tổng : </td>';
-            html_last += '<td >' + numberWithCommas(tongSoTien) + '</td>';
-            html_last += '<td >' + ((tongSoTienGiam/tongSoTien)*100).toFixed(2) + '%</td>';
-            html_last += '<td >' + numberWithCommas(tongSoTienGiam )+ '</td>';
-            html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong) + '</td>';
-            html_last += '<td >' + numberWithCommas(tongSoTienDaDong) + '</td>';
-            html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong-tongSoTienDaDong) + '</td>';
-            html_last += '<td >'  + '</td>';
-            html_last += '</tr>';
+        html_last += '<tr">';
+        html_last += '<td style="width:20px ;  ">' + '</td>';
+        html_last += '<td >' + '</td>';
+        html_last += '<td >' + '</td>';
+        html_last += '<td >' + '</td>';
+        html_last += '<td >' + '</td>';
+        html_last += '<td >' + 'Tổng : </td>';
+        html_last += '<td >' + numberWithCommas(tongSoTien) + '</td>';
+        html_last += '<td >' + ((tongSoTienGiam / tongSoTien) * 100).toFixed(2) + '%</td>';
+        html_last += '<td >' + numberWithCommas(tongSoTienGiam) + '</td>';
+        html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong) + '</td>';
+        html_last += '<td >' + numberWithCommas(tongSoTienDaDong) + '</td>';
+        html_last += '<td >' + numberWithCommas(tongSoTienPhaiDong - tongSoTienDaDong) + '</td>';
+        html_last += '<td >' + '</td>';
+        html_last += '</tr>';
         document.querySelector(".tbody-1").innerHTML = html;
         document.querySelector(".tbody-5").innerHTML = html_last;
 
@@ -93,7 +101,8 @@ function hienthids(status) {
 var selectStatus = document.getElementById('select-status');
 selectStatus.addEventListener('change', function () {
     var selectedStatus = selectStatus.value;
-    hienthids(selectedStatus);
+  
+        hienthids(selectedStatus, filteredData_ds);
 });
 
 
@@ -305,11 +314,11 @@ yearSelect.addEventListener("change", updateclasssOptions);
 var addedClasses = [];
 // Hàm cập nhật các giá trị trong select bill-classs-add
 function updateclasssOptions() {
-    
+
     var selectedMonth = monthSelect.value;
     var selectedYear = yearSelect.value;
     var check = true;
-    if(inputsValue.length != 0){
+    if (inputsValue.length != 0) {
         inputs.forEach(input => outputDiv.removeChild(input));
         inputs = [];
         inputsValue = [];
@@ -319,37 +328,37 @@ function updateclasssOptions() {
         classsSelect.remove(0);
     }
 
-        // Add default option
+    // Add default option
     var defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = 'Chọn lớp học';
     classsSelect.appendChild(defaultOption);
 
-     addedClasses = [];
+    addedClasses = [];
     for (var i = 0; i < ds_diemdanh.length; i++) {
         var diemdanh = ds_diemdanh[i];
         var diemdanhMonth = parseInt(diemdanh.ThoiGian.split("-")[1]);
         var diemdanhYear = parseInt(diemdanh.ThoiGian.split("-")[0]);
-     
+
         if ((diemdanhMonth == selectedMonth) && (diemdanhYear == selectedYear)) {
-           
+
             var classs = {
                 MaLop: diemdanh.MaLop,
-               
+
             };
 
             var isclasssAdded = addedClasses.some(function (addedclasss) {
-                return addedclasss.MaLop === classs.MaLop ;
+                return addedclasss.MaLop === classs.MaLop;
             });
 
-            if(!isclasssAdded && check){
+            if (!isclasssAdded && check) {
                 var defaultOption = document.createElement('option');
-                 defaultOption.value = 'Tất cả';
-                 defaultOption.textContent = 'Tất cả';
-                 classsSelect.appendChild(defaultOption);
-                 check = false;
+                defaultOption.value = 'Tất cả';
+                defaultOption.textContent = 'Tất cả';
+                classsSelect.appendChild(defaultOption);
+                check = false;
             }
-            
+
             if (!isclasssAdded) {
                 addedClasses.push(classs);
                 var option = document.createElement("option");
@@ -521,7 +530,7 @@ yearSelect_ps.addEventListener("change", updateclasssOptions2);
 var addedClasses_ps = [];
 // Hàm cập nhật các giá trị trong select bill-classs-add
 function updateclasssOptions2() {
-    
+
     var selectedMonth = monthSelect_ps.value;
     var selectedYear = yearSelect_ps.value;
     var check = true;
@@ -531,37 +540,37 @@ function updateclasssOptions2() {
         classsSelect_ps.remove(0);
     }
 
-        // Add default option
+    // Add default option
     var defaultOption = document.createElement('option');
     defaultOption.value = '';
     defaultOption.textContent = 'Chọn lớp học';
     classsSelect_ps.appendChild(defaultOption);
 
-     addedClasses = [];
+    addedClasses = [];
     for (var i = 0; i < ds_diemdanh.length; i++) {
         var diemdanh = ds_diemdanh[i];
         var diemdanhMonth = parseInt(diemdanh.ThoiGian.split("-")[1]);
         var diemdanhYear = parseInt(diemdanh.ThoiGian.split("-")[0]);
-     
+
         if ((diemdanhMonth == selectedMonth) && (diemdanhYear == selectedYear)) {
-           
+
             var classs = {
                 MaLop: diemdanh.MaLop,
-               
+
             };
 
             var isclasssAdded = addedClasses.some(function (addedclasss) {
-                return addedclasss.MaLop === classs.MaLop ;
+                return addedclasss.MaLop === classs.MaLop;
             });
 
-            if(!isclasssAdded && check){
+            if (!isclasssAdded && check) {
                 var defaultOption = document.createElement('option');
-                 defaultOption.value = 'Tất cả';
-                 defaultOption.textContent = 'Tất cả';
-                 classsSelect_ps.appendChild(defaultOption);
-                 check = false;
+                defaultOption.value = 'Tất cả';
+                defaultOption.textContent = 'Tất cả';
+                classsSelect_ps.appendChild(defaultOption);
+                check = false;
             }
-            
+
             if (!isclasssAdded) {
                 addedClasses.push(classs);
                 var option = document.createElement("option");
@@ -638,10 +647,10 @@ document.getElementById('sumit-bill-add-ps').addEventListener('click', function 
             attendance.MaLop === class_bill &&
             attendance.ThoiGian.includes(year_bill + '-' + month_bill)
         ) {
-            
+
             if (attendance.dd === 1) {
                 hasAttendance = true;
-                break; 
+                break;
             }
         }
     }
@@ -681,7 +690,7 @@ var lsthp = [];
 function handleRowClick(index) {
     // Xử lý sự kiện khi bấm vào một dòng
     // var selectedRow = rows[index].cells[1];
-    var selectedRow = filteredData[index];
+    var selectedRow = filteredData_ds[index];
 
 
     document.getElementById("btn-tab-3-1").classList.add("active");
@@ -1225,7 +1234,7 @@ document.getElementById('nav-container-Tab2').addEventListener('mouseleave', () 
 });
 
 
-document.getElementById('btn-tab1').addEventListener('click' , ()=>{
+document.getElementById('btn-tab1').addEventListener('click', () => {
     window.location.href = "./manageFinance.php";
 });
 

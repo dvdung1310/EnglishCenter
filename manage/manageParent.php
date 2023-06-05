@@ -77,8 +77,9 @@ $jsonListtk_ph = json_encode($listtk_ph);
 				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
-				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
-				<li><a href="../manage/ManageFinance.php">Quản lý tài khoản</a></li>
+				<li><a style="color: #0088cc;" href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
+				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -87,7 +88,7 @@ $jsonListtk_ph = json_encode($listtk_ph);
 		<h1>Quản lý Phụ huynh</h1>
 		<div class="search-container">
 			<form id="form-search" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
+				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if(isset($_POST['keyword'])) echo  $_POST['keyword']?>">
 				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
 				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 			</form>

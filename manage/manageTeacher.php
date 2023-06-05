@@ -106,9 +106,10 @@ $jsonListClass = json_encode($listClassOfTeacher);
 			<ul>
 				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
-				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
+				<li><a style="color: #0088cc;" href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/ManageParent.php">Quản lý phụ huynh</a></li>
-				<li><a href="../manage/ManageFinance.php">Quản lý tài khoản</a></li>
+				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
 			</ul>
 		</nav>
 	</header>
@@ -117,7 +118,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 		<h1>Quản lý Giáo viên</h1>
 		<div class="search-container">
 			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="">
+				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if (isset($_POST['keyword'])) echo  $_POST['keyword'] ?>">
 				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
 				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 			</form>
@@ -477,7 +478,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 						<input type="text" id="education_add" name="education_add" required placeholder="Nhập tên trình độ">
 
 						<label for="phone_number">Số điện thoại: <label id="lb_phone_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="tel" id="phone_number_add" name="phone_number_add" required placeholder="Nhập số diện thoại"> 
+						<input type="tel" id="phone_number_add" name="phone_number_add" required placeholder="Nhập số diện thoại">
 
 						<label for="email">Email: <label id="lb_email_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
 						<input type="email" id="email_add" name="email_add" required placeholder="Nhập email">
@@ -510,8 +511,8 @@ $jsonListClass = json_encode($listClassOfTeacher);
 		}
 
 		function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 
 		const rows = document.querySelectorAll('.tbody-1 tr');
 		const modalBg = document.querySelector('.modal-bg');
@@ -587,7 +588,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 					}
 				}
 
-
+				var color = '';
 				var html = '';
 
 				if (classes.length === '0') {
@@ -596,7 +597,13 @@ $jsonListClass = json_encode($listClassOfTeacher);
 					html += '<p> Số lớp dạy:  ' + classes.length + '</p>';
 
 					for (var i = 0; i < classes.length; i++) {
-
+						if (classes[i]['TrangThai'] == 'Đang mở') {
+							color = '#00c608';
+						} else if (classes[i]['TrangThai'] == 'Chưa mở') {
+							color = '#ad9d0b';
+						} else {
+							color = '#ad0b0b';
+						}
 						html += '<div class="class">' +
 							'<p></p>' +
 							'<table>' +
@@ -632,7 +639,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 							'<tr>' +
 
 							'<td>' +
-							'<p id="status-class">Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
+							'<p id="status-class" style ="color:' + color + '" >Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
 							'</td>' +
 							'</tr>' +
 							'</table>' +
@@ -817,34 +824,34 @@ $jsonListClass = json_encode($listClassOfTeacher);
 		document.querySelector('.cancle-btn-add').addEventListener('click', () => {
 			modalBgAdd.style.display = 'none';
 
-			 document.getElementById('phone_number_add').value ='';
-			document.getElementById('email_add').value ='';
-			document.getElementById('teacher_name_add').value ='';
-			 document.getElementById('age_add').value ='';
-			document.getElementById('hometown_add').value ='';
-			document.getElementById('address_add').value ='';
-			 document.getElementById('education_add').value ='';
-			 document.getElementById('birthday_add').value ='';
+			document.getElementById('phone_number_add').value = '';
+			document.getElementById('email_add').value = '';
+			document.getElementById('teacher_name_add').value = '';
+			document.getElementById('age_add').value = '';
+			document.getElementById('hometown_add').value = '';
+			document.getElementById('address_add').value = '';
+			document.getElementById('education_add').value = '';
+			document.getElementById('birthday_add').value = '';
 
-			
-				document.getElementById('lb_name_add').textContent = "";
 
-				document.getElementById('lb_birthday_add').textContent = "";
+			document.getElementById('lb_name_add').textContent = "";
 
-				document.getElementById('lb_age_add').textContent = "";
+			document.getElementById('lb_birthday_add').textContent = "";
 
-			
-				document.getElementById('lb_hometown_add').textContent = "";
+			document.getElementById('lb_age_add').textContent = "";
 
-			
-				document.getElementById('lb_address_add').textContent = "";
-			
-				document.getElementById('lb_education_add').textContent = "";
-			
-				document.getElementById('lb_phone_add').textContent = "";
 
-			
-				document.getElementById('lb_email_add').textContent = "";
+			document.getElementById('lb_hometown_add').textContent = "";
+
+
+			document.getElementById('lb_address_add').textContent = "";
+
+			document.getElementById('lb_education_add').textContent = "";
+
+			document.getElementById('lb_phone_add').textContent = "";
+
+
+			document.getElementById('lb_email_add').textContent = "";
 
 		});
 
