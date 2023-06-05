@@ -18,12 +18,9 @@
 </head>
 <body>
     <div class="PageWrap">
-        <!-- <div class="PageMenuBar">
-            <div class="PageLogoWrap">
-                <img class="PageLogoImg"/>
-            </div>
-            <button class="PageLogoBtn">Login</button>
-        </div> -->
+        <div id="menu-bar">
+          
+        </div>
         <div class="PageHomeInner">
             <div class="PageHomeIntroWrap">
                 <div class="PageHomeIntroBGDeco"></div>
@@ -271,7 +268,7 @@
                     <div class="pageVision-left-wrap">
   
                       <div class="pageVision-item">
-                        <button class=" vision-btn" type="button" data-bs-toggle="collapse" data-bs-target="#vision-item-1" aria-expanded="false" aria-controls="vision-item-1">
+                        <button class=" vision-btn vision-active" type="button" data-bs-toggle="collapse" data-bs-target="#vision-item-1" aria-expanded="false" aria-controls="vision-item-1">
                           TẦM NHÌN
                         </button>
                         <div class="collapse show" id="vision-item-1">
@@ -468,6 +465,37 @@
                     </div>
                   </div>
                 </div>
+                <div class="Course-list-wrap">
+                  <div class="Course-list-inner">
+                    <div class="Course-list-title">Danh Sách lớp</div>
+                    <div class="course-list-content">
+                      <div class="course-slide">
+                        <div class="slider-for-course courseSlider">
+                          <div class="courseSlidler-item">
+                            <img class="img-inner" src="../../assets/images/course-1.jpg"/>  
+                          </div>
+                          <div class="courseSlidler-item">
+                            <img class="img-inner" src="../../assets/images/course-2.jpg"/>  
+                          </div>
+                          <div class="courseSlidler-item">
+                            <img class="img-inner" src="../../assets/images/course-3.jpg"/>  
+                          </div>
+                          <div class="courseSlidler-item">
+                            <img class="img-inner" src="../../assets/images/course-4.jpg"/>  
+                          </div>
+                        </div>
+                        <button class="carousel-control-prev course-control-prev" type="button" data-bs-target=".slider-for" data-bs-slide="prev">
+                          <span class="carousel-control-prev-icon intro-control-next intro-control-icon-prev" aria-hidden="true"></span>
+                          <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next course-control-next-wrap" type="button" data-bs-target=".slider-for" data-bs-slide="next">
+                          <span class="carousel-control-next-icon  intro-control-icon-next" aria-hidden="true"></span>
+                          <span class="visually-hidden">Next</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!--Footer-->
               <div class="Footer">
@@ -548,5 +576,6 @@
     <script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js">
     </script>
     <script  src="./home.js"></script>
+    <script src="../common/menubar.js"></script>
 </body>
 </html>

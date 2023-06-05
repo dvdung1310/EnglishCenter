@@ -15,6 +15,34 @@
 }
 .PageHomeInner{
   background-color: #fff;
+  margin-top: 58px;
+}
+.PageMenuBar{
+  position: fixed;
+  width: 100%;
+  height: 68px;
+  background-image: radial-gradient(57.05% 18483.75% at 50% 50%, #7ebbe7 0%, #0d7cd0 100%);;
+  top: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 18px;
+  z-index: 100;
+  align-items: center;
+}
+.PageLogoWrap{
+}
+.PageLogoBtn{
+  border: none;
+  padding: 12px 24px;
+  color: #2576b9;
+  background-color: #ffd95c;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-right: 24px;
+  font-size: 18px;
+  text-decoration: none;
 }
 .PageHomeIntroWrap{
     background-color: #fff;
@@ -431,16 +459,19 @@
   right:0;
 }
 /*instructment-section*/
+.Course-list-wrap,
 .instrucment-wrap{
   background-color: #fff;
   display: flex;
   justify-content: center;
   padding-bottom: 42px;
 }
+.Course-list-inner,
 .instruct-inner{
   width: 1170px;
   position: relative;
 }
+.Course-list-title,
 .instruct-title{
   width: 100%;
   text-align: center;
@@ -453,23 +484,27 @@
   letter-spacing: 0;
   padding:18px 0;
 }
+.course-list-content,
+.course-slide,
 .instruct-slide,
 .instruct-content{
   width: 100%;
   position: relative;
 }
+.course-slide,
 .instruct-slide{
   display: flex;
   justify-content: center;
   align-items: center;
 }
+.courseSlider,
 .instructSlider{
   max-width: 913px;
   width: 90%;
   height: 432px;
   
 }
-
+.courseSlidler-item,
 .instructSlidler-item{
   width: 100%;
   height: 100%;
@@ -511,6 +546,7 @@
   right:38px;
 
 }
+/*Course*/
 
 /*Footer*/
 .Footer{
