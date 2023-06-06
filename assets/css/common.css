@@ -1,0 +1,42 @@
+.page-dialog-wrap{
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0,0,0, 0.2);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+.page-dialog-inner{
+    padding: 16px;
+    background-color: #fff;
+    border-radius: 16px;
+}
+.page-dialog-title{
+    font-size: 26px;
+    font-weight: 700;
+    padding: 12px 0 28px 8px;
+}
+.btn-dialog-wrap{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.close-dialog-btn{
+    padding: 9px 16px;
+    border: none;
+    background-color: #b4afaf;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 16px;
+    cursor: pointer;
+}
+.close-dialog-btn:hover{
+    box-shadow: #b4afaf 0px 0px 4px;
+}
+.open-dialog{
+    display: flex!important;
+}

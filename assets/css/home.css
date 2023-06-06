@@ -17,6 +17,7 @@
   background-color: #fff;
   margin-top: 58px;
 }
+/*Common menuBar*/
 .PageMenuBar{
   position: fixed;
   width: 100%;
@@ -32,6 +33,24 @@
   align-items: center;
 }
 .PageLogoWrap{
+  width: 180px;
+
+}
+.PageLogoImg{
+  width: 100%;
+}
+.menubar-avt-wrap{
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: solid 1px rgb(182, 182, 182);
+}
+.menubar-avt{
+  width: 100%;
+}
+.menuBar-dropdown-menu{
+  
 }
 .PageLogoBtn{
   border: none;

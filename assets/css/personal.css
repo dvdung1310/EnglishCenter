@@ -6,7 +6,7 @@ body{
     display: block!important;
 }
 .personal-disabled{
-    display: block!important;
+    display: none!important;
 }
 .personal-act-inline{
     display: inline!important;
