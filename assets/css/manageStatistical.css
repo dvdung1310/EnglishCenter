@@ -27,14 +27,7 @@ h1 {
     background-color: #ddd;
 }
 
-/* Thiết lập kích thước cho mỗi tab content */
-/* .tabcontent {
-    display: none;
-    margin-top: 25px;
-    text-align: center;
-    background-color: #ffff;
-    height: 300px;
-} */
+
 
 #Tab2,#Tab3,#Tab4,#Tab5
 ,#Tab2-add,#Tab3-add,#Tab4-add,#Tab5-add,
@@ -47,6 +40,7 @@ h1 {
 .tab {
     height: 44px;
     background-color: black;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 
@@ -160,7 +154,7 @@ max-height: 500px;
 
 
 
-#content{
+#content {
     background-color: #f5f5f5; 
        
         border-radius: 5px; /* Đường viền cong */

@@ -11,7 +11,9 @@
         $schedules = dataSchedulesByMaLop($maLop, $connection); ?>
         <a class='class' href='DetailsClass.php?maLop=<?php echo $maLop ?>'>
             <div>
-                <div class='class-code<?php echo $datas['TrangThai'] ?>'>
+                <div class='class-code<?php if($datas['TrangThai'] == 'Đang mở'){
+                    echo '1';
+                }else echo '0' ?>'>
                     <?php echo $datas['MaLop'] ?>
                 </div>
                 <div class='info'>

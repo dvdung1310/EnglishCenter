@@ -7,9 +7,9 @@ $dataSchedules = dataSchedulesByMaLop($malop, $connection);
 $nameTeacher = dataTeacherByMaLop($malop, $connection);
 $result = listSchedules($connection);
 $nameCondition = '';
-if ($dataClass['TrangThai'] == 0) {
+if ($dataClass['TrangThai'] == 'Chưa mở') {
     $nameCondition = 'Chưa mở';
-} else if ($dataClass['TrangThai'] == 1) {
+} else if ($dataClass['TrangThai'] == 'Đang mở') {
     $nameCondition = 'Đang mở';
 } else {
     $nameCondition = 'Đã đóng';
@@ -360,6 +360,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <input type="text" id="TeacherSalarie" name="TeacherSalarie" value="<?php
                                                                                             foreach ($nameTeacher as $nameTeachers) {
                                                                                                 $TeacherSalarie = $nameTeachers['TienTraGV'];
+                                                                                                if($TeacherSalarie == null){
+                                                                                                    $TeacherSalarie = 0 ;
+                                                                                                }
                                                                                             };
 
                                                                                             echo $TeacherSalarie;
@@ -367,12 +370,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <br>
                         <label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
                         <br><select name="SelectCondition" id="SelectCondition">
-                            <option value=" <?php echo $dataClass['TrangThai'] ?>">
+                            <option value="<?php echo $dataClass['TrangThai'] ?>">
                                 <?php echo $nameCondition ?>
                             </option>
-                            <option value="0">Chưa mở</option>
-                            <option value="1">Đang mở</option>
-                            <option value="2">Đã đóng</option>
+                            <option value="Chưa mở">Chưa mở</option>
+                            <option value="Đang mở">Đang mở</option>
+                            <option value="Đã đóng">Đã đóng</option>
                         </select>
                         <input type="submit" id='update' name="update" value="Sửa">
                     </form>

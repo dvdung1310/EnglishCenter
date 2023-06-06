@@ -10,7 +10,7 @@ var chi = [];
 var selectedYear_1 = new Date().getFullYear();
 filterByYear_1(new Date().getFullYear());
 
-doanhThu = thu.map((value, index) => value - chi[index]); 
+doanhThu = thu.map((value, index) => value - chi[index]);
 
 createStudentChar();
 
@@ -19,7 +19,7 @@ function createStudentChar() {
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         total: doanhThu,
-        soThu: thu, 
+        soThu: thu,
         soChi: chi,
     };
 
@@ -74,11 +74,11 @@ function createStudentChar() {
                     position: 'bottom',
                     font: {
                         family: 'Arial',
-                        size: 18,
+                        size: 22,
                         weight: 'bold',
                         color: '#333333'
                     }
-        
+
                 }
             }
         }
@@ -108,42 +108,236 @@ var selectYear_1 = document.getElementById('select-year-1');
 selectYear_1.addEventListener('change', function () {
     selectedYear_1 = selectYear_1.value;
     filterByYear_1(selectedYear_1);
-   
-    doanhThu = thu.map((value, index) => value - chi[index]); 
+
+    doanhThu = thu.map((value, index) => value - chi[index]);
     createStudentChar();
 });
-
-
-// function countTotal() {
-//     tongSoHS = [];
-    
-
-//     for (var i = 1; i <= 12; i++) {
-//         var monthData = {
-//             Thang: i,
-//             Nam: selectedYear_1,
-//             so: 0
-//         };
-
-
-//         var s = 0;
-//         for (var j = 0; j < ds_HSTang.length; j++) {
-//             if (((monthData.Thang >= ds_HSTang[j].Thang) && (monthData.Nam == ds_HSTang[j].Nam)) || (monthData.Nam > ds_HSTang[j].Nam)) {
-//                 s += ds_HSTang[j].so;
-//             }
-//         }
-//         monthData.so = s;
-
-//         tongSoHS.push(monthData.so);
-//     }
-// }
+///////////////////////////////////////////////////////////
 
 
 
 
 
 
+var tongDoanhThu = [];
+var tyLeLoiNhuan = [];
+var dtThang12 = 0;
+var selectedYear_2 = new Date().getFullYear();
 
+countTotal(tongDoanhThu);
+tinhTyLeLoiNhuan(tyLeLoiNhuan, tongDoanhThu);
+
+createDoanhThuChart(tongDoanhThu, tyLeLoiNhuan);
+
+
+function countTotal(tongDoanhThu) {
+    tongDoanhThu.length = 0;
+    dtThang12 = 0;
+
+    for (var i = 1; i <= 12; i++) {
+        var monthData = {
+            Thang: i,
+            Nam: selectedYear_2,
+            so: 0
+        };
+
+
+
+        var s = 0;
+        for (var j = 0; j < ds_DTTheoThang.length; j++) {
+            if (((monthData.Thang >= ds_DTTheoThang[j].Thang) && (monthData.Nam == ds_DTTheoThang[j].Nam)) || (monthData.Nam > ds_DTTheoThang[j].Nam)) {
+                s += parseInt(ds_DTTheoThang[j].SoTien);
+
+            }
+        }
+        monthData.so = s;
+        tongDoanhThu.push(monthData.so);
+    }
+    for (var k = 0; k < ds_DTTheoThang.length; k++) {
+        if (((12 >= ds_DTTheoThang[k].Thang) && (monthData.Nam - 1 == ds_DTTheoThang[k].Nam)) || (monthData.Nam - 1 > ds_DTTheoThang[k].Nam)) {
+            dtThang12 += parseInt(ds_DTTheoThang[k].SoTien);
+
+        }
+    }
+}
+
+
+
+
+
+function tinhTyLeLoiNhuan(tyLeLoiNhuan, tongDoanhThu) {
+    tyLeLoiNhuan.length = 0
+
+
+
+    // Tính tỷ lệ lợi nhuận của tháng 1 n
+
+    if (dtThang12 == 0) {
+        tyLeLoiNhuan.push(parseFloat(0).toFixed(2));
+    }
+    else {
+        var tyLeThang1 = ((tongDoanhThu[0] - dtThang12) / dtThang12) * 100;
+
+
+        tyLeLoiNhuan.push(tyLeThang1.toFixed(2));
+    }
+    for (var i = 1; i < tongDoanhThu.length; i++) {
+
+        var doanhThuHienTai = tongDoanhThu[i];
+        var doanhThuTruoc = tongDoanhThu[i - 1];
+        if (doanhThuTruoc == 0 && doanhThuHienTai == 0) {
+            tyLeLoiNhuan.push(parseFloat(0).toFixed(2));
+        }
+        else if (doanhThuTruoc == 0 && doanhThuHienTai != 0) {
+            tyLeLoiNhuan.push(parseFloat(100).toFixed(2));
+        }
+        else {
+            if (doanhThuTruoc < 0 && doanhThuHienTai < 0) {
+                var tyLe = (-((doanhThuHienTai - doanhThuTruoc) / doanhThuTruoc)) * 100;
+            }
+            else
+                var tyLe = ((doanhThuHienTai - doanhThuTruoc) / doanhThuTruoc) * 100;
+            tyLeLoiNhuan.push(parseFloat(tyLe).toFixed(2));
+        }
+    }
+}
+
+
+
+function createDoanhThuChart(tongDoanhThu, tyLeLoiNhuan) {
+
+
+    var chartData = {
+        chart: {
+            type: 'area',
+            height: 700
+        },
+        series: [
+            {
+                name: 'Tổng doanh thu',
+                data: tongDoanhThu
+            },
+            {
+                name: 'Tỷ lệ lợi nhuận',
+                data: tyLeLoiNhuan
+            }
+        ],
+        xaxis: {
+            categories: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12']
+        },
+        yaxis: [
+            {
+                title: {
+                    text: 'Tổng doanh thu (VND)'
+                }
+            },
+            {
+                opposite: true,
+                title: {
+                    text: 'Tỷ lệ lợi nhuận (%) '
+                }
+            }
+        ],
+        fill: {
+            type: 'solid',
+            opacity: [0.7, 0.5],
+
+
+        }
+    };
+
+
+    var chart = new ApexCharts(document.querySelector("#chart-2"), chartData);
+    chart.render();
+
+}
+
+
+var selectYear_2 = document.getElementById('select-year-2');
+selectYear_2.addEventListener('change', function () {
+    selectedYear_2 = selectYear_2.value;
+    countTotal(tongDoanhThu);
+    tinhTyLeLoiNhuan(tyLeLoiNhuan, tongDoanhThu);
+
+    createDoanhThuChart(tongDoanhThu, tyLeLoiNhuan);
+    console.log(tyLeLoiNhuan);
+    console.log(tongDoanhThu);
+
+});
+///////////
+
+var thuChiChart = null;
+setChart(new Date().getFullYear());
+
+var selectYear_3 = document.getElementById('select-year-3');
+selectYear_3.addEventListener('change', function () {
+    selectedYear_3 = selectYear_3.value;
+    setChart(selectedYear_3);
+
+});
+
+function setChart(year) {
+    var thu = 0;
+    var chi = 0;
+
+    for (var i = 0; i < ds_Thu.length; i++) {
+        if (year == ds_Thu[i].Nam) {
+            thu = parseInt(ds_Thu[i].SoTien);
+        }
+    }
+    for (var j = 0; j < ds_Chi.length; j++) {
+        if (year == ds_Chi[j].Nam) {
+            chi = parseInt(ds_Chi[j].SoTien);
+        }
+    }
+
+    createThuChiChart(thu, chi);
+}
+
+
+
+
+
+function createThuChiChart(thu, chi) {
+
+    var data = {
+        labels: ['Thu', 'Chi'],
+        datasets: [{
+            data: [thu, chi],
+            backgroundColor: ['#11d66e', '#ff5c5c']
+        }]
+    };
+
+    var ctx = document.getElementById('chart-3').getContext('2d');
+
+    if (thuChiChart) {
+        thuChiChart.destroy();
+    }
+    thuChiChart = new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: {
+            title: {
+                display: true,
+                text: 'Tỷ lệ thu / chi'
+            },
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Biểu đồ thu chi hàng năm',
+                    position: 'bottom',
+                    font: {
+                        family: 'Arial',
+                        size: 18,
+                        weight: 'bold',
+                       
+                    }
+                }
+            }
+        }
+    });
+
+}
 
 
 // Mặc định hiển thị tab đầu tiên
@@ -154,31 +348,12 @@ document.getElementById('btn-tab2').addEventListener('click', () => {
 
 });
 
+document.getElementById('btn-tab1').addEventListener('click', () => {
+    window.location.href = "./manageStatistical.php";
+
+});
 
 
-
-// var a = Math.round(203000/100*24.123);
-
-function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-
-
-
-
-
-
-function formatNumber(input) {
-    let value = input.value;
- 
-    value = value.replace(/[^\d,]/g, '');
-
-    value = value.replace(/,/g, '');
-
-    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    input.value = value;
-}
 
 
 

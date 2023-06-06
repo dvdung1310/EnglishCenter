@@ -69,7 +69,7 @@ $jslistCountClass = json_encode($listCountClass);
                 <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
                 <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
                 <li><a href="../manage/manageFinance.php">Quản lý tài chính</a></li>
-                <li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+                <li><a style="color: #0088cc;" href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
             </ul>
         </nav>
     </header>
@@ -77,9 +77,7 @@ $jslistCountClass = json_encode($listCountClass);
         <div class="tab">
             <button class="tablinks" id='btn-tab1'>Thống kê tổng quan</button>
             <button class="tablinks" id='btn-tab2'>Thống kê tài chính</button>
-            <button class="tablinks" id='btn-tab3'>Tổng hợp thu chi</button>
-            <button class="tablinks" id='btn-tab4'>Tab4</button>
-            <button class="tablinks" id='btn-tab5'>Tab5</button>
+           
         </div>
 
         <div style="display: flex;flex-direction: column;" id="content">

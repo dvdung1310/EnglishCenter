@@ -1,6 +1,6 @@
 <?php
  session_start();
- $name = $_SESSION['userName'];
+//  $name = $_SESSION['userName'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,7 +13,7 @@
 <body>
     <h1>Helo teacher
         <?php
-        echo $name;
+        // echo $name; 
         ?>
     </h1>
 </body>
