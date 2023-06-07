@@ -1,61 +1,242 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Thông tin lớp học</title>
     <style>
-        .checkbox {
-            display: none;
-            /* Ẩn checkbox gốc */
+        /* CSS để tạo giao diện */
+        #class-on  {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
 
-        .checkbox+label {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 2px solid #999;
-            border-radius: 50%;
-            cursor: pointer;
+        .class {
+            flex-basis: calc(33.33% - 20px);
+            margin: 10px;
+            background-color: #f5f5f5;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 20px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease-in-out;
         }
 
-        .green:checked+label {
-            background-color: #3cb371;
-            /* Màu xanh */
-            border-color: #3cb371;
+        .class:hover {
+            transform: scale(1.02);
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
         }
 
-        .green:checked+label::after {
-            content: "\2713";
-            /* Dấu tích unicode */
-            color: #fff;
-            font-size: 14px;
-            text-align: center;
-            line-height: 20px;
+        .class h2, .class h3, .class p {
+            margin: 10px 0;
         }
 
-        label::after {
-            content: "";
-            display: block;
+        .class table {
             width: 100%;
-            height: 100%;
-            text-align: center;
-            line-height: 20px;
         }
 
-        .red:not(:checked)+label {
-            background-color: #ff0000;
-            /* Màu đỏ */
-            border-color: #ff0000;
+        .class td {
+            padding: 5px;
         }
     </style>
 </head>
-
 <body>
-    <input type="checkbox" class="checkbox <?php echo ($data == 1) ? 'green' : 'red'; ?>" id="myCheckbox">
-    <label for="myCheckbox"></label>
-</body>
+    <div id="class-on">
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
 
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
+
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
+
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
+
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
+
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+        <div class="class">
+            <?php
+            // Dữ liệu lớp học
+            $maLop = "L01";
+            $tenLop = "Lớp A";
+            $soHocSinh = 30;
+            $soBuoiDaDay = 15;
+            $thoiGian = "08:00 AM - 10:00 AM";
+            $luong = "1.500.000 VND";
+            ?>
+
+            <h2>Mã lớp: <?php echo $maLop; ?></h2>
+            <h3>Tên lớp: <?php echo $tenLop; ?></h3>
+            <table>
+                <tr>
+                    <td><p>Số học sinh: </p></td>
+                    <td><?php echo $soHocSinh; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Số buổi đã dạy: </p></td>
+                    <td><?php echo $soBuoiDaDay; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Thời gian:</p></td>
+                    <td><?php echo $thoiGian; ?></td>
+                </tr>
+                <tr>
+                    <td><p>Lương:</p></td>
+                    <td><?php echo $luong; ?></td>
+                </tr>
+            </table>
+        </div>
+  
+</body>
 </html>

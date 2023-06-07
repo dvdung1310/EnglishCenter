@@ -475,7 +475,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 						<input type="text" id="address_add" name="address_add" required placeholder="Nhập địa chỉ">
 
 						<label for="education">Trình độ: <label id="lb_education_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
-						<input type="text" id="education_add" name="education_add" required placeholder="Nhập tên trình độ">
+						<input type="text" id="education_add" name="education_add" required placeholder="Nhập trình độ">
 
 						<label for="phone_number">Số điện thoại: <label id="lb_phone_add" style="color:red; font-size:13px ; font-style: italic "></label></label>
 						<input type="tel" id="phone_number_add" name="phone_number_add" required placeholder="Nhập số diện thoại">

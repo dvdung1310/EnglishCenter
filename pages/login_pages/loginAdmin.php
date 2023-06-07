@@ -33,6 +33,7 @@ if ($test) {
         session_start();
         $_SESSION['userName'] = htmlspecialchars($userName);
         header("Location: ../main_pages/homeAdmin.php");
+		
         exit();
     } else {
         $passWord_error = "Tài khoản hoặc mật khẩu bạn sai";
