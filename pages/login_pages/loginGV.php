@@ -26,8 +26,11 @@ if ($test) {
     $result = checkAcountTeacher($userName, $passWord, $connection);
     if ($result) {
         session_start();
-        $_SESSION['userName'] = htmlspecialchars($userName);
-        header("Location: pages/homeTeacher.php");
+        $gv  =  selectTeacherbyUsername($connection,$userName);
+      
+        $_SESSION['MaGV'] = htmlspecialchars($gv[0]['MaGV']);
+       
+        header("Location: ../main_pages/homeTeacher.php");
         exit();
     } else {
         $passWord_error = "Tài khoản hoặc mật khẩu bạn sai";
@@ -53,6 +56,7 @@ if ($test) {
     </div>
     <div class="login-star">
         <img src="/assets/images/login_stars.png" alt="">
+       
     </div>
     <div id="contain">
 

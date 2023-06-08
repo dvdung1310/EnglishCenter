@@ -1,0 +1,50 @@
+
+.PageMenuBar {
+    position: absolute;
+    width: unset;
+}
+
+
+#content {
+    width: 80%;
+    padding: 20px;
+    margin-left: 150px;
+  }
+
+  #table-1 {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  #table-1 th,
+  #table-1 td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  #table-1 th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  #table-1 th:hover {
+    background-color: #e0e0e0;
+  }
+  
+  .tbody-1 tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .tbody-1 tr:hover {
+    background-color: #e9e9e9;
+  }
+  .tbody-1 {
+    max-height: 800px;
+    overflow-y: auto;
+  }
+
+  .menubar-nav:hover {
+    background-color:turquoise;
+  }

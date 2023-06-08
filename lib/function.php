@@ -278,3 +278,22 @@ function createTablPH_HS($Mahs, $Maph, $connection)
         echo $e->getMessage();
     }
 }
+
+
+// select giao cvien
+function selectTeacherbyUsername($connection, $magv)
+{
+    $sql = "SELECT tk_gv.MaGV , giaovien.TenGV , giaovien.GioiTinh, giaovien.NgaySinh, giaovien.Tuoi , giaovien.QueQuan, giaovien.DiaChi, giaovien.TrinhDo, giaovien.SDT, giaovien.Email  FROM tk_gv INNER JOIN giaovien  WHERE tk_gv.MaGV = giaovien.MaGV AND UserName = ?";
+    try {
+        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $statement =  $connection->prepare($sql);
+        $statement->execute([$magv]);
+
+        $list  = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+        $connection = null;
+        return $list;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
