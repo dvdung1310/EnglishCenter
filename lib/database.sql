@@ -233,3 +233,13 @@ CREATE TABLE `englishcenter`.`chiphikhac`
 `SoTien` INT NOT NULL , 
 `TrangThai` INT NOT NULL , 
 PRIMARY KEY (`MaHD`)) ENGINE = InnoDB;
+
+--lopghp
+
+CREATE TABLE `englishcenter`.`lopghp` 
+(`MaLop` VARCHAR(20) NOT NULL , 
+`TGBatDau` DATE NOT NULL , 
+`TGKetThuc` DATE NOT NULL ,
+ `GiamHocPhi` FLOAT NOT NULL ,
+  PRIMARY KEY (`MaLop`),
+ foreign key (MaLop) references lop(Malop)) ENGINE = InnoDB;
