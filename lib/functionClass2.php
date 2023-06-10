@@ -1,5 +1,5 @@
 <?php
-include "../lib/database.php";
+include "../../lib/database.php";
 
 
 // danh sách lịch học
@@ -212,22 +212,13 @@ function dataClassById($malop, $connection)
 function deleteClassById($malop, $connection)
 {
     $sql1 = "DELETE from gv_lop where MaLop = ?";
-    $sql5 = "DELETE from diemdanh where MaLop = ?";
-    $sql6 = "DELETE from hs_lop where MaLop = ?";
     $sql2 = "DELETE from schedules_class where MaLop = ?";
     $sql3 = "DELETE from lop where MaLop = ?";
-    $sql4 = "DELETE from lopghp where MaLop = ?";
     try {
-        $statement6 = $connection->prepare($sql6);
-        $statement5 = $connection->prepare($sql5);
-        $statement4 = $connection->prepare($sql4);
         $statement1 = $connection->prepare($sql1);
         $statement2 = $connection->prepare($sql2);
         $statement3 = $connection->prepare($sql3);
 
-        $statement6->execute([$malop]);
-        $statement5->execute([$malop]);
-        $statement4->execute([$malop]);
         $statement1->execute([$malop]);
         $statement2->execute([$malop]);
         $statement3->execute([$malop]);
@@ -532,35 +523,6 @@ function getCodeStudentByTimeandCodeClass($malop, $time, $connection)
     }
 }
 
-// thêm giảm học phí vs $malop
-
-function insertDiscount($startDiscount,$endDiscount,$discount,$malop,$connection,){
-    $sql = "insert into lopghp values(?,?,?,?)";
-    try {
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $malop);
-        $statement->bindParam(2, $startDiscount);
-        $statement->bindParam(3, $endDiscount);
-        $statement->bindParam(4, $discount);
-        $statement->execute();
-    } catch (PDOException $e) {
-        $e->getMessage();
-    }
-}
-
-function getDiscount($malop,$connection){
-    $sql = "select * from lopghp where MaLop = ?";
-    try{
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $malop);
-        $statement->execute();
-        $data = $statement->fetch(PDO::FETCH_ASSOC);
-        return $data;
-    }catch(PDOException $e) {
-        $e->getMessage();
-    }
-}
-
 // truy vẫn hs từ mã hs
 function getStudentByid($mahs, $connection)
 {
@@ -592,8 +554,56 @@ function getCountDD($dd, $malop, $connection)
     }
 }
 
-// giảm học phí
-function discount($mahs, $Malop, $connection)
+// select mã phu huynh
+function getMaPH($userName, $connection)
+{
+    $sql = "select MaPH from tk_ph where UserName = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $userName);
+        $statement->execute();
+        $data  = $statement->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+// đăng kí lớp học
+function createTabHS_LOP($Mahs, $Malop, $connection)
+{
+    $sql = "insert into hs_lop(MAHS,MaLop) values(?,?)";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $Mahs);
+        $statement->bindParam(2, $Malop);
+        $check =  $statement->execute();
+        
+        if($check){
+            return true;
+        }else{
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+function setHSDANGKI($SLHS, $Malop, $connection)
+{
+    $stRegister = $SLHS+1;
+    $sql = "update lop set SLHS = ?  where MaLop = ? ";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $stRegister);
+        $statement->bindParam(2, $Malop);
+        $statement->execute();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+function setExits_hs_lop($mahs, $Malop, $connection)
 {
     $sql = "select * from hs_lop  where MaHS = ? and MaLop = ?";
     try {
@@ -602,37 +612,61 @@ function discount($mahs, $Malop, $connection)
         $statement->bindParam(2, $Malop);
         $statement->execute();
         $data = $statement->fetch(PDO::FETCH_ASSOC);
+        if($data){
+            return true;
+        }else{
+            return false;
+        }
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+function checkExitPH_HS($mahs,$connection){
+    $sql = "select * from ph_hs where MAHS = ? ";
+    try{
+      $statement = $connection->prepare($sql);
+      $statement->bindParam(1, $mahs);
+      $statement->execute();
+      $data = $statement->fetch(PDO::FETCH_ASSOC);
+      if($data){
+        return true;
+      }else{
+        return false;
+      }
+    } catch (PDOException $e) {
+      echo $e->getMessage();
+  }
+}
+
+
+// giảm học phí
+function discount($Malop, $connection)
+{
+    $sql = "select * from lopghp where MaLop = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $Malop);
+        $statement->execute();
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
         return $data;
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
 }
 
-function editDiscount($discount,$mahs, $Malop, $connection){
-    $sql = "update hs_lop set GiamHocPhi = ?  where MaHS = ? and MaLop = ?";
+// giảm học phí
+function insertDiscountMahs($Malop,$Mahs,$SoBuoiNghi,$GiamHocPhi, $connection)
+{
+    $sql = "insert into hs_lop values(?,?,?,?)";
     try {
         $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $discount);
-        $statement->bindParam(2, $mahs);
-        $statement->bindParam(3, $Malop);
+        $statement->bindParam(1, $Malop);
+        $statement->bindParam(2, $Mahs);
+        $statement->bindParam(3, $SoBuoiNghi);
+        $statement->bindParam(4, $GiamHocPhi);
         $statement->execute();
     } catch (PDOException $e) {
         echo $e->getMessage();
     }
 }
-
-
-function editDiscountFull($malop,$startTime,$endTime,$discount, $connection){
-     $sql = "update lopghp set TGBatDau = ? , TGKetThuc = ? , GiamHocPhi = ? where MaLop = ?";
-     try {
-        $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $startTime);
-        $statement->bindParam(2, $endTime);
-        $statement->bindParam(3, $discount);
-        $statement->bindParam(4, $malop);
-        $statement->execute();
-    } catch (PDOException $e) {
-        echo $e->getMessage();
-    }
-}
-

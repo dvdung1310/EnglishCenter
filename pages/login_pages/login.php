@@ -1,10 +1,5 @@
 <?php
 
-
-
-// $path_dir = __DIR__ . '/../../lib';
-// include $path_dir . '/function.php';
-
 include '../../lib/function.php';
 
 $userName = $passWord = "";
@@ -29,16 +24,18 @@ if (isset($_POST['submit'])) {
 if ($test) {
     $check_student = checkAcount($userName, $passWord, $connection);
 
-    if ($check_student) {
+    if ($check_student){
         session_start();
-        $_SESSION['userName'] = htmlspecialchars($userName);
-        header("Location: ../main_pages/homeStudent.php");
+        $mahs = getMaHS($userName,$connection);
+        $_SESSION['MaHS'] = $mahs;
+        header("Location: ../home/home.php");
         exit();
     } else {
         $check_parent = checkAcountParents($userName, $passWord, $connection);
         if ($check_parent) {
             session_start();
-            $_SESSION['userName'] = htmlspecialchars($userName);
+            $maph = getMaPH($userName,$connection);
+            $_SESSION['MaPH'] = $maph;
             header("Location: ../main_pages/homeParent.php");
             exit();
         } else {
@@ -46,7 +43,6 @@ if ($test) {
         }
     }
 }
-
 
 
 ?>

@@ -67,6 +67,38 @@
         }
         const idSchedules1 = element1 ? element1.value : "";
 
+        const element_startDiscount = document.getElementById('startDiscount');
+		const startDiscount = element_startDiscount ? element_startDiscount.value : "";
+
+		const element_endDiscount = document.getElementById('endDiscount');
+		const endDiscount = element_endDiscount ? element_endDiscount.value : "";
+
+		const element_discountpercent = document.getElementById('discountpercent');
+		const discountpercent = element_discountpercent ? element_discountpercent.value : "";
+
+        if(startDiscount){
+            if(!startDiscount || !endDiscount || !discountpercent){ 
+                document.getElementById('lbdiscount').textContent = '*Bạn đang thiếu dữ liệu';
+                return;
+            }else if(startDiscount == endDiscount){
+                document.getElementById('lbdiscount').textContent = '*Lịch trùng nhau';
+                return;
+            }
+            else{
+                document.getElementById('lbdiscount').textContent = "";
+            }
+        }else if(buttonClicked){
+            if(!startDiscount || !endDiscount || !discountpercent){ 
+                document.getElementById('lbdiscount').textContent = '*Bạn đang thiếu dữ liệu';
+                return;
+            }else if(startDiscount == endDiscount){
+                document.getElementById('lbdiscount').textContent = '*Lịch trùng nhau';
+                return;
+            }
+            else{
+                document.getElementById('lbdiscount').textContent = "";
+            }
+        }
 
         const element2 = document.getElementById('schedules2');
         console.log(element2);

@@ -297,3 +297,47 @@ function selectTeacherbyUsername($connection, $magv)
         echo $e->getMessage();
     }
 }
+
+// select mã học sinh
+function getMaHS($userName, $connection)
+{
+    $sql = "select MaHS from tk_hs where UserName = ? ";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $userName);
+        $statement->execute();
+        $data  = $statement->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+// select mã phu huynh
+function getMaPH($userName, $connection)
+{
+    $sql = "select MaPH from tk_ph where UserName = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $userName);
+        $statement->execute();
+        $data  = $statement->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
+
+// đăng kí lớp học
+function createTabHS_LOP($Mahs, $Malop, $connection)
+{
+    $sql = "insert into hs_lop(MAHS,MaLop) values(?,?)";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $Mahs);
+        $statement->bindParam(2, $Malop);
+        $statement->execute();
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}

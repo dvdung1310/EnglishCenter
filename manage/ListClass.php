@@ -4,7 +4,7 @@ include "../lib/FunctionClass.php";
 $listClass = listClass($connection);
 $result = listSchedules($connection);
 $listTeacher = listTeacher($connection);
-$dataClassOnOff = dataClassOnOff('Đang mở',$connection);
+$dataClassOnOff = dataClassOnOff('Đang mở', $connection);
 // lịch của giáo viên
 $timeTeacher = timeTeacher($connection);
 // $arrTime = array();
@@ -60,6 +60,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			}
 			$tientraGV = $_POST['TeacherSalarie'];
 			$teacherClass = CreateTeacher_Class($teachers, $maLop, $tientraGV, $connection);
+			if($teacherClass && isset($_POST['startDiscount']) && isset($_POST['endDiscount']) && isset($_POST['discountpercent'])){
+				insertDiscount($_POST['startDiscount'],$_POST['endDiscount'],$_POST['discountpercent'],$maLop,$connection);
+			}else{
+				insertDiscount('2023-1-1','2023-1-1',0,$maLop,$connection);
+			}
 			header("Location: ListClass.php");
 			exit();
 		}
@@ -108,18 +113,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</div>
 		<div>
 
-		<div class="searchClass" id="searchClass">
-            <div>
-				<input type="text" class="timkiem" placeholder="Tìm kiếm...">
+			<div class="searchClass" id="searchClass">
+				<div>
+					<input type="text" class="timkiem" placeholder="Tìm kiếm...">
+				</div>
 			</div>
-		</div>
-			
+
 			<div>
-					<select name="province" id="province">
-						<option  value="1">Lớp đang mở</option>
-						<option value="0">Lớp chưa mở </option>
-						<option value="2">Lớp đã đóng</option>
-					</select>
+				<select name="province" id="province">
+					<option value="1">Lớp đang mở</option>
+					<option value="0">Lớp chưa mở </option>
+					<option value="2">Lớp đã đóng</option>
+				</select>
 			</div>
 			<h1 style="color: #0088cc;">Danh sách lớp học</h1>
 			<!-- lớp on -->
@@ -236,6 +241,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<option value="Đang mở">Đang mở</option>
 								<option value="Đã đóng">Đã đóng</option>
 							</select>
+							<br>
+
+							<button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px;" type="button" onclick="addDiscount()">Thêm khuyến mại</button>
+							<div id="addDiscount">
+							</div>
 
 
 							<input type="submit" id='add' name="add" value="Thêm">
@@ -319,6 +329,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		}
 
 	}
+
+	
+	function addDiscount() {
+		var container = document.getElementById("addDiscount");
+		var card = document.createElement("div");
+		card.className = "card";
+		card.innerHTML = `
+		<label for="">Khuyến mại :<label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label></label>
+							<br>
+							
+							Thời gian bát đầu : <input type="date" name="startDiscount" id="startDiscount" ><br>
+							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount">
+							<input type="text" name="discountpercent" id="discountpercent" placeholder="Nhập % khuyến mại">
+							<button class="delete-button" onclick="deleteDiscount(this)">Xóa</button>
+  `;
+		container.appendChild(card);
+	}
+
+	function deleteDiscount(button) {
+		var index = button.getAttribute("data-index");
+		var card = button.parentNode;
+		var container = card.parentNode;
+		container.removeChild(card);
+
+	}
 	// Khi nhấn Thêm
 	const submit_add = document.getElementById('add');
 	submit_add.addEventListener('click', function(event) {
@@ -362,6 +397,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		const element2 = document.getElementById('schedules2');
 		const idSchedules2 = element2 ? element2.value : "";
 
+		// dữ liệu giảm học phí
+		const element_startDiscount = document.getElementById('startDiscount');
+		const startDiscount = element_startDiscount ? element_startDiscount.value : "";
+
+		const element_endDiscount = document.getElementById('endDiscount');
+		const endDiscount = element_endDiscount ? element_endDiscount.value : "";
+
+		const element_discountpercent = document.getElementById('discountpercent');
+		const discountpercent = element_discountpercent ? element_discountpercent.value : "";
+
 
 		var erorr_empty = "*Dữ liệu không để trống";
 
@@ -392,7 +437,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		const hasDuplicates = hasDuplicateElements(teacherScheduleArray, listtimeTeacher);
 		//Kiểm tra dữ liệu nhập vào
-
 		if (!classcode) {
 			document.getElementById('lbclasscode').textContent = erorr_empty;
 			return;
@@ -472,6 +516,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		} else {
 			document.getElementById('lbschedules').textContent = "";
 		}
+        
+		if(startDiscount){
+		if(!startDiscount || !endDiscount || !discountpercent){ 
+            document.getElementById('lbdiscount').textContent = '*Bạn đang thiếu dữ liệu';
+			return;
+		}else if(startDiscount == endDiscount){
+			document.getElementById('lbdiscount').textContent = '*Lịch trùng nhau';
+			return;
+		}
+		else{
+			document.getElementById('lbdiscount').textContent = "";
+		}
+	}
+
+		
 
 
 		document.querySelector('.add-success').style.display = 'block';
@@ -485,14 +544,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		// form2.submit();
 	});
 
-// 	$(document).ready(function () {
-//     $('.timkiem').keyup(function(){
-//         var txt = $('.timkiem').val();
-//         $.post('ajax_get_listClass.php',{data:txt},function(data){
-//              $('.class-container').html(data);
-//         })
-//     })
-// })
+	// 	$(document).ready(function () {
+	//     $('.timkiem').keyup(function(){
+	//         var txt = $('.timkiem').val();
+	//         $.post('ajax_get_listClass.php',{data:txt},function(data){
+	//              $('.class-container').html(data);
+	//         })
+	//     })
+	// })
 </script>
 
 
