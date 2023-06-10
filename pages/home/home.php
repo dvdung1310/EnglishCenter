@@ -1,6 +1,6 @@
 <?php
 include "../../lib/FunctionClass2.php";
-$dataClassOnOff = dataClassOnOff('Đang mở', $connection);
+$dataClassOnOff = dataClassOnOff('Chưa mở', $connection);
 session_start();
 $check = false;
 if(isset($_SESSION['MaHS'])){

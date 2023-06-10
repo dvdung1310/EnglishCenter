@@ -661,8 +661,8 @@ function insertDiscountMahs($Malop,$Mahs,$SoBuoiNghi,$GiamHocPhi, $connection)
     $sql = "insert into hs_lop values(?,?,?,?)";
     try {
         $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $Malop);
-        $statement->bindParam(2, $Mahs);
+        $statement->bindParam(1, $Mahs);
+        $statement->bindParam(2, $Malop);
         $statement->bindParam(3, $SoBuoiNghi);
         $statement->bindParam(4, $GiamHocPhi);
         $statement->execute();

@@ -191,9 +191,10 @@ if (isset($_POST['check'])) {
                     $endTimeObj = DateTime::createFromFormat('Y-m-d', $endTime);
                     $price = $discount['GiamHocPhi'];
                     $pr = true;
+                    insertDiscountMahs($malop,$mahs,0,$price,$connection);
                     if($day >= $startTimeObj && $day <= $endTimeObj){
                         $pr = true;
-                        insertDiscountMahs($malop,$mahs,0,$price,$connection);
+                        
                     }
                     ?>
                     <?php if (!$check) : ?>
