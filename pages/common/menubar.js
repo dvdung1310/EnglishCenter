@@ -23,14 +23,14 @@ const authMenuBarHTMl = ` <div class="PageMenuBar">
   <div class="menubar-info-wrap">
     <div class="menubar-info">
       <div class="menubar-name">Hieu lo.n</div>
-      <div class="dropdown">
-          <button class="menubar-avt-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
             <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Chi tiết lớp học</a></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+          <ul class="menubar-dropdown-menu">
+              <li class="menubar-dropdown-item"><a  href="#">Thông tin cá nhân</a></li>
+            <li class="menubar-dropdown-item"><a  href="#">Chi tiết lớp học</a></li>
+            <li class="menubar-dropdown-item"><a  href="#">Đăng xuất</a></li>
           </ul>
         </div>
     </div>
@@ -42,3 +42,7 @@ const authMenuBarHTMl = ` <div class="PageMenuBar">
  document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
 var $ = document.querySelector.bind(document)
 var $$ = document.querySelectorAll.bind(document)
+
+$(".menubar-drop-btn").onclick = ()=>{
+  $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+}
