@@ -347,6 +347,20 @@ input {
 }
 
 /* css box time */
+#details-17,
+#details-16,
+#details-15,
+#details-14,
+#details-13,
+#details-12,
+#details-11,
+#details-10,
+#details-9,
+#details-8,
+#details-7,
+#details-6,
+#details-5,
+#details-4,
 #details-1,
 #details-2,
 #details-3 {
@@ -365,15 +379,41 @@ input {
     z-index: 9999;
     transition: opacity 0.3s, visibility 0.3s;
 }
+#details-17.active,
+#details-16.active,
+#details-15.active,
+#details-14.active,
+#details-13.active,
+#details-12.active,
+#details-11.active,
+#details-10.active,
+#details-9.active,
+#details-8.active,
+#details-7.active,
+#details-6.active,
+#details-5.active,
+#details-4.active,
+#details-2.active,
+#details-3.active,
 #details-1.active {
     opacity: 1;
     visibility: visible;
 }
-
-#details-2.active {
-    opacity: 1;
-    visibility: visible;
-}
+#boxTime17,
+#boxTime16,
+#boxTime15,
+#boxTime14,
+#boxTime13,
+#boxTime12,
+#boxTime11,
+#boxTime10,
+#boxTime9,
+#boxTime8,
+#boxTime7,
+#boxTime6,
+#boxTime5,
+#boxTime4,
+#boxTime3,
 #boxTime2,
 #boxTime1{
     opacity: 0;
@@ -386,14 +426,41 @@ input {
     padding: 0px 30px;
     border-radius: 5px;
 }
+#boxTime17.active,
+#boxTime16.active,
+#boxTime15.active,
+#boxTime14.active,
+#boxTime13.active,
+#boxTime12.active,
+#boxTime11.active,
+#boxTime10.active,
+#boxTime9.active,
+#boxTime8.active,
+#boxTime7.active,
+#boxTime6.active,
+#boxTime5.active,
+#boxTime4.active,
+#boxTime2.active,
+#boxTime3.active,
 #boxTime1.active {
     opacity: 1;
     transform: scale(1);
 }
-#boxTime2.active {
-    opacity: 1;
-    transform: scale(1);
-}
+#closebtnboxTime17,  
+#closebtnboxTime16,
+#closebtnboxTime15,  
+#closebtnboxTime14,
+#closebtnboxTime13,  
+#closebtnboxTime12,
+#closebtnboxTime11,  
+#closebtnboxTime10,
+#closebtnboxTime9,  
+#closebtnboxTime8,
+#closebtnboxTime7,  
+#closebtnboxTime6,
+#closebtnboxTime5,  
+#closebtnboxTime4,
+#closebtnboxTime3,  
 #closebtnboxTime2,  
 #closebtnboxTime1 {
     position: absolute;

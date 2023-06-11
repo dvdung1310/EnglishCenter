@@ -212,7 +212,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 							<br>
-							<label for="price">Học phí:<label class="lbStyle" id="lbprice" style="color:red; font-size:13px ; font-style: italic "></label></label>
+							<label for="price">Học phí/buổi:<label class="lbStyle" id="lbprice" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<input type="text" id="price" name="price" placeholder="Nhập học phí...">
 
 							<label for="numberlessons">Tổng số buổi học:<label class="lbStyle" id="lbnumberlessons" style="color:red; font-size:13px ; font-style: italic "></label></label>
@@ -231,7 +231,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 									</option>
 								<?php endforeach; ?>
 							</select>
-							<br><label for="TeacherSalarie">Lương giáo viên:<label class="lbStyle" id="lbTeacherSalarie" style="color:red; font-size:13px ; font-style: italic "></label></label>
+							<br><label for="TeacherSalarie">Lương giáo viên/buổi:<label class="lbStyle" id="lbTeacherSalarie" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<input type="text" id="TeacherSalarie" name="TeacherSalarie" placeholder="Nhập lương giáo viên">
 
 							<label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>

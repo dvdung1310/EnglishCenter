@@ -201,6 +201,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             align-items: center;
         }
 
+        <?php
+        if($dataClass['TrangThai'] == 'Chưa mở'):?>
+            #piechart_3d{
+                display: none;
+            }
+        <?php endif ?>
+        
+
         */
     </style>
 </head>
@@ -274,7 +282,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </td>
                             </tr>
                             <tr>
-                                <th>Học phí:</th>
+                                <th>Học phí/buổi:</th>
                                 <td id="teacher-qq" contenteditable="false"><?php echo numberWithCommas($dataClass['HocPhi']); ?>VND</td>
                             </tr>
                             <tr>
@@ -282,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td id="" contenteditable="false"><?php echo $dataClass['SoBuoiDaToChuc']; ?></td>
                             </tr>
                             <tr>
-                                <th>Tổng số buổi dạy:</th>
+                                <th>Tổng số buổi học:</th>
                                 <td id="" contenteditable="false"><?php echo $dataClass['SoBuoi']; ?></td>
                             </tr>
                             <tr>
