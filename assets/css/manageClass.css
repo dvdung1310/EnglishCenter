@@ -30,6 +30,7 @@
 
 .class {
     position: relative;
+    color: inherit;
 }
 
 .class:hover {
@@ -264,16 +265,17 @@ input {
 }
 .detailButton{
     position: absolute;
-    bottom:0px;
+    bottom:-20px;
     left: 20%;
 }
 
 .detailButton input{
-    background-color:rgb(241, 113, 113);
-    border: none;
+    background-color: red;
     color: #fff;
-    border: 2px solid #0088cc;
+    padding: 10px;
     font-size: 15px;
+    border-radius: 10px;
+    border: none;
 }
 
 .detailButton button{
@@ -283,7 +285,23 @@ input {
     color: #fff;
     border: 2px solid #0088cc;
 }
-
+#opten-listAttendance{
+    background-color: yellow;
+    color: chartreuse;
+    padding: 10px;
+    border: none;
+    font-size: 15px;
+    border-radius: 10px;
+}
+#opten-listStudents{
+    background-color:chartreuse;
+    color:  yellow;
+    font-size: 15px;
+    padding: 10px;
+    border: none;
+    font-size: 15px;
+    border-radius: 10px;
+}
 .lbStyle{
     margin-left: 20px;
 }
@@ -471,6 +489,45 @@ input {
     font-size: 50px;
     cursor: pointer;
     color: #0088cc;
+}
+
+
+.center-listClass{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#open-btn{
+    background-color: #0088cc;
+    color: #fff;
+    padding: 10px;
+    font-size: 15px;
+    border-radius: 10px;
+}
+.timkiem{
+    padding: 10px 10px;
+    border: 1px solid #0088cc;
+}
+
+#province{
+    border:1px solid #0088cc;
+    outline: #0088cc;
+}
+#endDiscount,
+#startDiscount{
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    margin-top: 10px;
+}
+#discountpercent{
+    width: 40%;
+}
+.detailButton button{
+      margin-left: 10px;
 }
 
 

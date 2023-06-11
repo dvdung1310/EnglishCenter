@@ -60,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			}
 			$tientraGV = $_POST['TeacherSalarie'];
 			$teacherClass = CreateTeacher_Class($teachers, $maLop, $tientraGV, $connection);
-			if($teacherClass && isset($_POST['startDiscount']) && isset($_POST['endDiscount']) && isset($_POST['discountpercent'])){
-				insertDiscount($_POST['startDiscount'],$_POST['endDiscount'],$_POST['discountpercent'],$maLop,$connection);
-			}else{
-				insertDiscount('2023-1-1','2023-1-1',0,$maLop,$connection);
+			if ($teacherClass && isset($_POST['startDiscount']) && isset($_POST['endDiscount']) && isset($_POST['discountpercent'])) {
+				insertDiscount($_POST['startDiscount'], $_POST['endDiscount'], $_POST['discountpercent'], $maLop, $connection);
+			} else {
+				insertDiscount('2023-1-1', '2023-1-1', 0, $maLop, $connection);
 			}
 			header("Location: ListClass.php");
 			exit();
@@ -108,24 +108,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</nav>
 	</header>
 	<main>
-		<div class="">
-			<button id="open-btn">Thêm lớp</button>
-		</div>
-		<div>
-
+		<div class="center-listClass">
+			<div class="">
+				<button id="open-btn">Thêm lớp</button>
+			</div>
 			<div class="searchClass" id="searchClass">
 				<div>
-					<input type="text" class="timkiem" placeholder="Tìm kiếm...">
+					<input type="text" class="timkiem" placeholder="Tìm kiếm lớp...">
 				</div>
 			</div>
 
-			<div>
+			<div class="optionClass">
 				<select name="province" id="province">
 					<option value="1">Lớp đang mở</option>
 					<option value="0">Lớp chưa mở </option>
 					<option value="2">Lớp đã đóng</option>
 				</select>
 			</div>
+		</div>
+		<div>
 			<h1 style="color: #0088cc;">Danh sách lớp học</h1>
 			<!-- lớp on -->
 			<div class="class-container" id="district">
@@ -190,8 +191,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<input type="text" id="classname" name="classname" placeholder="Nhập tên lớp...">
 
 							<label for="classAge">Lứa tuổi:<label class="lbStyle" id="lbclassAge" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<input type="text" id="classAge" name="classAge" placeholder="Nhập lứa tuổi...">
-
+							<br><input style="width:40%" type="text" id="classAge" name="classAge" placeholder="Nhập lứa tuổi...">
+							<br>
 							<label for="classTimeOpen">Thời gian tạo lớp:</label>
 							<input type="date" id="classTimeOpen" name="classTimeOpen" placeholder="Nhập thời gian..."><label id="lbclassTimeOpen" style="color:red; font-size:13px ; font-style: italic "></label>
 							<br>
@@ -213,14 +214,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 							<br>
 							<label for="price">Học phí/buổi:<label class="lbStyle" id="lbprice" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<input type="text" id="price" name="price" placeholder="Nhập học phí...">
-
+							<br><input style="width:40%" type="text" id="price" name="price" placeholder="Nhập học phí...">
+							<br>
 							<label for="numberlessons">Tổng số buổi học:<label class="lbStyle" id="lbnumberlessons" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<input type="text" id="numberlessons" name="numberlessons" placeholder="Nhập số buổi học...">
-
+							<br><input style="width:40%" type="text" id="numberlessons" name="numberlessons" placeholder="Nhập số buổi học...">
+							<br>
 							<label for="students">Số lượng sinh viên tối đa:<label class="lbStyle" id="lbstudents" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<input type="text" id="students" name="students" placeholder="Nhập số lượng sinh viên...">
-
+							<br><input style="width:40%" type="text" id="students" name="students" placeholder="Nhập số lượng sinh viên...">
+							<br>
 							<label for="teacher">Giáo viên:<label class="lbStyle" id="lbteacher" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br>
 							<select name="teachers" id="teachers">
@@ -232,8 +233,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<?php endforeach; ?>
 							</select>
 							<br><label for="TeacherSalarie">Lương giáo viên/buổi:<label class="lbStyle" id="lbTeacherSalarie" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<input type="text" id="TeacherSalarie" name="TeacherSalarie" placeholder="Nhập lương giáo viên">
-
+							<br> <input style="width:40%" type="text" id="TeacherSalarie" name="TeacherSalarie" placeholder="Nhập lương giáo viên">
+<br>
 							<label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br><select name="SelectCondition" id="SelectCondition">
 								<option value="">Trạng thái</option>
@@ -243,7 +244,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							</select>
 							<br>
 
-							<button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px;" type="button" onclick="addDiscount()">Thêm khuyến mại</button>
+							<button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px; margin-bottom: 10px;" type="button" onclick="addDiscount()">Thêm khuyến mại</button>
 							<div id="addDiscount">
 							</div>
 
@@ -330,7 +331,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 	}
 
-	
+
 	function addDiscount() {
 		var container = document.getElementById("addDiscount");
 		var card = document.createElement("div");
@@ -338,11 +339,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		card.innerHTML = `
 		<label for="">Khuyến mại :<label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br>
-							
 							Thời gian bát đầu : <input type="date" name="startDiscount" id="startDiscount" ><br>
-							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount">
+							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount"><br>
 							<input type="text" name="discountpercent" id="discountpercent" placeholder="Nhập % khuyến mại">
-							<button class="delete-button" onclick="deleteDiscount(this)">Xóa</button>
+							<button class="delete-button" onclick="deleteDiscount(this)">Xóa khuyến mại</button>
   `;
 		container.appendChild(card);
 	}
@@ -516,21 +516,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		} else {
 			document.getElementById('lbschedules').textContent = "";
 		}
-        
-		if(startDiscount){
-		if(!startDiscount || !endDiscount || !discountpercent){ 
-            document.getElementById('lbdiscount').textContent = '*Bạn đang thiếu dữ liệu';
-			return;
-		}else if(startDiscount == endDiscount){
-			document.getElementById('lbdiscount').textContent = '*Lịch trùng nhau';
-			return;
-		}
-		else{
-			document.getElementById('lbdiscount').textContent = "";
-		}
-	}
 
-		
+		if (startDiscount) {
+			if (!startDiscount || !endDiscount || !discountpercent) {
+				document.getElementById('lbdiscount').textContent = '*Bạn đang thiếu dữ liệu';
+				return;
+			} else if (startDiscount == endDiscount) {
+				document.getElementById('lbdiscount').textContent = '*Lịch trùng nhau';
+				return;
+			} else {
+				document.getElementById('lbdiscount').textContent = "";
+			}
+		}
+
+
 
 
 		document.querySelector('.add-success').style.display = 'block';

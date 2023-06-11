@@ -6,8 +6,6 @@ $mahs = "";
 if (isset($_SESSION['MaHS']['MaHS'])) {
     $mahs = $_SESSION['MaHS']['MaHS'];
 }
-
-
 $resultHSLOP = setExits_hs_lop($mahs, $malop, $connection);
 $checkregister = "";
 $check = false;
@@ -33,12 +31,8 @@ if (isset($_POST['check'])) {
         $maph = checkExitPH_HS($mahs, $connection);
         if ($maph) {
             $checkregister = createTabHS_LOP($mahs, $malop, $connection);
-            if ($checkregister) {
-                $stRegister = $dataClass['SLHS'];
-                setHSDANGKI($stRegister, $malop, $connection);
-            } else {
-                $checkregister = false;
-            }
+            $stRegister = $dataClass['SLHS'];
+            setHSDANGKI($stRegister, $malop, $connection);
         }
     } else {
         header("Location: ../login_pages/login.php");
@@ -64,8 +58,17 @@ if (isset($_POST['check'])) {
         .buttonAdd {
             position: absolute;
             left: 30;
-            top: 100;
+            top: 100px;
+            padding: 8px;
+           
         }
+
+        .buttonAdd p{
+          margin: 0;
+          padding: 3px;
+        }
+
+        
 
         /* box add lớp */
         #overlay {
@@ -116,11 +119,42 @@ if (isset($_POST['check'])) {
             color: #0088cc;
         }
 
-        <?php if (isset($_SESSION['MaPH'])) : ?>#buttonAdd {
-            display: none;
+        #showButtons {
+            border: none;
+            border: 1px solid #0088cc;
+            font-size: 17px;
+           background-color: #ffd95c;
+           color:#0088cc;
         }
 
-        <?php endif ?>
+        #checkLoginButton{
+            margin-top: 10px;
+            margin-left: 50px;
+            border: none;
+            border: 1px solid #ffd95c;
+            font-size: 15px;
+            background-color: #0088cc;
+           color:#ffd95c;
+        }
+        #noButton{
+            margin-top: 10px;
+            margin-left: 5px;
+            border: none;
+            border: 1px solid #ffd95c;
+            font-size: 15px;
+           background-color: #0088cc;
+           color:#ffd95c;
+        }
+
+        
+
+        .text-regsister{
+            color:#0088cc;
+            font-size: 18px;
+            position: absolute;
+            left: 30;
+            top: 100px;
+        }
     </style>
 </head>
 
@@ -183,22 +217,21 @@ if (isset($_POST['check'])) {
                 <div id="box">
                     <button id="close-btn">&times;</button>
                     <?php $maph = false;
-                   if($mahs != ""){
-                    $maph = checkExitPH_HS($mahs, $connection);
-                    $discount = discount($malop, $connection);
-                    $day = date("Y/m/d");
-
-                    $startTime = $discount['TGBatDau'];
-                    $startTimeObj = new DateTime($startTime);
-                    $endTime = $discount['TGKetThuc'];
-                    $endTimeObj = new DateTime($endTime);
-                    $price = $discount['GiamHocPhi'];
-                    $pr = false;
-                    if((new DateTime($day)) >= $startTimeObj && (new DateTime($day)) <= $endTimeObj){
-                        $pr = true;
-                        insertDiscountMahs($malop, $mahs, 0, $price, $connection);
+                    if ($mahs != "") {
+                        $maph = checkExitPH_HS($mahs, $connection);
+                        $discount = discount($malop, $connection);
+                        $day = date("Y/m/d");
+                        $startTime = $discount['TGBatDau'];
+                        $startTimeObj = new DateTime($startTime);
+                        $endTime = $discount['TGKetThuc'];
+                        $endTimeObj = new DateTime($endTime);
+                        $price = $discount['GiamHocPhi'];
+                        $pr = false;
+                        if ((new DateTime($day)) >= $startTimeObj && (new DateTime($day)) <= $endTimeObj) {
+                            $pr = true;
+                            insertDiscountMahs($malop, $mahs, 0, $price, $connection);
+                        }
                     }
-                   }
                     ?>
                     <?php if (!$check) : ?>
                         <div>
@@ -231,7 +264,7 @@ if (isset($_POST['check'])) {
         </div>
         <?php if (!$resultHSLOP) : ?>
             <div class="buttonAdd">
-                <button id="showButtons">Bạn muốn đăng kí lớp học</button>
+                <button id="showButtons"><p>Bạn muốn đăng kí lớp học</p></button>
                 <div id="buttonContainer" class="hidden">
                     <button id="checkLoginButton">Có</button>
                     <button id="noButton">Không</button>
@@ -240,7 +273,7 @@ if (isset($_POST['check'])) {
 
         <?php endif ?>
         <?php if ($resultHSLOP) : ?>
-            <div>
+            <div class="text-regsister">
                 Lớp này bạn đã đăng kí
             </div>
             </div>
@@ -322,7 +355,18 @@ if (isset($_POST['check'])) {
                             </td>
                         </tr>
                         <tr>
-                           
+                            <th style="color: #0088cc">Khuyến mại :</th>
+                            <td style="color: #0088cc">
+                                <?php
+                                $discount = getDiscount($malop, $connection);
+
+                                if (empty($discount['GiamHocPhi'])) {
+                                    echo '0%';
+                                } else {
+                                    echo $discount['GiamHocPhi'] . '%';
+                                }
+                                ?>
+                            </td>
                         </tr>
                     </table>
                     <input style="display: none;" type="text" id="" name="deleteClass" value="helloToiDepTraiQuaDi">
@@ -349,6 +393,7 @@ if (isset($_POST['check'])) {
     closeBtn.addEventListener('click', () => {
         overlay.classList.remove('active');
         box.classList.remove('active');
+        location.reload();
     });
 
     $(document).ready(function() {

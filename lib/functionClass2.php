@@ -670,3 +670,16 @@ function insertDiscountMahs($Malop,$Mahs,$SoBuoiNghi,$GiamHocPhi, $connection)
         echo $e->getMessage();
     }
 }
+
+function getDiscount($malop,$connection){
+    $sql = "select * from lopghp where MaLop = ?";
+    try{
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $malop);
+        $statement->execute();
+        $data = $statement->fetch(PDO::FETCH_ASSOC);
+        return $data;
+    }catch(PDOException $e) {
+        $e->getMessage();
+    }
+}

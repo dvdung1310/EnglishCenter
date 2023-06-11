@@ -465,7 +465,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                                <?php else: ?><br>
                                 
-                                <label for=""><label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label></label>
+                                <label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label>
                               Thời gian bắt đầu : <input type="date" name="startDiscount" id="startDiscount" value="<?php echo $discount['TGBatDau']?>"><br>
                               Thời gian kết thúc : <input type="date" name="endDiscount" id="endDiscount" value="<?php echo $discount['TGKetThuc']?>"><br>
                               Khuyến mại : <input type="text" name="discountpercent" id="discountpercent" style="width: 40%;" value="<?php echo $discount['GiamHocPhi']?>">
@@ -736,11 +736,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		var card = document.createElement("div");
 		card.className = "card";
 		card.innerHTML = `
-		<label for=""><label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<br>
+		<label class="" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label>
 							Thời gian bát đầu : <input type="date" name="startDiscount" id="startDiscount" ><br>
-							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount">
-							<input type="text" name="discountpercent" id="discountpercent">
+							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount"> <br>
+							<input type="text" name="discountpercent" id="discountpercent" placeholder="Nhập % khuyến mại">
                             <label id="lbvv2"></label>
 							<button class="delete-button" onclick="deleteDiscount(this)">Xóa khuyến mại :</button>
   `;
