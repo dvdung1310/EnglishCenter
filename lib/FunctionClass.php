@@ -470,7 +470,7 @@ function ListTimeAttendance($malop, $connection)
 // đểm số lượng sinh viên đi học bằng thơi gian hôm đó
 function TotalStudentByTime($time, $connection)
 {
-    $sql = "select count(ThoiGian) as total from diemdanh where dd = 1 and ThoiGian = ?";
+    $sql = "select count(dd) as total from diemdanh where dd = 1 and ThoiGian = ?";
     try {
         $statement = $connection->prepare($sql);
         $statement->bindParam(1, $time);

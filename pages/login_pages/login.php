@@ -28,7 +28,7 @@ if ($test) {
         session_start();
         $mahs = getMaHS($userName,$connection);
         $_SESSION['MaHS'] = $mahs;
-        header("Location: ../home/home.php");
+        header("Location: ../main_pages/homeStudent.php");
         exit();
     } else {
         $check_parent = checkAcountParents($userName, $passWord, $connection);

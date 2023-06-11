@@ -2,54 +2,14 @@
 include "../../lib/FunctionClass2.php";
 $malop = $_GET['malop'];
 session_start();
-$mahs = "";
-if (isset($_SESSION['MaHS']['MaHS'])) {
-    $mahs = $_SESSION['MaHS']['MaHS'];
-}
-
-
-$resultHSLOP = setExits_hs_lop($mahs, $malop, $connection);
-$checkregister = "";
 $check = false;
-if (isset($_SESSION['MaHS'])) {
+if (isset($_SESSION['MaPH'])) {
     $check = true;
 }
-
-
-
-
-
-
 $dataClass = dataClassById($malop, $connection);
 $dataSchedules = dataSchedulesByMaLop($malop, $connection);
 $nameTeacher = dataTeacherByMaLop($malop, $connection);
 $result = listSchedules($connection);
-$nameCondition = '';
-if ($dataClass['TrangThai'] == 'Chưa mở') {
-    $nameCondition = 'Chưa mở';
-} else if ($dataClass['TrangThai'] == 'Đang mở') {
-    $nameCondition = 'Đang mở';
-} else {
-    $nameCondition = 'Đã đóng';
-}
-if (isset($_POST['check'])) {
-    if ($_SESSION['MaHS'] != null) {
-        $mahs = $_SESSION['MaHS']['MaHS'];
-        $maph = checkExitPH_HS($mahs, $connection);
-        if ($maph) {
-            $checkregister = createTabHS_LOP($mahs, $malop, $connection);
-            if ($checkregister) {
-                $stRegister = $dataClass['SLHS'];
-                setHSDANGKI($stRegister, $malop, $connection);
-            } else {
-                $checkregister = false;
-            }
-        }
-    } else {
-        header("Location: ../login_pages/login.php");
-        exit();
-    }
-}
 ?>
 <!DOCTYPE html>
 
@@ -120,6 +80,12 @@ if (isset($_POST['check'])) {
             cursor: pointer;
             color: #0088cc;
         }
+        <?php if(isset($_SESSION['MaPH'])): ?>
+            #buttonAdd{
+                display: none;
+            }
+            <?php endif ?>
+        
     </style>
 </head>
 
@@ -178,70 +144,8 @@ if (isset($_POST['check'])) {
 
             <!-- main -->
 
-            <div id="overlay">
-                <div id="box">
-                    <button id="close-btn">&times;</button>
-                    <?php $maph = false;
-                    $maph = checkExitPH_HS($mahs, $connection);
-                    $discount = discount($malop, $connection);
-                    $day = date("Y/m/d");
-                    $startTime = $discount['TGBatDau'];
-                    $startTimeObj = DateTime::createFromFormat('Y-m-d', $startTime);
-                    $endTime = $discount['TGKetThuc'];
-                    $endTimeObj = DateTime::createFromFormat('Y-m-d', $endTime);
-                    $price = $discount['GiamHocPhi'];
-                    $pr = true;
-                    insertDiscountMahs($malop,$mahs,0,$price,$connection);
-                    if($day >= $startTimeObj && $day <= $endTimeObj){
-                        $pr = true;
-                        
-                    }
-                    ?>
-                    <?php if (!$check) : ?>
-                        <div>
-                            <p>Thông báo !</p>
-                            <p>Bạn đã chưa đăng nhập tài khoản</p>
-                        </div>
-                    <?php
-
-
-                    elseif ($check && $maph) : ?>
-                        <div>
-                            <p>Thông báo !</p>
-                            <p>Bạn đã đăng kí thành công</p>
-                            <p><?php if($pr){
-                                echo "Bạn đã được khuyến mại : ";
-                                echo $price;
-                            }?></p>
-                        </div>
-                    <?php elseif (!$maph) : ?>
-                        <div>
-                            <p>Thông báo !</p>
-                            <p>Bạn đã chưa liên kết tài khoản phụ huynh</p>
-                        </div>
-                    <?php endif ?>
-                </div>
-            </div>
-
         </div>
         </div>
-        <?php if (!$resultHSLOP) : ?>
-            <div class="buttonAdd">
-                <button id="showButtons">Bạn muốn đăng kí lớp học</button>
-                <div id="buttonContainer" class="hidden">
-                    <button id="checkLoginButton">Có</button>
-                    <button id="noButton">Không</button>
-                </div>
-            </div>
-
-        <?php endif ?>
-        <?php if ($resultHSLOP) : ?>
-            <div>
-                Lớp này bạn đã đăng kí
-            </div>
-            </div>
-
-        <?php endif ?>
         <div class="modal-bg">
 
         </div>
@@ -318,7 +222,6 @@ if (isset($_POST['check'])) {
                             </td>
                         </tr>
                     </table>
-                    <input style="display: none;" type="text" id="" name="deleteClass" value="helloToiDepTraiQuaDi">
                 </form>
             </div>
         </div>
@@ -329,53 +232,7 @@ if (isset($_POST['check'])) {
     </footer>
 </body>
 <script>
-    const openBtn = document.getElementById('checkLoginButton');
-    const overlay = document.getElementById('overlay');
-    const box = document.getElementById('box');
-    const closeBtn = document.getElementById('close-btn');
-
-    openBtn.addEventListener('click', () => {
-        overlay.classList.add('active');
-        box.classList.add('active');
-    });
-
-    closeBtn.addEventListener('click', () => {
-        overlay.classList.remove('active');
-        box.classList.remove('active');
-    });
-
-    $(document).ready(function() {
-        $("#checkLoginButton").click(function() {
-            var province_id = $(this).val();
-            $.post(window.location.href, {
-                check: province_id
-            }, function(check) {
-                setTimeout(function() {
-                    document.documentElement.innerHTML = check;
-                }, 30000); // Đợi 30 giây (30000ms) trước khi load lại trang
-            });
-        });
-    });
-
-
-
-    var noButton = document.getElementById('noButton');
-
-    var showButton = document.getElementById('showButtons');
-    var buttonContainer = document.getElementById('buttonContainer');
-
-    showButton.addEventListener('click', function(event) {
-        buttonContainer.classList.toggle('hidden');
-        event.stopPropagation();
-    });
-
-    buttonContainer.addEventListener('click', function(event) {
-        event.stopPropagation();
-    });
-
-    noButton.addEventListener('click', function() {
-        buttonContainer.classList.toggle('hidden');
-    });
+    
 </script>
 
 </html>
