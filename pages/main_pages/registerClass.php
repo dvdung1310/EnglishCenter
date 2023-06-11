@@ -33,6 +33,10 @@ if (isset($_POST['check'])) {
             $checkregister = createTabHS_LOP($mahs, $malop, $connection);
             $stRegister = $dataClass['SLHS'];
             setHSDANGKI($stRegister, $malop, $connection);
+            
+            if($stRegister+1 == $dataClass['SLHSToiDa']){
+                setSLHSToiDa($malop,$connection);
+            }
         }
     } else {
         header("Location: ../login_pages/login.php");

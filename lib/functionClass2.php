@@ -683,3 +683,14 @@ function getDiscount($malop,$connection){
         $e->getMessage();
     }
 }
+
+function setSLHSToiDa($malop,$connection){
+    $sql = "update lop set TrangThai = 'Đang mở' where MaLop = ?";
+    try{
+        $statement = $connection->prepare($sql);
+        $statement->bindParam(1, $malop);
+        $statement->execute();
+    }catch(PDOException $e) {
+        $e->getMessage();
+    }
+}
