@@ -468,12 +468,13 @@ function ListTimeAttendance($malop, $connection)
 }
 
 // đểm số lượng sinh viên đi học bằng thơi gian hôm đó
-function TotalStudentByTime($time, $connection)
+function TotalStudentByTime($time,$malop, $connection)
 {
-    $sql = "select count(dd) as total from diemdanh where dd = 1 and ThoiGian = ?";
+    $sql = "select count(dd) as total from diemdanh where dd = 1 and ThoiGian = ? and MaLop = ?";
     try {
         $statement = $connection->prepare($sql);
         $statement->bindParam(1, $time);
+        $statement->bindParam(2, $malop);
         $statement->execute();
         $data = $statement->fetch(PDO::FETCH_ASSOC);
         return $data;

@@ -567,7 +567,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td><?php echo $j++ ?></td>
                                     <td><?php echo convertDateFormat($data['ThoiGian']) ?></td>
                                     <td><?php
-                                        $totalStudent = TotalStudentByTime($data['ThoiGian'], $connection);
+                                        $totalStudent = TotalStudentByTime($data['ThoiGian'],$malop, $connection);
                                         echo $totalStudent['total'] . '/' . $dataClass['SLHS']  ?></td>
                                 </tr>
 
