@@ -70,7 +70,7 @@
     color: rgba(0,0,0);
     cursor: pointer;
   }
-  .menubar-dropdown-item>a:hover{
+  .menubar-dropdown-item>a:hover , #btn-logout:hover{
     color: #0d7cd0;
   }
   .menubar-avt-wrap{
@@ -122,3 +122,4 @@
         height: 100%;
     }
   }
+

@@ -45,37 +45,12 @@ if (isset($_POST['submit'])) {
             
             insertNgayDK($maHS,date('Y-m-d'),$connection);
     
-            if ($_COOKIE['maph']!=' ') {
-                createTablPH_HS($maHS, $_COOKIE['maph'], $connection);
-            }
 
             $success = 'Tạo tài khoản thành công';
         }
     }
 
-    // if($userName!=""){
-    //     $result = checkExitUser($userName,$connection);
-    //     if($result){
-    //         $userName_error = "Tài khoản bạn đã bị trùng";
-    //     }else if(!empty($passWord) && !empty($confirmPassword)){
-    //         $check = testConfirmPassWord($passWord,$confirmPassword);
-    //         if($check){
-    //             $student = registerAcountStudent($userName, $passWord, $maHS,$connection);
-    //             if($student){
-    //               $success = "Bạn đã tạo tài khoản thành công";
-    //               $maph = $_GET['maph'];
-    //               if($maHS != null){
-    //                 createTablPH_HS($maHS,$maph,$connection);
-    //               }
-    //             }else{
-    //                 $success = "Lỗi !!!";
-    //             }
-    //         }else{
-    //             $confirmPassword_error = "Mật khẩu không trùng khớp";
-    //         }
-    //     }
 
-    // }
 
 }
 
@@ -95,11 +70,11 @@ if (isset($_POST['submit'])) {
     <div class="login-star">
         <img src="/assets/images/login_stars.png" alt="">
     </div>
-    <div id="contain">
+    <div id="contain" style="height: 97vh;">
 
         <div class="login-student" style=" width: 500px;">
             <div class="login-student-img">
-                <img src="/assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/logo-web.png" alt="">
             </div>
 
             <div class="login-student-form">

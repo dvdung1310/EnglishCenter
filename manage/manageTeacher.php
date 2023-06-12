@@ -99,17 +99,19 @@ $jsonListClass = json_encode($listClassOfTeacher);
 <body>
 	<header>
 		<div class="logo">
-			<img src="../assets/images/Apollo-Logo.png" alt="Logo">
+			<img src="../assets/images/logo-web.png" alt="Logo">
 
 		</div>
 		<nav>
 			<ul>
-				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
+				<li><a href="./ListClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a style="color: #0088cc;" href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/ManageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
 				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+				<li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+
 			</ul>
 		</nav>
 	</header>
@@ -145,6 +147,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 			</thead>
 			<tbody class="tbody-1">
 				<?php $i = 1;
+				$nam=0;$nu = 0;
 				if (!$listTeacher)
 					echo ' <h2>Không tìm thấy kết quả phù hợp "' . $_POST['keyword'] . '"</h2>';
 				else {
@@ -153,6 +156,9 @@ $jsonListClass = json_encode($listClassOfTeacher);
 							<td><?php echo $i++ ?></td>
 							<td><?php echo $teacher['MaGV']; ?></td>
 							<td><?php echo $teacher['TenGV']; ?></td>
+
+							<?php if($teacher['GioiTinh'] == 'Nam') $nam++;
+							else $nu++; ?>
 
 							<td><?php echo $teacher['GioiTinh']; ?></td>
 							<td><?php echo $teacher['Tuoi']; ?></td>
@@ -491,6 +497,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 				</div>
 			</div>
 		</div>
+		<p style="margin-left: 80%; font-style:italic; font-size:13px"> <?php echo '*Tổng số giáo viên: '. $i-1 . '  Nam: '.$nam.'  Nữ: '.$nu ?> </p>
 
 
 

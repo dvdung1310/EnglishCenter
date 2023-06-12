@@ -7,12 +7,7 @@ $listTeacher = listTeacher($connection);
 $dataClassOnOff = dataClassOnOff('Đang mở', $connection);
 // lịch của giáo viên
 $timeTeacher = timeTeacher($connection);
-// $arrTime = array();
-// $i = 0 ;
-// foreach ($listClass as $dataCodeClass) {
-// 	$arrTime[$i] = $dataCodeClass;
-// 	$i++;
-// };
+
 $listtimeTeacher = json_encode($timeTeacher);
 
 $arr = array();
@@ -95,15 +90,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 	<header>
 		<div class="logo">
-			<img src="../assets/images/Apollo-Logo.png" alt="Logo">
+			<img src="../assets/images/logo-web.png" alt="Logo">
 		</div>
 		<nav>
 			<ul>
-				<li><a style="color: #0088cc;" href="../manage/ListClass.php">Quản lý lớp học</a></li>
-				<li><a href="../manage/manageStudent.php">Quản lý học viên</a></li>
-				<li><a href="manageTeacher.php">Quản lý giáo viên</a></li>
-				<li><a href="manageParent.php">Quản lý phụ huynh</a></li>
-				<li><a href="#">Quản lý tài khoản</a></li>
+			<li><a style="color: #0088cc;"href="./ListClass.php">Quản lý lớp học</a></li>
+                <li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
+                <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
+                <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
+                <li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+                <li><a  href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+                <li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+
 			</ul>
 		</nav>
 	</header>

@@ -59,21 +59,12 @@ if (isset($_POST['submit'])) {
         $email = "";
     } else {
         $email = $_POST['email'];
-        if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+        if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             $error_email = "Nhập Email không hợp lệ";
         }
     }
 
-    if (empty($_POST['maph'])) {
-        $maph = ' ';
-        $error_check = '';
-    } else {
-        $maph = $_POST['maph'];
-        $check = checkCodeParents($maph, $connection);
-        if (!$check) {
-            $error_check = "Mã phụ huynh không trùng khớp";
-        }
-    }
+
 }
 
 $check_empty = false;
@@ -91,7 +82,6 @@ if ($check_empty) {
         $email = ' ';
     }
 
-    setcookie('maph', $maph);
     setcookie('name', $name);
     setcookie('gender', $gender);
     setcookie('date', $date);
@@ -102,15 +92,7 @@ if ($check_empty) {
     header('Location: RegisterStudent2.php');
 }
 
-// if($test && $check){
-//     $result = registerTableStudent($name,$gender,$date,$age,$address,$phone,$email,$connection);
-//     if($result != null){
-//         header("Location: RegisterAcounHS.php?id=$result&&maph=$maph");
-//         exit();
-//     }
-// }else {
-//     $error_check = "Mã phụ huynh không trùng khớp";
-// }
+
 
 ?>
 
@@ -133,7 +115,7 @@ if ($check_empty) {
         <div class="login-student">
             <div class="login-student-img">
 
-                <img src="../../assets/images/Apollo-Logo.png" alt="">
+                <img src="../../assets/images/logo-web.png" alt="">
             </div>
 
             <div style="padding: 0 100px;" class="login-student-form">
@@ -214,9 +196,7 @@ if ($check_empty) {
                         echo $error_email;
                         ?>
                     </p>
-                    <div>
-                        <input name="maph" class="login-student-form-input" type="text" placeholder="Mã phụ huynh (nếu có) : ">
-                    </div>
+                   
                     <p style="color:red;font-size : 18px">
                         <?php
                         if (isset($_POST['submit'])) {

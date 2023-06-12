@@ -1,31 +1,31 @@
 <?php
 require '../../lib/functionUserTeacher.php';
 
-// $data = json_decode(file_get_contents('php://input'), true);
 
-
-// $maGV = $_POST['key1'];
-
-
-
-// session_start();
-// $maGV = $_SESSION['MaGV'];
-
-
-$maGV = 18;
+session_start();
+$maGV = $_SESSION['MaGV'];
 
 
 $listBill  =  selectLuongGV($connection, $maGV);
 $listSoBuoiDayAll =  selectSoBuoiDayAll($connection);
 $tenGV = selectTenGV($connection,$maGV);
-
+$detailTeacher = selectTeacher($connection, $maGV);
 
 $jslistBill = json_encode($listBill);
 $jslistSoBuoiDayAll = json_encode($listSoBuoiDayAll);
 $jsmaGV  =  json_encode($maGV);
 $jstenGV  =  json_encode($tenGV);
+$jsdetailTeacher = json_encode($detailTeacher);
 
-
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['btn-logout'])) {
+  
+      session_start();
+      session_unset();
+      session_destroy();
+      header("Location: ../home/home.php");
+    }
+  }
 
 ?>
 <!DOCTYPE html>
@@ -37,7 +37,10 @@ $jstenGV  =  json_encode($tenGV);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/assets/css/home.css">
     <link rel="stylesheet" href="/assets/css/userTeacherWage.css">
-    <title>Document</title>
+
+    
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <title>Giáo viên</title>
 </head>
 
 <body>
@@ -70,8 +73,10 @@ $jstenGV  =  json_encode($tenGV);
 
 
             </tbody>
+            
 
         </table>
+        <p id="emty"></p>
     </div>
 
 
@@ -82,36 +87,57 @@ $jstenGV  =  json_encode($tenGV);
 
 <script>
     var tenGV = <?php print_r($jstenGV); ?>; 
-    const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
-<a class="PageLogoWrap" >
+    var detailTeacher = <?php print_r($jsdetailTeacher); ?>;
+    const authMenuBarHTMl = ` <div style= "position: absolute" class="PageMenuBar">
+<a class="PageLogoWrap">
     <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
 </a>
 <div class="menubar-left">
-  <a class="menubar-nav" href="homeTeacher.php">Thông tin lớp dạy</a>
-  <a class="menubar-nav"  style="color:darkcyan" href="userTeacher_wage.php">Lịch sử lương</a>
-  <a class="menubar-nav">Tab3</a>
-  <a class="menubar-nav last-nav">Tab4</a>
+  <a class="menubar-nav"  href="./homeTeacher.php" >Thông tin lớp dạy</a>
+  <a class="menubar-nav  last-nav"  href="./userTeacher_wage.php" style="color:darkcyan">Lịch sử lương</a>
+
   <div class="menubar-info-wrap">
     <div class="menubar-info">
-      <div class="menubar-name">`+ tenGV[0].TenGV +`</div>
-      <div class="dropdown">
-          <button class="menubar-avt-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class="menubar-name">` + tenGV[0].TenGV + `</div>
+      
+      
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
             <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Chi tiết lớp học</a></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Teacher.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
           </ul>
         </div>
+        
+
     </div>
   </div>
 </div>
   
 </div>`
-
     //isAuthentication === true
     document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+
+var $ = document.querySelector.bind(document)
+var $$ = document.querySelectorAll.bind(document)
+
+$(".menubar-drop-btn").onclick = ()=>{
+   
+    $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+ 
+}
+var img2 = document.querySelector(".menubar-avt");
+    if (detailTeacher[0].GioiTinh == "Nam") {
+    
+        img2.src = "../../assets/images/Teacher-male-icon.png";
+    } else {
+        
+        img2.src = "../../assets/images/Teacher-female-icon.png";
+    }
+
     var dsHoaDon = <?php print_r($jslistBill); ?>;
     var dssoBuoiDay = <?php print_r($jslistSoBuoiDayAll); ?>;
     var MaGV  = <?php print_r($jsmaGV); ?>;

@@ -1,7 +1,10 @@
 <?php
 require '../../lib/functionPersonal.php';
 
-$mahs = 30;
+session_start();
+$ma = $_SESSION['MaHS'];
+
+$mahs = $ma['MaHS'];
 
 $detailStudent = selectStudent($connection, $mahs);
 $accountStudent = selectAcountStudent($connection, $mahs);
@@ -41,6 +44,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         updatePassHS($connection, $username, $pass);
         header("Location: personal_Student.php");
     }
+    if (isset($_POST['btn-logout'])) {
+
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../home/home.php");
+      }
+
 }
 
 
@@ -57,6 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../assets/fonts/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="../../assets/css/home.css" />
     <link rel="stylesheet" href="../../plugins/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css">
 
     <title>Thông tin cá nhân</title>
 </head>
@@ -65,7 +77,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="personal-wrap">
         <div id="menu-bar"></div>
 
-        <div class="personal-bg-wrap"></div>
+        <div class="personal-bg-wrap">
+        <h2 style="margin-left:40%;  margin-top: 10px;">  Thông tin cá nhân</h2>
+        </div>
         <div class="personal-inner">
             <div class="personal-avt-wrap">
                 <img src="../../assets/images/Student-male-icon.png" alt="" class="personal-avt">
@@ -186,12 +200,55 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
     <!--slick.js-->
     <!-- <script src="./personal.js"></script> -->
-    <script src="../common/menubar.js"></script>
+    <!-- <script src="../common/menubar.js"></script> -->
+    <script>
+          var detailStudent = <?php print_r($jsdetailStudent); ?>;
+    var accountStudent = <?php print_r($jsaccountStudent); ?>;
+ 
+    const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
+<a class="PageLogoWrap" href="../main_pages/homeStudent.php">
+    <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
+</a>
+<div class="menubar-left">
+  <a class="menubar-nav"  href="./userStudent_class.php" >Thông tin lớp học</a>
+  <a class="menubar-nav  last-nav" href="./userStudent_link.php">Liên kết với phụ huynh</a>
+
+  <div class="menubar-info-wrap">
+    <div class="menubar-info">
+      <div class="menubar-name">` +  detailStudent[0].TenHS + `</div>
+     
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
+            <img alt="" class="menubar-avt">
+          </button>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Student.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
+          </ul>
+        </div>
+    </div>
+  </div>
+</div>
+
+</div>`
+  //isAuthentication === true
+  document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+  var $ = document.querySelector.bind(document)
+var $$ = document.querySelectorAll.bind(document)
+
+
+
+$(".menubar-drop-btn").onclick = ()=>{
+   
+    $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+ 
+}
+    </script>
 </body>
 
 <script>
-    var detailStudent = <?php print_r($jsdetailStudent); ?>;
-    var accountStudent = <?php print_r($jsaccountStudent); ?>;
+  
 
 
     document.getElementById('id').innerHTML = detailStudent[0].MaHS;
@@ -202,10 +259,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     document.getElementById('gender').innerHTML = detailStudent[0].GioiTinh;
     var img = document.querySelector(".personal-avt");
+    var img2 = document.querySelector(".menubar-avt");
     if (detailStudent[0].GioiTinh == "Nam") {
         img.src = "../../assets/images/Student-male-icon.png";
+        img2.src =  "../../assets/images/Student-male-icon.png";
     } else {
         img.src = "../../assets/images/Student-female-icon.png";
+        img2.src =  "../../assets/images/Student-female-icon.png";
     }
 
     var selectTag = document.getElementById("gender-input");

@@ -42,9 +42,12 @@ body{
 .personal-center-inner{
 
 }
+.menubar-nav:hover {
+    background-color: turquoise;
+}
 .personal-inner{
     transform: translateY(-120px);
-    width:380px;
+    width:420px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,4 +157,53 @@ body{
 }
 .personal-accept:hover{
     box-shadow: #579d2d 0px 0px 4px;
+}
+#btn-nofi{
+    border: none;
+    margin-left: 10px;
+    background-color: white;
+    position: absolute;
+    z-index: 1000;
+    top: 20px;
+    right: 201px;
+    background-color: unset;
+}
+  
+  #div-nofi{
+    display: none;
+    position: absolute;
+    
+    background-color: #f2f2f2;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    height: 400px;
+    max-height: 380px;
+    background-color: lavender;
+    overflow-y: auto;
+    border: ridge;
+    z-index: 1000;
+    top: 47px;
+    right: 225px;
+  }
+
+  #nofi{
+    border: solid 2px;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 20px;
+  }
+
+  #nofi button {
+    background-color: rgb(0 125 124);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-right: 10px;
+    cursor: pointer;
+  }
+
+  #btn-logout:hover{
+    cursor: pointer;
 }

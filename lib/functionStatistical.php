@@ -194,7 +194,7 @@ function listCountHSDD($connection)
 //  ds hs nghi nhieu
 function listHSAbsent($connection)
 {
-    $sql = 'SELECT diemdanh.MaHS,MaLop,TenHS ,COUNT(ThoiGian) AS "so" FROM diemdanh INNER JOIN hocsinh WHERE dd = "0" and diemdanh.MaHS = hocsinh.MaHS GROUP BY MaHS,MaLop,TenHS ORDER BY "so" DESC LIMIT 10;';
+    $sql = 'SELECT diemdanh.MaHS,MaLop,TenHS ,COUNT(ThoiGian) AS "so" FROM diemdanh INNER JOIN hocsinh WHERE dd = "0" and diemdanh.MaHS = hocsinh.MaHS GROUP BY MaHS,MaLop,TenHS ORDER BY COUNT(ThoiGian) DESC LIMIT 10;';
     
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

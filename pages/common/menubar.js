@@ -39,7 +39,7 @@ const authMenuBarHTMl = ` <div class="PageMenuBar">
   
 </div>`
 //isAuthentication === true
- document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
 var $ = document.querySelector.bind(document)
 var $$ = document.querySelectorAll.bind(document)
 

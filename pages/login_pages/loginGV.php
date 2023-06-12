@@ -58,11 +58,11 @@ if ($test) {
         <img src="/assets/images/login_stars.png" alt="">
        
     </div>
-    <div id="contain">
+    <div id="contain" style=" height: 97vh;">
 
         <div class="login-student" style="width: 500px;">
             <div class="login-student-img">
-                <img src="/assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/logo-web.png" alt="">
             </div>
 
             <div class="login-student-form">

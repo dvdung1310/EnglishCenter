@@ -1,0 +1,83 @@
+.PageMenuBar {
+
+    width: unset;
+}
+.menubar-nav:hover {
+    background-color: turquoise;
+}
+
+#content {
+    margin-top: 100px;
+  
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+#btn-logout:hover{
+    cursor: pointer;
+}
+
+.tab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.tab li {
+    float: left;
+}
+
+.tab a {
+    display: block;
+    color: #000;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    border-bottom: 2px solid transparent;
+}
+
+.tab a:hover {
+    border-bottom: 2px solid #ccc;
+    background-color: lightblue;
+}
+
+.tabcontent {
+    display: none;
+    padding: 20px;
+    /* border: 1px solid #ccc; */
+    border-top: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+}
+
+.tabcontent h3 {
+    margin-top: 0;
+}
+
+.tablinks.active {
+    background-color: steelblue;
+}
+
+.class{
+    border-style: inset;
+    border-color: peru;
+    border-radius: 10px;
+
+    padding: 10px;
+    margin: 20px;
+    width: 80%;
+  
+    
+}
+#container-class, #container-class-close{
+    max-height: 700px;
+    overflow-y: auto;
+}
+
+#class-active, #class-close{
+    margin-left: 70px;
+    
+}
+#tbody-class td{
+    padding: 20px;
+}

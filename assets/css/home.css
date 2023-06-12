@@ -35,6 +35,11 @@
   width: 180px;
 
 }
+
+#btn-logout:hover{
+  cursor: pointer;
+}
+
 .PageLogoImg{
   width: 100%;
 }
@@ -798,3 +803,4 @@
     transform: rotate(7deg);
 }
 }
+

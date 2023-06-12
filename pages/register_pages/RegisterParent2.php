@@ -43,37 +43,13 @@ if (isset($_POST['submit'])) {
             $maph = registerTableParents($_COOKIE['name'], $_COOKIE['gender'], $_COOKIE['date'], $_COOKIE['age'], $_COOKIE['address'], $_COOKIE['phone'], $_COOKIE['email'], $connection);
             registerAcountParents($userName, $passWord, $maph, $connection);
     
-            if ($_COOKIE['mahs']!=' ') {
-                createTablPH_HS( $_COOKIE['mahs'],$maph, $connection);
-            }
+           
 
             $success = 'Tạo tài khoản thành công';
         }
     }
 
-    // if($userName!=""){
-    //     $result = checkExitUser($userName,$connection);
-    //     if($result){
-    //         $userName_error = "Tài khoản bạn đã bị trùng";
-    //     }else if(!empty($passWord) && !empty($confirmPassword)){
-    //         $check = testConfirmPassWord($passWord,$confirmPassword);
-    //         if($check){
-    //             $student = registerAcountStudent($userName, $passWord, $maHS,$connection);
-    //             if($student){
-    //               $success = "Bạn đã tạo tài khoản thành công";
-    //               $mahs = $_GET['mahs'];
-    //               if($maHS != null){
-    //                 createTablPH_HS($maHS,$mahs,$connection);
-    //               }
-    //             }else{
-    //                 $success = "Lỗi !!!";
-    //             }
-    //         }else{
-    //             $confirmPassword_error = "Mật khẩu không trùng khớp";
-    //         }
-    //     }
 
-    // }
 
 }
 
@@ -93,11 +69,11 @@ if (isset($_POST['submit'])) {
     <div class="login-star">
         <img src="/assets/images/login_stars.png" alt="">
     </div>
-    <div id="contain">
+    <div id="contain" style="height:97vh">
 
         <div class="login-student" style=" width: 500px;">
             <div class="login-student-img">
-                <img src="/assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/logo-web.png" alt="">
             </div>
 
             <div class="login-student-form">

@@ -54,10 +54,6 @@ function hienthids(kind, dsHoaDon_vl) {
         document.querySelector(".tbody-5").innerHTML = '';
     }
     else {
-
-        
-
-
         if (kind) {
             filteredData = dsHoaDon_vl.filter(function (hoaDon) {
                 return hoaDon['Loai'] === kind;

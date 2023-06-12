@@ -15,7 +15,10 @@
     width: 100%;
     border-collapse: collapse;
   }
-  
+  #btn-logout:hover{
+    cursor: pointer;
+}
+
   #table-1 th,
   #table-1 td {
     padding: 10px;

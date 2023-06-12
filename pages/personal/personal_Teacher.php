@@ -1,7 +1,8 @@
 <?php
 require '../../lib/functionPersonal.php';
 
-$magv = 17;
+session_start();
+$magv= $_SESSION['MaGV'];
 
 $detailTeacher = selectTeacher($connection, $magv);
 $accountTeacher = selectAcountTeacher($connection, $magv);
@@ -29,10 +30,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: personal_Teacher.php");
     }
 
-
-
-
-
     if (isset($_POST['new-pass'])) {
         $username = $_POST['username'];
         $pass = $_POST['new-pass'];
@@ -40,7 +37,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         updatePassGV($connection, $username, $pass);
         header("Location: personal_Teacher.php");
     }
+    if (isset($_POST['btn-logout'])) {
+
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../home/home.php");
+      }
 }
+
 
 
 ?>
@@ -56,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../assets/fonts/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="../../assets/css/home.css" />
     <link rel="stylesheet" href="../../plugins/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="../../assets/css/common.css">
     <title>Thông tin cá nhân</title>
 </head>
 
@@ -64,7 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="personal-wrap">
         <div id="menu-bar"></div>
 
-        <div class="personal-bg-wrap"></div>
+        <div class="personal-bg-wrap">
+        <h2 style="margin-left:40%;  margin-top: 10px;">  Thông tin cá nhân</h2>
+        </div>
         <div class="personal-inner">
             <div class="personal-avt-wrap">
                 <img  alt="" class="personal-avt">
@@ -188,19 +195,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
         </div>
-
+<a href="../main_pages/homeTeacher.php"></a>
     </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!--boostrap.js-->
     <script src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
     <!--slick.js-->
     <!-- <script src="./personal.js"></script> -->
-    <script src="../common/menubar.js"></script>
-</body>
-
-<script>
-    var detailTeacher = <?php print_r($jsdetailTeacher); ?>;
+    <!-- <script src="../common/menubar.js"></script> -->
+    <script>
+        var detailTeacher = <?php print_r($jsdetailTeacher); ?>;
     var accountTeacher = <?php print_r($jsaccountTeacher); ?>;
+    const authMenuBarHTMl = ` <div style= "position: absolute" class="PageMenuBar">
+<a class="PageLogoWrap">
+    <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
+</a>
+<div class="menubar-left">
+  <a class="menubar-nav"  href="../main_pages/homeTeacher.php" >Thông tin lớp dạy</a>
+  <a class="menubar-nav last-nav"  href="../main_pages/userTeacher_wage.php">Lịch sử lương</a>
+ 
+  
+  <div class="menubar-info-wrap">
+    <div class="menubar-info">
+      <div class="menubar-name">` + detailTeacher[0].TenGV+ `</div>
+      
+      
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
+            <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
+          </button>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Teacher.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
+          </ul>
+        </div>
+        
+
+    </div>
+  </div>
+</div>
+  
+</div>`
+    //isAuthentication === true
+    document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+
+var $ = document.querySelector.bind(document)
+var $$ = document.querySelectorAll.bind(document)
+
+$(".menubar-drop-btn").onclick = ()=>{
+   
+    $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+ 
+}
+
+    </script>
+</body>
+<script>
+    
 
 
     document.getElementById('id').innerHTML = detailTeacher[0].MaGV;
@@ -211,11 +263,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     document.getElementById('gender').innerHTML = detailTeacher[0].GioiTinh;
     var img = document.querySelector(".personal-avt");
-
+    var img2 = document.querySelector(".menubar-avt");
     if (detailTeacher[0].GioiTinh == "Nam") {
         img.src = "../../assets/images/Teacher-male-icon.png";
+        img2.src = "../../assets/images/Teacher-male-icon.png";
     } else {
         img.src = "../../assets/images/Teacher-female-icon.png";
+        img2.src = "../../assets/images/Teacher-female-icon.png";
     }
 
 

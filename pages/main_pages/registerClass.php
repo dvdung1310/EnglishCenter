@@ -10,8 +10,19 @@ $resultHSLOP = setExits_hs_lop($mahs, $malop, $connection);
 $checkregister = "";
 $check = false;
 if (isset($_SESSION['MaHS'])) {
+
     $check = true;
+    $maHS = $_SESSION['MaHS'];
+    $tenHS = selecttenHS($connection, $maHS['MaHS']);
+$detailStudent = selectStudent($connection, $maHS['MaHS']);
+$jstenHS = json_encode($tenHS);
+$jsdetailStudent = json_encode($detailStudent);
+$jscheck = json_encode($check);
 }
+
+
+
+
 
 $dataClass = dataClassById($malop, $connection);
 $dataSchedules = dataSchedulesByMaLop($malop, $connection);
@@ -33,16 +44,29 @@ if (isset($_POST['check'])) {
             $checkregister = createTabHS_LOP($mahs, $malop, $connection);
             $stRegister = $dataClass['SLHS'];
             setHSDANGKI($stRegister, $malop, $connection);
-            
-            if($stRegister+1 == $dataClass['SLHSToiDa']){
-                setSLHSToiDa($malop,$connection);
+
+            if ($stRegister + 1 == $dataClass['SLHSToiDa']) {
+                setSLHSToiDa($malop, $connection);
             }
+          
         }
     } else {
         header("Location: ../login_pages/login.php");
         exit();
     }
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+    if (isset($_POST['btn-logout'])) {
+
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../home/home.php");
+    }
+}
+
+
 ?>
 <!DOCTYPE html>
 
@@ -53,7 +77,9 @@ if (isset($_POST['check'])) {
     <title>Chi tiết lớp học</title>
     <link rel="stylesheet" href="../../assets/css/manage.css">
     <link rel="stylesheet" href="../../assets/css/home.css" />
+    <link rel="stylesheet" href="../../assets/css/common.css">
     <script src="https://code.jquery.com/jquery-3.6.4.js"></script>
+
     <style>
         .hidden {
             display: none;
@@ -64,15 +90,15 @@ if (isset($_POST['check'])) {
             left: 30;
             top: 100px;
             padding: 8px;
-           
+
         }
 
-        .buttonAdd p{
-          margin: 0;
-          padding: 3px;
+        .buttonAdd p {
+            margin: 0;
+            padding: 3px;
         }
 
-        
+
 
         /* box add lớp */
         #overlay {
@@ -127,38 +153,55 @@ if (isset($_POST['check'])) {
             border: none;
             border: 1px solid #0088cc;
             font-size: 17px;
-           background-color: #ffd95c;
-           color:#0088cc;
+            background-color: #ffd95c;
+            color: #0088cc;
         }
 
-        #checkLoginButton{
+        #checkLoginButton {
             margin-top: 10px;
             margin-left: 50px;
             border: none;
             border: 1px solid #ffd95c;
             font-size: 15px;
             background-color: #0088cc;
-           color:#ffd95c;
+            color: #ffd95c;
         }
-        #noButton{
+
+        #noButton {
             margin-top: 10px;
             margin-left: 5px;
             border: none;
             border: 1px solid #ffd95c;
             font-size: 15px;
-           background-color: #0088cc;
-           color:#ffd95c;
+            background-color: #0088cc;
+            color: #ffd95c;
         }
 
-        
 
-        .text-regsister{
-            color:#0088cc;
+
+        .text-regsister {
+            color: #0088cc;
             font-size: 18px;
             position: absolute;
             left: 30;
             top: 100px;
         }
+
+
+        .menubar-nav:hover {
+            background-color: turquoise;
+        }
+        #btn-logout{
+        all:unset;
+      
+    border: none;
+    background-color: unset;
+
+    }
+    #btn-logout:hover{
+        cursor: pointer;
+        background-color: #0d7cd0;
+    }
     </style>
 </head>
 
@@ -173,46 +216,17 @@ if (isset($_POST['check'])) {
 
                 if (!$check) : ?>
                     <div class="PageMenuBar">
-                        <a class="PageLogoWrap">
+                        <a class="PageLogoWrap" href="../home/home.php">
                             <img class="PageLogoImg" src="../../assets/images/logo-web.png" />
                         </a>
                         <div class="menubar-btnwrap">
-                            <a href="/pages/home/home.html" class="PageLogoBtn">Login LoDuHi</a>
+                            <a href="../login_pages/login.php" class="PageLogoBtn">Login LoDuHi</a>
                         </div>
                     </div>
                 <?php endif ?>
 
                 <!-- khi đã đăng nhập -->
-                <?php
-                if ($check) : ?>
-                    <div class="PageMenuBar">
-                        <a class="PageLogoWrap">
-                            <img src="../../assets/images/logo-web.png" class="PageLogoImg" />
-                        </a>
-                        <div class="menubar-left">
-                            <a class="menubar-nav">Tab1</a>
-                            <a class="menubar-nav">Tab2</a>
-                            <a class="menubar-nav">Tab3</a>
-                            <a class="menubar-nav last-nav">Tab4</a>
-                            <div class="menubar-info-wrap">
-                                <div class="menubar-info">
-                                    <div class="menubar-name"></div>
-                                    <div class="dropdown">
-                                        <button class="menubar-avt-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-                                            <li><a class="dropdown-item" href="#">Chi tiết lớp học</a></li>
-                                            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
 
-                    </div>
-                <?php endif ?>
             </div>
 
             <!-- main -->
@@ -268,7 +282,9 @@ if (isset($_POST['check'])) {
         </div>
         <?php if (!$resultHSLOP) : ?>
             <div class="buttonAdd">
-                <button id="showButtons"><p>Bạn muốn đăng kí lớp học</p></button>
+                <button id="showButtons">
+                    <p>Bạn muốn đăng kí lớp học</p>
+                </button>
                 <div id="buttonContainer" class="hidden">
                     <button id="checkLoginButton">Có</button>
                     <button id="noButton">Không</button>
@@ -383,6 +399,59 @@ if (isset($_POST['check'])) {
         <p>© 2023 Hệ thống quản lý giáo dục. All rights reserved.</p>
     </footer>
 </body>
+<script>
+    var check = <?php print_r($jscheck); ?>;
+    var tenHS = <?php print_r($jstenHS); ?>;
+    var detailStudent = <?php print_r($jsdetailStudent); ?>;
+    if (check) {
+        const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
+<a class="PageLogoWrap" href="../main_pages/homeStudent.php">
+    <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
+</a>
+<div class="menubar-left">
+  <a class="menubar-nav"  href="./userStudent_class.php" >Thông tin lớp học</a>
+  <a class="menubar-nav  last-nav" href="./userStudent_link.php">Liên kết với phụ huynh</a>
+
+  <div class="menubar-info-wrap">
+    <div class="menubar-info">
+      <div class="menubar-name">` + tenHS[0].TenHS + `</div>
+     
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
+            <img alt="" class="menubar-avt">
+          </button>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Student.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
+          </ul>
+        </div>
+    </div>
+  </div>
+</div>
+
+</div>`
+        //isAuthentication === true
+        document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+
+
+
+        document.querySelector(".menubar-drop-btn").onclick = () => {
+
+            document.querySelector(".menubar-dropdown-menu").classList.toggle("menubar-show")
+
+        }
+
+        var img2 = document.querySelector(".menubar-avt");
+        if (detailStudent[0].GioiTinh == "Nam") {
+
+            img2.src = "../../assets/images/Student-male-icon.png";
+        } else {
+
+            img2.src = "../../assets/images/Student-female-icon.png";
+        }
+}
+</script>
 <script>
     const openBtn = document.getElementById('checkLoginButton');
     const overlay = document.getElementById('overlay');

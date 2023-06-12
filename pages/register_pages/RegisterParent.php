@@ -62,17 +62,7 @@ if (isset($_POST['submit'])) {
         }
     }
 
-    if (empty($_POST['mahs'])) {
-        $mahs = ' ';
-        $error_check = '';
-    } else {
-        $mahs = $_POST['mahs'];
-        echo $mahs;
-        $check = checkCodeStudents($mahs, $connection);
-        if (!$check) {
-            $error_check = "Mã học sinh không trùng khớp";
-        }
-    }
+    
 }
 
 $check_empty = false;
@@ -85,7 +75,7 @@ if ($check_empty) {
     
     if (empty($email)) $email = ' ';
 
-    setcookie('mahs', $mahs);
+   
     setcookie('name', $name);
     setcookie('gender', $gender);
     setcookie('date', $date);
@@ -115,11 +105,11 @@ if ($check_empty) {
     <div class="login-star">
         <img src="/assets/images/login_stars.png" alt="">
     </div>
-    <div id="contain">
+    <div id="contain" style="  height: 97vh;">
         <div class="login-student">
             <div class="login-student-img">
 
-                <img src="/assets/images/Apollo-Logo.png" alt="">
+                <img src="/assets/images/logo-web.png" alt="">
             </div>
 
             <div style="padding: 0 100px;" class="login-student-form">
@@ -200,9 +190,7 @@ if ($check_empty) {
                         echo $error_email;
                         ?>
                     </p>
-                    <div>
-                        <input name="mahs" class="login-student-form-input" type="text" placeholder="Mã học sinh (nếu có) : ">
-                    </div>
+                  
                     <p style="color:red;font-size : 18px">
                         <?php
                         if (isset($_POST['submit']))

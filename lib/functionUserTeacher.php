@@ -326,3 +326,23 @@ function selectTenGV($connection, $magv)
         echo $e->getMessage();
     }
 }
+
+
+
+    // select tt giao vien
+
+    function selectTeacher($connection,$ma){
+        $sql = "select * from giaovien where MaGV = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$ma]);
+
+            $listClass  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+
+            $connection = null;
+            return $listClass;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }

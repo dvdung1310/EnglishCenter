@@ -46,16 +46,18 @@ $jslistBill = json_encode($listBill);
 <body>
     <header>
         <div class="logo">
-            <img src="../assets/images/Apollo-Logo.png" alt="Logo">
+            <img src="../assets/images/logo-web.png" alt="Logo">
         </div>
         <nav>
             <ul>
-                <li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
+                <li><a href="./ListClass.php">Quản lý lớp học</a></li>
                 <li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
                 <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
                 <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
                 <li><a  style="color: #0088cc;"href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
                 <li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+                <li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+
             </ul>
         </nav>
     </header>
@@ -64,7 +66,7 @@ $jslistBill = json_encode($listBill);
         <div class="tab">
             <button class="tablinks" id='btn-tab1'>Thu học phí</button>
             <button class="tablinks" id='btn-tab2'>Chi phí</button>
-            <button class="tablinks" id='btn-tab3'>Tổng hợp thu chi</button>
+            <button class="tablinks" id='btn-tab3'>Lịch sử thu chi</button>
            
         </div>
         <div id="nav-container-Tab2">
@@ -84,7 +86,7 @@ $jslistBill = json_encode($listBill);
                     <input type="submit" name="search" id="search" value="Tìm kiếm" style="width: 100px">
                     <button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
                 </form>
-                <form action="">
+                <form action="" style="width: 500px;">
                 <div style="display:inline-flex ; align-items:baseline">
                     <h3 style="margin-right:5px">Từ :</h3>
                     <input type="date" id="date-from" style="width: 120px;height: 30px; font-size:16px" required>
@@ -98,7 +100,7 @@ $jslistBill = json_encode($listBill);
                 <button id="btn-filter" >Lọc</button>
                 </form>
                 <div style="display:inline-flex ">
-                    <h3 style="margin-right:5px">Loại hóa đơn :</h3>
+                    <h3 style="margin-right:5px;    width: 138px;">Loại hóa đơn :</h3>
                     <select style=" border: groove;background-color: beige;font-size: 14px;padding:0; width:200px;height:50px" id="select-kind-bill">
                         <option value="">...</option>
                         <option value="chi">Hóa đơn chi</option>

@@ -17,6 +17,7 @@ header {
 
 .logo img {
 	max-height: 50px;
+	background-color: skyblue;
 }
 
 nav ul {

@@ -128,6 +128,8 @@ var check_status = false;
 var check_kind = false;
 var selectedKind = '';
 var selectedStatus = '';
+
+
 selectStatus.addEventListener('change', function () {
     selectedStatus = selectStatus.value;
 

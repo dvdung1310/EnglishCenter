@@ -1,13 +1,32 @@
 <?php
 require '../../lib/functionPersonal.php';
 
-$maph = 13;
+session_start();
+$ma = $_SESSION['MaPH'];
 
-$detailParent = selectParent($connection, $maph);
-$accountParent = selectAcountParent($connection, $maph);
+
+$maPH= $ma['MaPH'];
+
+
+
+$detailParent = selectParent($connection, $maPH);
+$accountParent = selectAcountParent($connection, $maPH);
+$listBill_CD = searchHDHocPhi($connection, 'Chưa đóng', $maPH);
+$listBill_CN = searchHDHocPhi($connection, 'Còn nợ', $maPH);
+
+
+
 
 $jsdetailParent = json_encode($detailParent);
 $jsaccountParent = json_encode($accountParent);
+
+$jslistBill_CD = json_encode($listBill_CD);
+$jslistBill_CN = json_encode($listBill_CN);
+
+$listRequest  = selectdslk($connection, $maPH);
+
+$jslistRequest = json_encode($listRequest);
+
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -18,14 +37,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $gt = $_POST['gender-input'];
         $ns = $_POST['birthday-input'];
         $tuoi = $_POST['age-input'];
-        
+
         $dc = trim($_POST['address-input']);
-    
+
         $sdt = $_POST['phone-input'];
         $email = trim($_POST['email-input']);
 
         updateParentbyID($connection, $maph, $ten, $gt, $ns, $tuoi, $dc, $sdt, $email);
-        
+
         header("Location: personal_Parent.php");
     }
 
@@ -40,9 +59,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         updatePassPH($connection, $username, $pass);
         header("Location: personal_Parent.php");
     }
+    if (isset($_POST['accept-maHS'])) {
+        $mahs = $_POST['accept-maHS'];
+        deletedslk($connection,$mahs,$maPH);
+        insertPHHS($mahs,$maPH,$connection);
+        header("Location: personal_Parent.php");
+      }
+    
+      if (isset($_POST['refuse-maHS'])) {
+        $mahs = $_POST['refuse-maHS'];
+        
+        deletedslk($connection,$mahs,$maPH);
+       
+        header("Location: personal_Parent.php");
+      }
+      if (isset($_POST['btn-logout'])) {
+
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../home/home.php");
+      }
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" href="../../assets/fonts/themify-icons/themify-icons.css">
     <link rel="stylesheet" href="../../assets/css/home.css" />
     <link rel="stylesheet" href="../../plugins/bootstrap-5.2.3-dist/css/bootstrap.min.css" />
-
+    <link rel="stylesheet" href="../../assets/css/common.css">
     <title>Thông tin cá nhân</title>
 </head>
 
@@ -64,10 +102,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="personal-wrap">
         <div id="menu-bar"></div>
 
-        <div class="personal-bg-wrap"></div>
+        <div class="personal-bg-wrap">
+            <h2 style="margin-left:40%;  margin-top: 10px;"> Thông tin cá nhân</h2>
+        </div>
+
         <div class="personal-inner">
             <div class="personal-avt-wrap">
-                <img  alt="" class="personal-avt">
+                <img alt="" class="personal-avt">
             </div>
             <div class="personal-inner-name"></div>
             <div class="personal-inner-info">
@@ -114,7 +155,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <input id="age-input" name="age-input" class="personal-inner-edit-range personal-inner-edit-range-info" type="number" placeholder="Nhập tuổi" required></input>
 
 
-               
+
                     <div class="personal-inner-item">
                         <div class="personal-inner-key">Địa chỉ : <strong style="color: red; font-size: 12px;font-style: italic;" id="err-address"></strong></div>
                         <div id="address" class="personal-inner-value personal-inner-value-info">Longabc@gmail.com</div>
@@ -179,19 +220,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
 
     </div>
+    <button type="button" id="btn-nofi"><img id="img-nofi" width="30px" src=<?php if (!$listRequest && !$listBill_CD && !$listBill_CN) echo '"../../assets/images/bell.png"';
+                                                                            else echo '"../../assets/images/bell-1.png"' ?> alt=""></button>
+    <div id="div-nofi">
+        <?php if (!$listRequest && !$listBill_CD && !$listBill_CN) echo 'Không có thông báo mới!' ?> </button>
+    </div>
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
     <!--boostrap.js-->
     <script src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
     <!--slick.js-->
     <!-- <script src="./personal.js"></script> -->
-    <script src="../common/menubar.js"></script>
+    <!-- <script src="../common/menubar.js"></script> -->\
+    <script>
+        var detailParent = <?php print_r($jsdetailParent); ?>;
+        var accountParent = <?php print_r($jsaccountParent); ?>;
+
+
+        var ds_yeuCau = <?php print_r($jslistRequest); ?>;
+        var dsHoaDon_CD = <?php print_r($jslistBill_CD); ?>;
+        var dsHoaDon_CN = <?php print_r($jslistBill_CN); ?>;
+
+        const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
+<a class="PageLogoWrap" href="../main_pages/homeParent.php">
+    <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
+</a>
+<div class="menubar-left">
+  <a class="menubar-nav"  href="../main_pages/userParent_child.php">Thông tin của con</a>
+  <a class="menubar-nav  last-nav"  href="../main_pages/userParent_Fee.php">Học phí của con</a>
+  
+  <div class="menubar-info-wrap">
+    <div class="menubar-info">
+      <div class="menubar-name">` + detailParent[0].TenPH + `</div>
+
+
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
+            <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
+          </button>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Parent.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
+          </ul>
+        </div>
+
+    
+    </div>
+  </div>
+</div>
+
+</div>`
+        //isAuthentication === true
+        document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+
+        var $ = document.querySelector.bind(document)
+        var $$ = document.querySelectorAll.bind(document)
+
+        $(".menubar-drop-btn").onclick = () => {
+
+            $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+
+        }
+    </script>
 </body>
 
 <script>
-    var detailParent = <?php print_r($jsdetailParent); ?>;
-    var accountParent = <?php print_r($jsaccountParent); ?>;
-
-
     document.getElementById('id').innerHTML = detailParent[0].MaPH;
     document.getElementById('id-inp').innerHTML = detailParent[0].MaPH;
 
@@ -200,11 +293,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     document.getElementById('gender').innerHTML = detailParent[0].GioiTinh;
     var img = document.querySelector(".personal-avt");
-
+    var img2 = document.querySelector(".menubar-avt");
     if (detailParent[0].GioiTinh == "Nam") {
         img.src = "../../assets/images/Parent-male-icon.png";
+        img2.src = "../../assets/images/Parent-male-icon.png";
     } else {
         img.src = "../../assets/images/Parent-female-icon.png";
+        img2.src = "../../assets/images/Parent-female-icon.png";
     }
     var selectTag = document.getElementById("gender-input");
     for (var i = 0; i < selectTag.options.length; i++) {
@@ -269,7 +364,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const gender = document.getElementById('gender-input').value;
         const birthday = document.getElementById('birthday-input').value;
         const age = document.getElementById('age-input').value;
-     
+
         const address = document.getElementById('address-input').value;
 
 
@@ -428,19 +523,105 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $(".info-cancel").onclick = () => {
         onChangeEditType(false, "info");
-      
-            document.getElementById('err-name').textContent = "";    
-            document.getElementById('err-gender').textContent = "";
-            document.getElementById('err-birthday').textContent = "";
-            document.getElementById('err-age').textContent = "";
-            document.getElementById('err-address').textContent = "";
-            document.getElementById('err-phone').textContent = "";
-            document.getElementById('err-email').textContent = "";
+
+        document.getElementById('err-name').textContent = "";
+        document.getElementById('err-gender').textContent = "";
+        document.getElementById('err-birthday').textContent = "";
+        document.getElementById('err-age').textContent = "";
+        document.getElementById('err-address').textContent = "";
+        document.getElementById('err-phone').textContent = "";
+        document.getElementById('err-email').textContent = "";
     }
     $(".password-cancel").onclick = () => {
         onChangeEditType(false, "pass");
         document.getElementById('err-pass').textContent = "";
     }
+
+
+
+
+
+    var button = document.getElementById('btn-nofi');
+var hiddenDiv = document.getElementById('div-nofi');
+
+button.addEventListener('click', function() {
+    hiddenDiv.style.display = hiddenDiv.style.display === 'block' ? 'none' : 'block';
+ 
+});
+
+
+var divNofiContainer = document.getElementById('div-nofi');
+
+ds_yeuCau.forEach(function(yeuCau) {
+
+  var nofiDiv = document.createElement('div');
+  nofiDiv.id = 'nofi';
+  nofiDiv.innerHTML = '<p>Học viên ' + yeuCau.TenHS + ' đã gửi yêu cầu liên kết với bạn</p>' +
+                      '<button onclick="tuChoi(' + yeuCau.MaHS + ',' + yeuCau.MaPH + ')">Từ chối</button>' +
+                      '<button onclick="chapNhan(' + yeuCau.MaHS + ',' + yeuCau.MaPH + ')">Chấp nhận</button>';
+
+  divNofiContainer.appendChild(nofiDiv);
+
+
+});
+
+dsHoaDon_CD.forEach(function(yeuCau) {yeuCau
+
+    var nofiDiv = document.createElement('div');
+    nofiDiv.id = 'nofi';
+    nofiDiv.innerHTML = '<p> Hóa đơn '+ yeuCau.TenHD + ' (' + numberWithCommas(yeuCau.SoTienPhaiDong) +  ' VND) của  Học viên ' +yeuCau.TenHS +  '  chưa được thanh toán</p>'
+    divNofiContainer.appendChild(nofiDiv);
+  });
+
+
+
+  dsHoaDon_CN.forEach(function(yeuCau) {
+
+    var nofiDiv = document.createElement('div');
+    nofiDiv.id = 'nofi';
+    nofiDiv.innerHTML = '<p> Hóa đơn '+ yeuCau.TenHD + ' còn nợ (' + numberWithCommas(yeuCau.NoPhiConLai) +  ' VND) của  Học viên ' +yeuCau.TenHS +  '  chưa được thanh toán</p>'
+    divNofiContainer.appendChild(nofiDiv);
+  });
+
+
+  function tuChoi(maHS, maPH) {
+    var form = document.createElement('form');
+
+    form.method = 'POST';
+      form.name = 'refuse-form'
+   
+    var input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'refuse-maHS';
+    input.value = maHS;
+    form.appendChild(input);
+  
+    document.body.appendChild(form);
+    form.submit();
+  
+}
+
+function chapNhan(maHS, maPH) {
+
+
+  var form = document.createElement('form');
+
+  form.method = 'POST';
+    form.name = 'accept-form'
+ 
+  var input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'accept-maHS';
+  input.value = maHS;
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+}
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 </script>
 
 </html>

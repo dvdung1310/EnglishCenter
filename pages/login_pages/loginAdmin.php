@@ -30,9 +30,8 @@ if (isset($_POST['submit'])) {
 if ($test) {
     $result = checkAcountAdmin($userName, $passWord, $connection);
     if ($result) {
-        session_start();
-        $_SESSION['userName'] = htmlspecialchars($userName);
-        header("Location: ../main_pages/homeAdmin.php");
+        
+        header("Location: ../../manage/ListClass.php");
 		
         exit();
     } else {
@@ -40,23 +39,8 @@ if ($test) {
     }
 }
 
-// if ($test) {
-// 	$result = checkAcount($userName, $passWord, $connection);
-// 	$checkParents = checkAcountParents($userName, $passWord, $connection);
-// 	if ($result || $checkParents) {
-// 		session_start();
-// 		$_SESSION['userName'] = htmlspecialchars($userName);
-// 		header("Location: pages/homeAdmin.php");
-// 		exit();
-// 	} else {
-// 		$passWord_error = "Username hoặc password của bạn sai!";
-// 	}
-// }
-
 
 ?>
-
-
 
 
 
@@ -64,6 +48,7 @@ if ($test) {
 <html>
 
 <head>
+
 	<meta charset="UTF-8">
 	<title>Admin Login</title>
 	<style>

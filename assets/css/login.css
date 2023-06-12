@@ -54,9 +54,10 @@ body {
     border-top-left-radius: 10px;
 }
 .login-student-img img{
-    width: 80px;
-    height: 80px;
-    padding:10px 10px 0px 100%;
+  width: 140px;
+  height: 55px;
+  padding: inherit;
+  background-color: skyblue;
 }
 
 .login-student-form{

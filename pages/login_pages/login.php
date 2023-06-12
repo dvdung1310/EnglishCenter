@@ -43,8 +43,6 @@ if ($test) {
         }
     }
 }
-
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -69,9 +67,8 @@ if ($test) {
 
         <div class="login-student">
             <div class="login-student-img">
-                <img src="../../assets/images/Apollo-Logo.png" alt="">
+                <img src="../../assets/images/logo-web.png" alt="">
             </div>
-
             <div class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">
                     <div style="display: flex;justify-content: start;">

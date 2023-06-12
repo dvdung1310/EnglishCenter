@@ -1,11 +1,7 @@
 <?php
 include "../../lib/FunctionClass2.php";
 $dataClassOnOff = dataClassOnOff('Chưa mở', $connection);
-session_start();
-$check = false;
-if(isset($_SESSION['MaHS'])){
-  $check = true;
-}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -48,57 +44,26 @@ if(isset($_SESSION['MaHS'])){
   <div class="PageWrap">
     <div id="menu-bar">
       <!-- khi chưa đăng nhập -->
-      <?php 
-           
-       if(!$check): ?>
+     
       <div class="PageMenuBar">
-        <a class="PageLogoWrap">
+        <a class="PageLogoWrap" href="./home.php">
           <img class="PageLogoImg" src="../../assets/images/logo-web.png" />
         </a>
         <div class="menubar-btnwrap">
           <a href="../login_pages/login.php" class="PageLogoBtn">Login LoDuHi</a>
         </div>
       </div>
-      <?php endif ?>
+ 
 
       <!-- khi đã đăng nhập -->
-      <?php           
-       if($check):?>
-      <div class="PageMenuBar">
-<a class="PageLogoWrap">
-    <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
-</a>
-<div class="menubar-left">
-  <a class="menubar-nav">Tab1</a>
-  <a class="menubar-nav">Tab2</a>
-  <a class="menubar-nav">Tab3</a>
-  <a class="menubar-nav last-nav">Tab4</a>
-  <div class="menubar-info-wrap">
-    <div class="menubar-info">
-      <div class="menubar-name"></div>
-      <div class="dropdown">
-          <button class="menubar-avt-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Chi tiết lớp học</a></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
-          </ul>
-        </div>
-    </div>
-  </div>
-</div>
-  
-</div>
-<?php endif ?>
+
     </div>
     <div class="PageHomeInner">
       <div class="PageHomeIntroWrap">
         <div class="PageHomeIntroBGDeco"></div>
         <div class="PageHomeIntroBGDeco"></div>
         <div class="PageHomeIntroBGDeco"></div>
-        <div class="PageHomeIntroHeader">HÀNG TRIỆU PHỤ HUYNH ĐÃ LỰA CHỌN APOLLO ENGLISH
+        <div class="PageHomeIntroHeader">HÀNG TRIỆU PHỤ HUYNH ĐÃ LỰA CHỌN LODUHI ENGLISH
           <br />
           ĐỂ CON HỌC CÙNG NIỀM CẢM HỨNG
         </div>
@@ -108,11 +73,11 @@ if(isset($_SESSION['MaHS'])){
               <img class="silder-quote-img" src="../../assets/images/quote.svg" />
             </div>
             <div class="slider-for introSlider">
-              <div class="introSlidler-item">Mình tên là Nguyễn Mai Chi. Với kết quả 147 điểm Cambridge, mình đã vinh dự nhận được Học bổng 50% từ Đại học British University Vietnam trong Lễ Vinh danh Cambridge của Apollo. Mình muốn cảm ơn thầy Wade đã luôn truyền cảm hứng và giúp đỡ mình rất nhiều để đạt được thành tích này! Cảm ơn Apollo đã cho mình một môi trường học tập hết ý! </div>
-              <div class="introSlidler-item">Tớ tên là Nguyễn Đức Hạnh Nguyên. Tớ đã học tại Apollo English được một năm rồi. Tớ thực sự thích Apollo vì ở đây tớ làm quen nhiều người bạn mới. Tớ cũng rất thích các buổi hội thảo của thầy James nữa. Thầy đã giúp tớ tự tin hơn nhiều khi nói tiếng Anh. Giờ ngày nào tớ cũng muốn nói tiếng Anh thôi! </div>
-              <div class="introSlidler-item">Xin chào! Tớ là Nguyễn Khang Thịnh và ước mơ của tớ là trở thành một nhà sáng chế nổi tiếng! Tớ thích chế tạo mọi thứ và khi tớ lớn lên, tớ muốn đi du lịch khắp thế giới để khoe những phát minh của mình. Tiếng Anh sẽ rất quan trọng khi tớ giao tiếp, đó là lý do tại sao tớ thích học tại Apollo. Sau mỗi tiết học, tớ cảm thấy mình tiến gần hơn đến ước mơ của mình! </div>
-              <div class="introSlidler-item">Tớ tên là Đỗ Hồng Quân. Tớ đã học tại Apollo hơn một năm. Tớ thích ở Apollo vì thầy của tớ - thầy Kieran thực sự tốt bụng và vui tính! Tớ thích những bài giảng của thầy về những địa điểm và các loài vật tuyệt vời trên khắp thế giới. Quả là thú vị khi học về những điều mới bằng tiếng Anh. </div>
-              <div class="introSlidler-item">Tớ tên là Trường An và tớ rất thích Chương trình Hè tại Apollo. Tớ được nói tiếng Anh mỗi ngày trong 6 tuần. Tớ nghĩ rằng kỹ năng tiếng Anh và sự tự tin của tớ đã cải thiện rất nhiều. Các thầy cô có những bài giảng và hoạt động siêu thú vị. Chúng tớ cũng đã tới Nông trại Hoa Lúa. Đó là ngày mùa hè yêu thích của tớ. Tớ hy vọng rằng mình có thể tham gia lần nữa vào mùa hè năm sau!</div>
+              <div class="introSlidler-item">Mình tên là Nguyễn Mai Chi. Với kết quả 147 điểm Cambridge, mình đã vinh dự nhận được Học bổng 50% từ Đại học British University Vietnam trong Lễ Vinh danh Cambridge của LoDuHi. Mình muốn cảm ơn thầy Wade đã luôn truyền cảm hứng và giúp đỡ mình rất nhiều để đạt được thành tích này! Cảm ơn LoDuHi đã cho mình một môi trường học tập hết ý! </div>
+              <div class="introSlidler-item">Tớ tên là Nguyễn Đức Hạnh Nguyên. Tớ đã học tại LoDuHi English được một năm rồi. Tớ thực sự thích LoDuHi vì ở đây tớ làm quen nhiều người bạn mới. Tớ cũng rất thích các buổi hội thảo của thầy James nữa. Thầy đã giúp tớ tự tin hơn nhiều khi nói tiếng Anh. Giờ ngày nào tớ cũng muốn nói tiếng Anh thôi! </div>
+              <div class="introSlidler-item">Xin chào! Tớ là Nguyễn Khang Thịnh và ước mơ của tớ là trở thành một nhà sáng chế nổi tiếng! Tớ thích chế tạo mọi thứ và khi tớ lớn lên, tớ muốn đi du lịch khắp thế giới để khoe những phát minh của mình. Tiếng Anh sẽ rất quan trọng khi tớ giao tiếp, đó là lý do tại sao tớ thích học tại LoDuHi. Sau mỗi tiết học, tớ cảm thấy mình tiến gần hơn đến ước mơ của mình! </div>
+              <div class="introSlidler-item">Tớ tên là Đỗ Hồng Quân. Tớ đã học tại LoDuHi hơn một năm. Tớ thích ở LoDuHi vì thầy của tớ - thầy Kieran thực sự tốt bụng và vui tính! Tớ thích những bài giảng của thầy về những địa điểm và các loài vật tuyệt vời trên khắp thế giới. Quả là thú vị khi học về những điều mới bằng tiếng Anh. </div>
+              <div class="introSlidler-item">Tớ tên là Trường An và tớ rất thích Chương trình Hè tại LoDuHi. Tớ được nói tiếng Anh mỗi ngày trong 6 tuần. Tớ nghĩ rằng kỹ năng tiếng Anh và sự tự tin của tớ đã cải thiện rất nhiều. Các thầy cô có những bài giảng và hoạt động siêu thú vị. Chúng tớ cũng đã tới Nông trại Hoa Lúa. Đó là ngày mùa hè yêu thích của tớ. Tớ hy vọng rằng mình có thể tham gia lần nữa vào mùa hè năm sau!</div>
               <div class="introSlidler-item">Xin chào. Tớ tên là Võ Hà My và tớ 6 tuổi. Cô giáo của tớ là cô Eleanor. Cô rất thân thiện và vui vẻ. Tớ thích nói tiếng Anh. Tớ thích hát những bài hát tiếng Anh và chơi những trò chơi cùng bạn bè! </div>
             </div>
             <button class="carousel-control-prev intro-control-prev" type="button" data-bs-target=".slider-for" data-bs-slide="prev">
@@ -224,10 +189,10 @@ if(isset($_SESSION['MaHS'])){
                   </div>
                 </div>
                 <div class="right-content-wrap">
-                  <div class="jou-right-title">Chào mừng bạn đến với Apollo English!</div>
-                  <div class="jou-right-content">Chào mừng bạn đến với Apollo English - “Where the best become better” - nơi các học viên được khơi sáng tình yêu học tập để tự tin sử dụng tiếng Anh như ngôn ngữ thứ hai, làm chủ kỹ năng tương lai và khai phóng tiềm năng của bản thân trước thế giới không ngừng biến đổi.
+                  <div class="jou-right-title">Chào mừng bạn đến với LoDuHi English!</div>
+                  <div class="jou-right-content">Chào mừng bạn đến với LoDuHi English - “Where the best become better” - nơi các học viên được khơi sáng tình yêu học tập để tự tin sử dụng tiếng Anh như ngôn ngữ thứ hai, làm chủ kỹ năng tương lai và khai phóng tiềm năng của bản thân trước thế giới không ngừng biến đổi.
 
-                    <br />Trong suốt gần 30 năm mang tiếng Anh gần hơn với cuộc sống, Apollo tự hào và cảm thấy biết ơn khi được chứng kiến các thế hệ học viên của mình trưởng thành, và thành công. Chắc chắn chúng tôi sẽ nỗ lực hơn nữa để mang đến những trải nghiệm học tập tuyệt vời!
+                    <br />Trong suốt gần 30 năm mang tiếng Anh gần hơn với cuộc sống, LoDuHi tự hào và cảm thấy biết ơn khi được chứng kiến các thế hệ học viên của mình trưởng thành, và thành công. Chắc chắn chúng tôi sẽ nỗ lực hơn nữa để mang đến những trải nghiệm học tập tuyệt vời!
                   </div>
                 </div>
               </div>
@@ -240,7 +205,7 @@ if(isset($_SESSION['MaHS'])){
                 <div class="right-content-wrap">
                   <div class="jou-right-title">
                     Thành lập</div>
-                  <div class="jou-right-content">Trung tâm tiếng Anh Apollo đầu tiên được thành lập bởi 2 nhà sáng lập Khalid Muhmood & Arabella Peters với sự chứng kiến của đại diện Hoàng Gia Anh và Bộ Giáo dục & Đào tạo Việt Nam.</div>
+                  <div class="jou-right-content">Trung tâm tiếng Anh LoDuHi đầu tiên được thành lập bởi 2 nhà sáng lập Khalid Muhmood & Arabella Peters với sự chứng kiến của đại diện Hoàng Gia Anh và Bộ Giáo dục & Đào tạo Việt Nam.</div>
                 </div>
               </div>
             </div>
@@ -251,7 +216,7 @@ if(isset($_SESSION['MaHS'])){
                 </div>
                 <div class="right-content-wrap">
                   <div class="jou-right-title">Áp dụng chuẩn Cambridge</div>
-                  <div class="jou-right-content">Apollo đã trở thành 1 trong những tổ chức đầu tiên được ủy quyền chính thức bởi viện khảo thí Cambridge. Cũng trong năm này Apollo trở thành đối tác chiến lược của Đài truyền hình Việt Nam với vai trò cố vấn cho những chương trình giáo dục danh tiếng như: Đường lên đỉnh Olympia, Rung chuông vàng...
+                  <div class="jou-right-content">LoDuHi đã trở thành 1 trong những tổ chức đầu tiên được ủy quyền chính thức bởi viện khảo thí Cambridge. Cũng trong năm này LoDuHi trở thành đối tác chiến lược của Đài truyền hình Việt Nam với vai trò cố vấn cho những chương trình giáo dục danh tiếng như: Đường lên đỉnh Olympia, Rung chuông vàng...
                   </div>
                 </div>
               </div>
@@ -263,7 +228,7 @@ if(isset($_SESSION['MaHS'])){
                 </div>
                 <div class="right-content-wrap">
                   <div class="jou-right-title">Người thầy chuẩn quốc tế</div>
-                  <div class="jou-right-content">Apollo chính thức trở thành thành viên duy nhất tại Việt Nam của tổ chức giảng dạy lâu đời nhất thế giới - International House (IH).</div>
+                  <div class="jou-right-content">LoDuHi chính thức trở thành thành viên duy nhất tại Việt Nam của tổ chức giảng dạy lâu đời nhất thế giới - International House (IH).</div>
                 </div>
               </div>
             </div>
@@ -274,9 +239,9 @@ if(isset($_SESSION['MaHS'])){
                 </div>
                 <div class="right-content-wrap">
                   <div class="jou-right-title">Giáo trình chuẩn quốc tế</div>
-                  <div class="jou-right-content">Apollo là tổ chức đầu tiên kết hợp với nhà xuất bản Oxford University Press ra mắt giáo trình Get- Set - Go. Đây cũng chính là bộ giáo trình chuẩn quốc tế mà 2 năm sau đó cho tới hiện nay vẫn đang được công nhận và sử dụng rộng rãi trong hệ thống giáo dục Việt Nam.
+                  <div class="jou-right-content">LoDuHi là tổ chức đầu tiên kết hợp với nhà xuất bản Oxford University Press ra mắt giáo trình Get- Set - Go. Đây cũng chính là bộ giáo trình chuẩn quốc tế mà 2 năm sau đó cho tới hiện nay vẫn đang được công nhận và sử dụng rộng rãi trong hệ thống giáo dục Việt Nam.
 
-                    <br />Tiếp nối thành công của Get-Set-Go, Apollo đã nhiều lần cải tiến giáo trình học tập trong những năm sau đó. Điển hình là hệ thống đào tạo công dân toàn cầu AGLS đã được ra mắt vào 2017 với sự hợp tác chiến lược cùng nhà xuất bản hàng đầu thế giới National Geographic Learning.
+                    <br />Tiếp nối thành công của Get-Set-Go, LoDuHi đã nhiều lần cải tiến giáo trình học tập trong những năm sau đó. Điển hình là hệ thống đào tạo công dân toàn cầu AGLS đã được ra mắt vào 2017 với sự hợp tác chiến lược cùng nhà xuất bản hàng đầu thế giới National Geographic Learning.
                   </div>
                 </div>
               </div>
@@ -288,7 +253,7 @@ if(isset($_SESSION['MaHS'])){
                 </div>
                 <div class="right-content-wrap">
                   <div class="jou-right-title">Thành viên Hoàng gia</div>
-                  <div class="jou-right-content">Với những đóng góp của mình cho nền giáo dục Việt Nam, nhà sáng lập Apollo English – ông Khalid Muhmood được Bộ Giáo dục và Đào tạo trao tặng huân chương “Vì sự nghiệp giáo dục" (2006). Đồng thời được nữ hoàng Anh phong tước ‘Thành viên Hoàng Gia’ (2008).</div>
+                  <div class="jou-right-content">Với những đóng góp của mình cho nền giáo dục Việt Nam, nhà sáng lập LoDuHi English – ông Khalid Muhmood được Bộ Giáo dục và Đào tạo trao tặng huân chương “Vì sự nghiệp giáo dục" (2006). Đồng thời được nữ hoàng Anh phong tước ‘Thành viên Hoàng Gia’ (2008).</div>
                 </div>
               </div>
             </div>
@@ -299,7 +264,7 @@ if(isset($_SESSION['MaHS'])){
                 </div>
                 <div class="right-content-wrap">
                   <div class="jou-right-title">Giải thưởng quốc tế</div>
-                  <div class="jou-right-content">Apollo được vinh danh “Tổ chức đào tạo Anh ngữ của năm” tại Education Investor Asia Awards với vai trò tiên phong mang đến trẻ em Việt Nam chương trình đào tạo công dân toàn cầu.</div>
+                  <div class="jou-right-content">LoDuHi được vinh danh “Tổ chức đào tạo Anh ngữ của năm” tại Education Investor Asia Awards với vai trò tiên phong mang đến trẻ em Việt Nam chương trình đào tạo công dân toàn cầu.</div>
                 </div>
               </div>
             </div>
@@ -331,7 +296,7 @@ if(isset($_SESSION['MaHS'])){
         <div class="background-line">
           <div class="bg-line animated go bg-animation-line">
             <img class="desktop-line img-inner" src="../../assets/images/i-line.svg" alt="">
-            <!-- <img class="mb-line" src="/apollo/images/vision/i-line-mb.svg" alt="line"> -->
+            <!-- <img class="mb-line" src="/LoDuHi/images/vision/i-line-mb.svg" alt="line"> -->
           </div>
           <div class="i-rocket animated go">
             <img src="../../assets/images/i-rocket.svg" alt="">
@@ -430,7 +395,7 @@ if(isset($_SESSION['MaHS'])){
                     <img src="../../assets/images/joe.png" alt="" class="teacher-img">
                   </div>
                   <div class="teacher-name">Joseph Black</div>
-                  <div class="teacher-role"> GĐ Học vụ (Apollo Thái Hà) </div>
+                  <div class="teacher-role"> GĐ Học vụ (LoDuHi Thái Hà) </div>
                   <div class="teacher-des">Cảm giác hạnh phúc nhất đối với tôi là khi học trò yêu thích học hỏi.</div>
                 </div>
                 <div class="teacher-info">
@@ -438,7 +403,7 @@ if(isset($_SESSION['MaHS'])){
                     <img src="../../assets/images/stephen.jpg" alt="" class="teacher-img">
                   </div>
                   <div class="teacher-name">Stephen Fessler</div>
-                  <div class="teacher-role"> Giáo viên (Apollo Bắc Ninh) </div>
+                  <div class="teacher-role"> Giáo viên (LoDuHi Bắc Ninh) </div>
                   <div class="teacher-des">Nếu một đứa trẻ không thể học theo cách chúng ta dạy, có lẽ chúng ta nên dạy theo cách chúng học.</div>
                 </div>
                 <div class="teacher-info">
@@ -446,7 +411,7 @@ if(isset($_SESSION['MaHS'])){
                     <img src="../../assets/images/amiee.jpg" alt="" class="teacher-img">
                   </div>
                   <div class="teacher-name">Amiee Thomas</div>
-                  <div class="teacher-role"> Giáo viên (Apollo Hào Nam) </div>
+                  <div class="teacher-role"> Giáo viên (LoDuHi Hào Nam) </div>
                   <div class="teacher-des">Những thầy cô giỏi nhất dạy bằng trái tim, chứ không từ sách vở.</div>
                 </div>
                 <div class="teacher-info">
@@ -454,7 +419,7 @@ if(isset($_SESSION['MaHS'])){
                     <img src="../../assets/images/alisa.png" alt="" class="teacher-img">
                   </div>
                   <div class="teacher-name">Alisa Kartyshova</div>
-                  <div class="teacher-role"> Giáo viên (Apollo Phố Huế) </div>
+                  <div class="teacher-role"> Giáo viên (LoDuHi Phố Huế) </div>
                   <div class="teacher-des">Chúng ta hãy nhớ rằng một đứa trẻ, một giáo viên, một quyển sách và một cái bút có thể thay đổi cả thế giới.</div>
                 </div>
                 <div class="teacher-info">
@@ -462,7 +427,7 @@ if(isset($_SESSION['MaHS'])){
                     <img src="../../assets/images/richard.jpg" alt="" class="teacher-img">
                   </div>
                   <div class="teacher-name">Richard Anthony Light</div>
-                  <div class="teacher-role"> Giáo viên (Apollo Thái Hà)</div>
+                  <div class="teacher-role"> Giáo viên (LoDuHi Thái Hà)</div>
                   <div class="teacher-des">Nhìn thấy học trò tiến bộ từng ngày là nguồn động viên tinh thần lớn nhất với tôi.</div>
                 </div>
               </div>
@@ -614,8 +579,8 @@ if(isset($_SESSION['MaHS'])){
                     <div class="instruct-item-wrap">
                       <div class="introNavImg">
                         <div class="listClassOn<?php echo $i++ ?>">
-                          <a href="                          
-                          registerClass.php?malop=<?php echo $listClassOn['MaLop'] ?>                          
+                          <a href="                        
+                          ../main_pages/registerClass.php?malop=<?php echo $listClassOn['MaLop'] ?>                          
                           ">
                             <p> Mã lớp: <?php echo $listClassOn['MaLop'] ?></p>
                             <p> Tên lớp: <?php echo $listClassOn['TenLop'] ?></p>
@@ -638,7 +603,7 @@ if(isset($_SESSION['MaHS'])){
       <!--Footer-->
       <div class="Footer">
         <div class="Footer-inner">
-          <div class="Footer-title">HÃY CÙNG APOLLO KHƠI SÁNG TÌNH YÊU HỌC TẬP NGAY HÔM NAY !</div>
+          <div class="Footer-title">HÃY CÙNG LOHUHI KHƠI SÁNG TÌNH YÊU HỌC TẬP NGAY HÔM NAY !</div>
           <div class="Footer-content-wrap">
             <div class="Footer-content-bg">
               <img class="img-inner" src="../../assets/images/backround-footer.png" />
@@ -682,7 +647,7 @@ if(isset($_SESSION['MaHS'])){
                     <a class="footer-back-right-nav">Liên hệ</a>
                     <a class="footer-back-right-nav">Tuyển dụng</a>
                     <a class="footer-back-right-nav">Đối tác (ASP)</a>
-                    <a class="footer-back-right-nav">Teach At Apollo</a>
+                    <a class="footer-back-right-nav">Teach At LoDuHi</a>
                     <div class="footer-back-right-nav">
                       theo dõi chúng tôi tại
                       <div class="icon-flex">
@@ -694,7 +659,7 @@ if(isset($_SESSION['MaHS'])){
                   </div>
                 </div>
                 <div class="footer-span">
-                  Copyright © 2022 Apollo English. All rights reserved.
+                  Copyright © 2022 LoDuHi English. All rights reserved.
                 </div>
               </div>
             </div>
@@ -713,7 +678,7 @@ if(isset($_SESSION['MaHS'])){
   <script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js"></script>
   <script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js">
   </script>
-  <script src="./home.js"></script>
+  <script src="../home/home.js"></script>
   <!-- <script src="../common/menubar.js"></script> -->
 </body>
 

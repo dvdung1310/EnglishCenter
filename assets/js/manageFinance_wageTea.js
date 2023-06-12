@@ -817,3 +817,7 @@ document.getElementById('btn-tab1').addEventListener('click', () => {
 });
 
 
+document.getElementById('btn-tab3').addEventListener('click', () => {
+    window.location.href = "./manageHistoryFinance.php";
+
+});

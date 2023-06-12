@@ -38,7 +38,7 @@ function hienthids() {
 
     if(filteredData.length ==0)
     {
-        document.querySelector(".tbody-1").innerHTML = 'Không có dữ liệu phù hợp';
+        document.querySelector("#emty").innerHTML = 'Không có dữ liệu lương ';
         return;
     }
 

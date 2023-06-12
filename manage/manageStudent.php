@@ -80,17 +80,19 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 <body>
 	<header>
 		<div class="logo">
-			<img src="../assets/images/Apollo-Logo.png" alt="Logo">
+			<img src="../assets/images/logo-web.png" alt="Logo">
 
 		</div>
 		<nav>
 			<ul>
-				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
+				<li><a href="./ListClass.php">Quản lý lớp học</a></li>
 				<li><a style="color: #0088cc;"href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
 				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+				<li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+
 			</ul>
 		</nav>
 	</header>
@@ -122,10 +124,13 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			</thead>
 			<tbody class="tbody-1">
 				<?php $i = 1;
+				$nam=0;$nu = 0;
 				if (!$listStudent)
 					echo ' <h2>Không tìm thấy kết quả phù hợp "' . $_POST['keyword'] . '"</h2>';
 				else {
 					foreach ($listStudent as $Student) : ?>
+					<?php if($Student['GioiTinh'] == 'Nam') $nam++;
+							else $nu++; ?>
 						<tr>
 							<td><?php echo $i++ ?></td>
 							<td><?php echo $Student['MaHS']; ?></td>
@@ -418,6 +423,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			<h3>Thay đổi mật khẩu thành công!</h3>
 		</div>
 
+		<p style="margin-left: 80%; font-style:italic; font-size:13px"> <?php echo '*Tổng số học viên: '. $i-1 . '  Nam: '.$nam.'  Nữ: '.$nu ?> </p>
 
 
 	</main>

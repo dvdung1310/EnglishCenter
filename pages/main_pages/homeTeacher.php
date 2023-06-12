@@ -3,23 +3,23 @@ require '../../lib/functionUserTeacher.php';
 
 
 session_start();
-// $maGV = $_SESSION['MaGV'];'
+$maGV = $_SESSION['MaGV'];
 
-$maGV = 23;
 
 $listClassActive  =  listClassOfTeacher($connection, $maGV, 'Đang mở');
 $listClassClose  =  listClassOfTeacher($connection, $maGV, 'Đã đóng');
 $listSchedules =  listSchedules($connection);
 $listStudentOfClass =  studentOfClass($connection, $maGV);
 $listDD =  listDD($connection, $maGV);
-$tenGV = selectTenGV($connection,$maGV);
-
+$tenGV = selectTenGV($connection, $maGV);
+$detailTeacher = selectTeacher($connection, $maGV);
 
 $jslistDD =  json_encode($listDD);
 $jslistClassClose = json_encode($listClassClose);
 $jslistStudentOfClass = json_encode($listStudentOfClass);
 $jsmaGV  =  json_encode($maGV);
 $jstenGV  =  json_encode($tenGV);
+$jsdetailTeacher = json_encode($detailTeacher);
 
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -77,10 +77,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             insertDiemDanh($malop, $maHS, $thoiGian, (int)$diemDanh, $connection);
         }
 
-  
+
         $la =  selectSoBuoiDaToChuc($connection, $malop);
         $soBDTC =  $la[0]['SoBuoiDaToChuc'] + 1;
-     
+
         updateSoBuoiDaToChuc($connection, $soBDTC, $malop);
         header("Location: homeTeacher.php");
     }
@@ -101,12 +101,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         deleteDiemDanh($connection, $class, $date);
         $la =  selectSoBuoiDaToChuc($connection, $class);
         $soBDTC =  $la[0]['SoBuoiDaToChuc'] - 1;
-      
-        if($soBDTC != 0 )
-        updateSoBuoiDaToChuc($connection, $soBDTC, $class);
-        
+
+        if ($soBDTC != 0)
+            updateSoBuoiDaToChuc($connection, $soBDTC, $class);
+
         header("Location: homeTeacher.php");
     }
+    if (isset($_POST['btn-logout'])) {
+
+        session_start();
+        session_unset();
+        session_destroy();
+        header("Location: ../home/home.php");
+      }
 }
 
 
@@ -120,21 +127,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-   
-   
-    <!-- bootstrap.css-->   
+
+
+    <!-- bootstrap.css-->
     <!-- <link rel="stylesheet" href="../../plugins/bootstrap-5.2.3-dist/css/bootstrap.min.css" /> -->
     <!--slick.css-->
+
     <link rel="stylesheet" href="../../plugins/slick-1.8.1/slick/slick.css" />
-    <link rel="stylesheet" href="../../assets/css/home.css"/>
+    <link rel="stylesheet" href="../../assets/css/home.css" />
     <!--Animated css-->
-      <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
-      />
-      
-      <link rel="stylesheet" href="/assets/css/userTeacherClass.css">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <link rel="stylesheet" href="/assets/css/userTeacherClass.css">
+    <link rel="stylesheet" href="../../assets/css/common.css">
+    <title>Giáo viên</title>
 </head>
 
 <body>
@@ -204,7 +210,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 endforeach;
             } ?>
 
-            
+
 
 
         </div>
@@ -386,59 +392,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </body>
 
 
-
 <script>
-    
     var ds_diemdanh = <?php print_r($jslistDD); ?>;
     var ds_lopDong = <?php print_r($jslistClassClose); ?>;
     var ds_hocsinh = <?php print_r($jslistStudentOfClass); ?>;
-    var MaGV  = <?php print_r($jsmaGV); ?>;
-    var tenGV = <?php print_r($jstenGV); ?>; 
+    var MaGV = <?php print_r($jsmaGV); ?>;
+    var tenGV = <?php print_r($jstenGV); ?>;
+    var detailTeacher = <?php print_r($jsdetailTeacher); ?>;
+
     const authMenuBarHTMl = ` <div style= "position: absolute" class="PageMenuBar">
 <a class="PageLogoWrap">
     <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
 </a>
 <div class="menubar-left">
   <a class="menubar-nav"  href="./homeTeacher.php" style="color:darkcyan">Thông tin lớp dạy</a>
-  <a class="menubar-nav"  href="./userTeacher_wage.php"">Lịch sử lương</a>
-  <a class="menubar-nav">Tab3</a>
-  <a class="menubar-nav last-nav">Tab4</a>
+  <a class="menubar-nav  last-nav"  href="./userTeacher_wage.php"">Lịch sử lương</a>
+
   <div class="menubar-info-wrap">
     <div class="menubar-info">
-      <div class="menubar-name">`+ tenGV[0].TenGV +`</div>
-      <div class="dropdown">
-          <button class="menubar-avt-wrap" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+      <div class="menubar-name">` + tenGV[0].TenGV + `</div>
+      
+      
+      <div class="menubar-dropdown">
+          <button class="menubar-avt-wrap menubar-drop-btn">
             <img src="../../assets/images/Student-male-icon.png" alt="" class="menubar-avt">
           </button>
-          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-              <li><a class="dropdown-item" href="#">Thông tin cá nhân</a></li>
-            <li><a class="dropdown-item" href="#">Chi tiết lớp học</a></li>
-            <li><a class="dropdown-item" href="#">Đăng xuất</a></li>
+          <ul class="menubar-dropdown-menu" id ="a123">
+              <li class="menubar-dropdown-item"><a  href="../personal/personal_Teacher.php">Thông tin cá nhân</a></li>
+      
+              <li class="menubar-dropdown-item">  <form action="" method="post"> <input type="submit" name ="btn-logout"  id ="btn-logout" value ="Đăng xuất" style="border: none;background-color: unset;"></form></li>          </ul>
           </ul>
         </div>
+        
+
     </div>
   </div>
 </div>
   
 </div>`
-        
     //isAuthentication === true
     document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
 
+var $ = document.querySelector.bind(document)
+var $$ = document.querySelectorAll.bind(document)
+
+
+
+$(".menubar-drop-btn").onclick = ()=>{
+   
+    $(".menubar-dropdown-menu")[0].classList.toggle("menubar-show")
+ 
+}
+
+var img2 = document.querySelector(".menubar-avt");
+    if (detailTeacher[0].GioiTinh == "Nam") {
+    
+        img2.src = "../../assets/images/Teacher-male-icon.png";
+    } else {
+        
+        img2.src = "../../assets/images/Teacher-female-icon.png";
+    }
+ 
 </script>
 
 <script src="../../assets/js/userTeacherClass.js"></script>
 
-   
 
-   <!--boostrap.js-->
-   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-    
-    <!--boostrap.js-->
-     <script  src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
-     <script  src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
-     <!--slick.js-->
-     <script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js"></script>
+
+<!--boostrap.js-->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+<!--boostrap.js-->
+<script src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.min.js"></script>
+<script src="../../plugins/bootstrap-5.2.3-dist/js/bootstrap.bundle.min.js"></script>
+<!--slick.js-->
+<script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js"></script>
 
 
 

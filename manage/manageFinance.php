@@ -24,8 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$arrayClass = explode(",", $class);
 		}
 		$listDD = attendOfMonth($connection, $thang, $nam);
-		
-	
+
+
 
 		foreach ($listDD as $dd) {
 			foreach ($listHS_GHP as $ghp) {
@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				}
 			}
 		}
-		// header("Location: manageFinance.php");
+		header("Location: manageFinance.php");
 	}
 
 
@@ -88,16 +88,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				$giamHocPhi = $aa['GiamHocPhi'];
 			}
 		}
-		if($diemDanh)
-		$soTien = $diemDanh * $hocPhi;
+		if ($diemDanh)
+			$soTien = $diemDanh * $hocPhi;
 		$soTienGiam = round($soTien * $giamHocPhi / 100);
 		$SoTienPhaiDong = $soTien - $soTienGiam;
 
-		
-			insertHDHocPhi($connection, $ten, $malop, $mahs, $thoiGian, $soTien, $giamHocPhi, $soTienGiam, $SoTienPhaiDong);
-		
 
-		// header("Location: manageFinance.php");
+		insertHDHocPhi($connection, $ten, $malop, $mahs, $thoiGian, $soTien, $giamHocPhi, $soTienGiam, $SoTienPhaiDong);
+
+
+		header("Location: manageFinance.php");
 	}
 
 	if (isset($_POST['refesh'])) {
@@ -216,16 +216,19 @@ $jslistDD =  json_encode($listDD);
 <body>
 	<header>
 		<div class="logo">
-			<img src="../assets/images/Apollo-Logo.png" alt="Logo">
+			<img src="../assets/images/logo-web.png" alt="Logo">
 		</div>
 		<nav>
 			<ul>
-				<li><a href="../manage/ManageClass.php">Quản lý lớp học</a></li>
+				<li><a href="./ListClass.php">Quản lý lớp học</a></li>
 				<li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a style="color: #0088cc;" href="../manage/manageFinance.php">Quản lý tài chính</a></li>
 				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+				<li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+
+				
 			</ul>
 		</nav>
 	</header>
@@ -235,13 +238,14 @@ $jslistDD =  json_encode($listDD);
 			<button class="tablinks" id='btn-tab1'>Thu học phí</button>
 			<button class="tablinks" id='btn-tab2'>Chi phí</button>
 			<button class="tablinks" id='btn-tab3'>Lịch sử thu chi</button>
-			
+
 		</div>
+
 		<div id="nav-container-Tab2">
 
 			<a href="./manageFinance_wageTea.php" id="btn-tab-luongGV">Lương giáo viên</a>
 			<a href="./manageFinance_OtherFee.php" id="btn-tab-chiPhiKhac">Chi phí khác</a>
-			
+
 
 		</div>
 
@@ -249,15 +253,15 @@ $jslistDD =  json_encode($listDD);
 			<h1>Thu Học phí</h1>
 			<div class="search-container">
 				<form id="form-search" method="post" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-					<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if(isset($_POST['keyword'])) echo  $_POST['keyword']?>">
+					<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if (isset($_POST['keyword'])) echo  $_POST['keyword'] ?>">
 					<input type="submit" name="search" id="search" value="Tìm kiếm" style="width: 100px">
 					<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 				</form>
 				<div style="display:inline-flex">
-                    <h3 style="margin-right:5px">Trạng thái :</h3>
-                    <select style=" border: groove;background-color: beige;font-size: 14px;padding:0; width:200px;height:50px" id="select-status">
-                        <option value="">...</option>
-					<option value="Chưa đóng">Chưa đóng</option>
+					<h3 style="margin-right:5px">Trạng thái :</h3>
+					<select style=" border: groove;background-color: beige;font-size: 14px;padding:0; width:200px;height:50px" id="select-status">
+						<option value="">...</option>
+						<option value="Chưa đóng">Chưa đóng</option>
 						<option value="Còn nợ">Còn nợ</option>
 						<option value="Hoàn thành">Hoàn thành</option>
 					</select>
@@ -304,7 +308,7 @@ $jslistDD =  json_encode($listDD);
 
 					</tbody>
 
-<tbody class="tbody-5">
+					<tbody class="tbody-5">
 				</table>
 			</div>
 			<!-- Them hoa don -->
@@ -314,7 +318,7 @@ $jslistDD =  json_encode($listDD);
 						<button class="tablinks-add" id='btn-tab1-add' onclick="openTab_add(event, 'Tab1-add')">Thêm hóa đơn học phí tháng</button>
 						<button class="tablinks-add" id='btn-tab2-add' onclick="openTab_add(event, 'Tab2-add')">Thênm hóa đơn cá nhân</button>
 						<!-- <button class="tablinks-add" id='btn-tab3-add' onclick="openTab_add(event, 'Tab3-add')">Thêm hóa </button> -->
-						
+
 					</div>
 
 					<div id="Tab1-add" class="tabcontent-add">
@@ -378,7 +382,7 @@ $jslistDD =  json_encode($listDD);
 											<select style="width: 50%;" name="bill-class-add" id="bill-class-add">
 
 												<option value="">Chọn lớp</option>
-											
+
 											</select>
 											<button type="button" id="reset-class" style="margin-left: 20px;background-color: yellowgreen;padding: 10px;">Reset</button>
 											<br>
@@ -447,7 +451,7 @@ $jslistDD =  json_encode($listDD);
 
 									<option value="">Chọn lớp</option>
 
-								
+
 								</select>
 
 								<br>
@@ -459,7 +463,7 @@ $jslistDD =  json_encode($listDD);
 								</select>
 
 								<br>
-								
+
 
 								<button style="background-color: teal;margin-top: 25px;" id="reset-2" type="reset">Làm mới</button>
 
@@ -515,7 +519,7 @@ $jslistDD =  json_encode($listDD);
 				<div class="btn-tab-3">
 					<button class="tablinks-3" id="btn-tab-3-1" onclick="openTab_3(event, 'tab-3-1')">Thông tin hóa đơn</button>
 					<button class="tablinks-3" id="btn-tab-3-2" onclick="openTab_3(event, 'tab-3-2')">Lịch sử thanh toán</button>
-					
+
 				</div>
 
 				<div id="tab-3-1" class="tabcontent-3">
@@ -644,7 +648,7 @@ $jslistDD =  json_encode($listDD);
 							<br>
 							<label>Thời gian : <label id="lb-time-add-trans" style="color:red; font-size:13px ; font-style: italic "></label></label>
 
-							
+
 
 							<input style="font-size: 16px;" type="date" id="date-add-trans" name="date-add-trans" required>
 							<br>
@@ -852,10 +856,10 @@ $jslistDD =  json_encode($listDD);
 			</div>
 		</div> -->
 		<!--  -->
-		
+
 		<div class="delete-cant">
 			<img src="../assets/images/Close-icon.png" alt="" style=" width: 40px;">
-			<h3 id ='tb2'> <br> </h3>
+			<h3 id='tb2'> <br> </h3>
 			<button id="close">Đóng</button>
 		</div>
 
@@ -888,7 +892,6 @@ $jslistDD =  json_encode($listDD);
 	var ds_lop_DD = <?php print_r($jslistClassOpen); ?>;
 	var ds_hs_hocphi = <?php print_r($jslistHS_GHP); ?>;
 	var ds_diemdanh = <?php print_r($jslistDD); ?>;
-
 </script>
 
 <script src="../assets/js/manageFinance.js"></script>
