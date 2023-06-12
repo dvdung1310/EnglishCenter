@@ -656,15 +656,15 @@ function discount($Malop, $connection)
 }
 
 // giảm học phí
-function insertDiscountMahs($Malop,$Mahs,$SoBuoiNghi,$GiamHocPhi, $connection)
+
+function insertDiscountMahs($Malop,$Mahs,$GiamHocPhi, $connection)
 {
-    $sql = "insert into hs_lop values(?,?,?,?)";
+    $sql = "update hs_lop set GiamHocPhi = ? where MaHS = ? and MaLop = ?";
     try {
         $statement = $connection->prepare($sql);
-        $statement->bindParam(1, $Mahs);
-        $statement->bindParam(2, $Malop);
-        $statement->bindParam(3, $SoBuoiNghi);
-        $statement->bindParam(4, $GiamHocPhi);
+        $statement->bindParam(1, $GiamHocPhi);
+        $statement->bindParam(2, $Mahs);
+        $statement->bindParam(3, $Malop);
         $statement->execute();
     } catch (PDOException $e) {
         echo $e->getMessage();

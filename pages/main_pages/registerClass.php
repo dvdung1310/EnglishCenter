@@ -247,7 +247,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $pr = false;
                         if ((new DateTime($day)) >= $startTimeObj && (new DateTime($day)) <= $endTimeObj) {
                             $pr = true;
-                            insertDiscountMahs($malop, $mahs, 0, $price, $connection);
+                            insertDiscountMahs($malop, $mahs, $price, $connection);
                         }
                     }
                     ?>

@@ -9,7 +9,6 @@ CREATE TABLE admin
 Password VARCHAR(30) NOT NULL , 
 PRIMARY KEY (UserName))
 
-
 --hocsinh
 
 CREATE TABLE hocsinh 
@@ -53,7 +52,7 @@ PRIMARY KEY (UserName))
 
 --ph-hs
 CREATE TABLE ph_hs
-(MAHS int,
+(MaHS int,
 MaPH int,
 foreign key (MaPH) references phuhuynh(MaPH) ,
 foreign key (MaHS) references hocsinh(MaHS) ,
@@ -115,7 +114,7 @@ PRIMARY KEY (idSchedules,MaLop))
 
 --gv_lop
 CREATE TABLE gv_lop
-(MAGV int,
+(MaGV int,
 MaLop varchar(20),
 foreign key (MaGV) references giaovien(MaGV) ,
 foreign key (MaLop) references lop(MaLop) ,
@@ -123,7 +122,7 @@ PRIMARY KEY (MaGV,MaLop))
 
 --hs_lop
 CREATE TABLE hs_lop 
-(MAHS int, 
+(MaHS int, 
 MaLop varchar(20),
 SoBuoiNghi int DEFAULT '0', 
 GiamHocPhi float DEFAULT '0', 

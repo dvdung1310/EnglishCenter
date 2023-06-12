@@ -655,7 +655,7 @@ $jsdetailStudent = json_encode($detailStudent);
               <div class="footer-back">
                 <div class="footer-box-wrap">
                   <div class="footer-back-left">
-                    <img src="../../assets/images/logo-footer.png" alt="" class="footer-img-back">
+                    <img src="../../assets/images/logo-web.png" alt="" class="footer-img-back">
                   </div>
                   <div class="footer-back-right">
                     <a class="footer-back-right-nav">Liên hệ</a>
