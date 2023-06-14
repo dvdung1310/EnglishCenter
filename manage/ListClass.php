@@ -2,6 +2,7 @@
 include "../lib/FunctionClass.php";
 
 $listClass = listClass($connection);
+
 $result = listSchedules($connection);
 $listTeacher = listTeacher($connection);
 $dataClassOnOff = dataClassOnOff('Đang mở', $connection);
@@ -131,6 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php
 				if ($dataClassOnOff != null) :
 					foreach ($dataClassOnOff as $datas) :
+						var_dump($datas);
 						$maLop = $datas['MaLop'];
 						$nameTeacher = dataTeacherByMaLop($maLop, $connection);
 						$schedules = dataSchedulesByMaLop($maLop, $connection); ?>

@@ -530,6 +530,16 @@ input {
       margin-left: 10px;
 }
 
+#yesDelete,#noDelete{
+    padding: 5px 10px;
+    width: 70px;
+    
+}
+#noDelete{
+    margin-left: 20px;
+    
+}
+
 
 button:hover, input[type='submit']:hover{
     cursor: pointer;

@@ -20,7 +20,17 @@
             echo $e->getMessage();
         }
     }
-
+    function deleteLKPHHS($connection,$MaHS){
+        $sql = "delete from lienketph_hs where MaPH = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$MaHS]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
 
     //select những lớp mà  phụ huynh học
 

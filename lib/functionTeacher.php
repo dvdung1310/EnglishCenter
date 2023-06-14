@@ -155,6 +155,51 @@
         }
     }
 
+    //
+     // search Giao vien
+     function listClassActive($connection){
+        $sql = "SELECT * FROM lop INNER JOIN gv_lop WHERE lop.MaLop = gv_lop.MaLop and TrangThai = 'Đang mở';";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+         
+            $statement->execute();
+
+            $listTeacher  = $statement-> fetchAll(PDO:: FETCH_ASSOC);
+            $connection = null;
+            return $listTeacher;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+     // Xoa giao vien
+     function deleteLuongGV($connection,$magv){
+        $sql = "DELETE FROM luonggv WHERE MaGV = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$magv]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    function deletegv_lop($connection,$magv){
+        $sql = "DELETE FROM gv_lop WHERE MaGV = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$magv]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+
+
 
      // Xoa giao vien
      function deleteTeacher($connection,$magv){

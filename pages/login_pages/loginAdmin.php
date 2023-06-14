@@ -128,13 +128,13 @@ if ($test) {
 	<div class="login">
 		<h1>Admin Login</h1>
 		<form action="#" method="post">
-			<input type="text" name="username" placeholder="Username">
+			<input type="text" name="username" placeholder="Username" value="<?php if(isset($_POST['username'])) echo $_POST['username'] ?>">
 			<p style="color:red ; margin-bottom: 20px;font-size : 18px">
 				<?php
 				if (isset($_POST['submit']))
 					echo $userName_error;
 				?></p>
-			<input type="password" name="password" placeholder="Password">
+			<input type="password" name="password" placeholder="Password" value="<?php if(isset($_POST['password'])) echo $_POST['password'] ?>">
 			<p style="color:red ; margin-bottom: 20px;font-size : 18px">
 				<?php
 				if (isset($_POST['submit']))

@@ -71,13 +71,13 @@ if ($test) {
                         <h1>Giáo Viên</h1>
                     </div>
                     <div class="login-student-form-center">
-                        <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc Email:">
+                        <input class="login-student-form-input" type="text" name="userName" placeholder="Tên tài khoản hoặc số điện thoại :" value="<?php if(isset($_POST['userName'])) echo $_POST['userName'] ?>">
                     </div>
                     <p style="color:red ; margin-bottom: 20p;font-size : 18px;"><?php
                                                                 echo "$userName_error";
                                                                 ?></p>
                     <div>
-                        <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : ">
+                        <input name="passWord" class="login-student-form-input" type="password" placeholder="Mật khẩu : "value="<?php if(isset($_POST['password'])) echo $_POST['password'] ?>">
                     </div>
                     <p style="color:red ; margin-bottom: 20px;font-size : 18px">
                         <?php

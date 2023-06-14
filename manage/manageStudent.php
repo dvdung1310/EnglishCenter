@@ -43,6 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		deletetk_hs($connection, $mahs);
 		deleteStudent_ph_hs($connection, $mahs);
 		deleteNgaydk($connection,$mahs);
+		
+		deleteLKPHHS($connection,$mahs);
+		deleteDiemDanh($connection,$mahs);
+		$listMaHD =  selectMaHD($connection,$mahs);
+        foreach($listMaHD as $hd){
+            deleteLSTHP($connection,$hd['MaHD']);
+        }
 		deleteStudent($connection, $mahs);
 		header("Location: manageStudent.php");
 	}

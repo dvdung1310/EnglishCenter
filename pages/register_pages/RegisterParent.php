@@ -130,9 +130,9 @@ if ($check_empty) {
                         <div>
                             <h1 style="font-size : 25px; margin-right: 120px">Giới tính </h1>
                             <select name="gender" style="font-size: 20px;">
-                                <option value="nam">Nam</option>
-                                <option value="nu">Nữ</option>
-                                <option value="lgbt">LGBT</option>
+                                <option value="Nam">Nam</option>
+                                <option value="Nữ">Nữ</option>
+                        
                             </select>
                         </div>
 

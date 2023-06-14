@@ -7,6 +7,7 @@ $dataSchedules = dataSchedulesByMaLop($malop, $connection);
 $nameTeacher = dataTeacherByMaLop($malop, $connection);
 $result = listSchedules($connection);
 $nameCondition = '';
+
 if ($dataClass['TrangThai'] == 'Chưa mở') {
     $nameCondition = 'Chưa mở';
 } else if ($dataClass['TrangThai'] == 'Đang mở') {
@@ -18,6 +19,10 @@ if ($dataClass['TrangThai'] == 'Chưa mở') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['deleteClass'])) {
+        $listMaHD =  selectMaHD($connection,$malop);
+        foreach($listMaHD as $hd){
+            deleteLSTHP($connection,$hd['MaHD']);
+        }
         $result = deleteClassById($malop, $connection);
         header("Location: ListClass.php");
         exit();

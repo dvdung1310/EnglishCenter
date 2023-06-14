@@ -10,7 +10,7 @@ require '../lib/functionTeacher.php';
 $listTeacher = listTeacher($connection);
 $listtk_gv = listtk_gv($connection);
 $listClassOfTeacher = listClassOfTeacher($connection);
-
+$listClassActive = listClassActive($connection);
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['teacher_name_edit'])) {
@@ -62,6 +62,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	if (isset($_POST['maGV_delete'])) {
 		$magv = $_POST['maGV_delete'];
 		deletetk_gv($connection, $magv);
+		deletegv_lop($connection , $magv);
+		deleteLuongGV($connection, $magv);
 		deleteTeacher($connection, $magv);
 		header("Location: manageTeacher.php");
 	}
@@ -79,6 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $jsonListTeacher = json_encode($listTeacher);
 $jsonListtk_gv = json_encode($listtk_gv);
 $jsonListClass = json_encode($listClassOfTeacher);
+$jsonlistClassActive = json_encode($listClassActive);
 
 
 
@@ -511,6 +514,8 @@ $jsonListClass = json_encode($listClassOfTeacher);
 	</footer>
 
 	<script>
+
+	var ds_lopHD = <?php print_r($jsonlistClassActive); ?>; //
 		function convertDateFormat(dateString) {
 			var dateParts = dateString.split("-");
 			var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
@@ -553,8 +558,7 @@ $jsonListClass = json_encode($listClassOfTeacher);
 						teacher_select = ds_giaovien[i];
 				}
 
-				console.log(teacher_select);
-
+			
 
 				document.getElementById('teacher-name').textContent = teacher_select.TenGV;
 				document.getElementById('teacher-gender').textContent = teacher_select.GioiTinh;
@@ -957,7 +961,16 @@ $jsonListClass = json_encode($listClassOfTeacher);
 
 			event.preventDefault();
 			document.querySelector('.delete-ques').style.display = 'none';
-			if (listClass.length != 0) {
+			
+			var check_class = false;
+			for(var i =0; i<length.ds_lopHD;i++){
+				if(ds_lopHD[i].MaGV == teacher_select.MaGV ){
+					check_class = true;
+				}
+						
+			}
+
+			if (check_class) {
 				document.querySelector('.delete-cant').style.display = 'block';
 				return;
 			}

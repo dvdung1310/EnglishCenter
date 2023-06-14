@@ -30,6 +30,13 @@ MaHS int not null,
 foreign key (MaHS) references hocsinh(MaHS) , 
 PRIMARY KEY (UserName)) 
 
+--ngaydkhs
+CREATE TABLE ngaydkhs 
+(MaHS int PRIMARY , 
+ThoiGian date not null,
+foreign key (MaHS) references hocsinh(MaHS) , 
+) 
+
 --phuhuynh
 CREATE TABLE phuhuynh 
 (MaPH INT NOT NULL AUTO_INCREMENT,

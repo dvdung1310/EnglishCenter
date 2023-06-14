@@ -217,6 +217,8 @@ function deleteClassById($malop, $connection)
     $sql2 = "DELETE from schedules_class where MaLop = ?";
     $sql3 = "DELETE from lop where MaLop = ?";
     $sql4 = "DELETE from lopghp where MaLop = ?";
+    $sql7 = "DELETE from hdhocphi where MaLop = ?";
+
     try {
         $statement6 = $connection->prepare($sql6);
         $statement5 = $connection->prepare($sql5);
@@ -224,6 +226,8 @@ function deleteClassById($malop, $connection)
         $statement1 = $connection->prepare($sql1);
         $statement2 = $connection->prepare($sql2);
         $statement3 = $connection->prepare($sql3);
+        $statement7 = $connection->prepare($sql7);
+
 
         $statement6->execute([$malop]);
         $statement5->execute([$malop]);
@@ -231,9 +235,40 @@ function deleteClassById($malop, $connection)
         $statement1->execute([$malop]);
         $statement2->execute([$malop]);
         $statement3->execute([$malop]);
+
+        $statement7->execute([$malop]);
     } catch (PDOException $e) {
         $e->getMessage();
     }
+}
+
+// truy vấn ma hdhocphi cua lop
+function selectMaHD( $connection, $malop)
+{
+    $sql = "SELECT MaHD FROM  hdhocphi   WHERE MaLop = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$malop]);
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+    return null;
+}
+/// xoa lsthp
+
+function deleteLSTHP($connection,$mahd)
+{
+    $sql = "delete  from lsthp where MaHD = ? ";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$mahd]);
+
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+    return null;
 }
 
 // update lop 

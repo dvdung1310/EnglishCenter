@@ -34,6 +34,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$maph = $_POST['maph_delete'];
 		deletetk_ph($connection, $maph);
 		deleteParent_ph_hs($connection, $maph);
+		deleteLKPHHS($connection,$maph);
+
 		deleteParent($connection, $maph);
 		header("Location: manageParent.php");
 	}
@@ -101,7 +103,7 @@ $jsonListtk_ph = json_encode($listtk_ph);
 			<thead>
 				<tr>
 					<th onclick="sortTable(0)">STT</th>
-					<th onclick="sortTable(1)">Mã Giáo viên</th>
+					<th onclick="sortTable(1)">Mã phụ huynh</th>
 					<th onclick="sortTable(2)">Họ tên</th>
 					<th onclick="sortTable(3)">Giới tính</th>
 					<th onclick="sortTable(4)">Tuổi</th>

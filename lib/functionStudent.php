@@ -117,6 +117,70 @@
             echo $e->getMessage();
         }
     }
+    //
+    function deleteLKPHHS($connection,$MaHS){
+        $sql = "delete from lienketph_hs where MaHS = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$MaHS]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+    function deleteDiemDanh($connection,$MaHS){
+        $sql = "delete from diemdanh where MaHS = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$MaHS]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+    function deleteHDHP($connection,$MaHS){
+        $sql = "delete from hdhocphi where MaHS = ?";
+        try{
+            $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
+            $statement =  $connection->prepare($sql);
+            $statement-> execute([$MaHS]);
+            $connection = null;
+        } catch (PDOException $e){
+            echo $e->getMessage();
+        }
+    }
+
+    // truy vấn ma hdhocphi cua lop
+function selectMaHD( $connection, $malop)
+{
+    $sql = "SELECT MaHD FROM  hdhocphi   WHERE MaHS = ?";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$malop]);
+        $data = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+    return null;
+}
+/// xoa lsthp
+
+function deleteLSTHP($connection,$mahd)
+{
+    $sql = "delete  from lsthp where MaHD = ? ";
+    try {
+        $statement = $connection->prepare($sql);
+        $statement->execute([$mahd]);
+
+    } catch (PDOException $e) {
+        $e->getMessage();
+    }
+    return null;
+}
+
 
 
      // Xoa hoc vien
