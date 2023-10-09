@@ -42,14 +42,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$mahs = $_POST['mahs_delete'];
 		deletetk_hs($connection, $mahs);
 		deleteStudent_ph_hs($connection, $mahs);
-		deleteNgaydk($connection,$mahs);
-		
-		deleteLKPHHS($connection,$mahs);
-		deleteDiemDanh($connection,$mahs);
-		$listMaHD =  selectMaHD($connection,$mahs);
-        foreach($listMaHD as $hd){
-            deleteLSTHP($connection,$hd['MaHD']);
-        }
+		deleteNgaydk($connection, $mahs);
+
+		deleteLKPHHS($connection, $mahs);
+		deleteDiemDanh($connection, $mahs);
+		$listMaHD =  selectMaHD($connection, $mahs);
+		foreach ($listMaHD as $hd) {
+			deleteLSTHP($connection, $hd['MaHD']);
+		}
 		deleteStudent($connection, $mahs);
 		header("Location: manageStudent.php");
 	}
@@ -93,7 +93,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		<nav>
 			<ul>
 				<li><a href="./ListClass.php">Quản lý lớp học</a></li>
-				<li><a style="color: #0088cc;"href="../manage/manageStudent.php">Quản lý học viên</a></li>
+				<li><a style="color: #0088cc;" href="../manage/manageStudent.php">Quản lý học viên</a></li>
 				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
 				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
 				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
@@ -108,7 +108,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 		<h1>Quản lý Học viên</h1>
 		<div class="search-container">
 			<form id="form-search" method="post" action="<?php echo  htmlspecialchars($_SERVER['PHP_SELF']); ?>" style="width: 50%; margin: unset;display: inline-flex;" autocomplete="off">
-				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if(isset($_POST['keyword'])) echo  $_POST['keyword']?>">
+				<input type="text" name="keyword" placeholder="Tìm kiếm..." style="width: 70%" value="<?php if (isset($_POST['keyword'])) echo  $_POST['keyword'] ?>">
 				<input type="submit" name="search" value="Tìm kiếm" style="width: 100px">
 				<button type="submit" id="refesh-btn" name="refesh" style=" background-color: currentcolor "> <img style="width: 30px;" src="../assets/images/Refresh-icon.png" alt=""></button>
 			</form>
@@ -125,19 +125,20 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 					<th onclick="sortTable(4)">Tuổi</th>
 					<th onclick="sortTable(5)" style="width :200px">Địa chỉ</th>
 					<th onclick="sortTable(6)">Lớp đang học</th>
-					
+
 
 				</tr>
 			</thead>
 			<tbody class="tbody-1">
 				<?php $i = 1;
-				$nam=0;$nu = 0;
+				$nam = 0;
+				$nu = 0;
 				if (!$listStudent)
 					echo ' <h2>Không tìm thấy kết quả phù hợp "' . $_POST['keyword'] . '"</h2>';
 				else {
 					foreach ($listStudent as $Student) : ?>
-					<?php if($Student['GioiTinh'] == 'Nam') $nam++;
-							else $nu++; ?>
+						<?php if ($Student['GioiTinh'] == 'Nam') $nam++;
+						else $nu++; ?>
 						<tr>
 							<td><?php echo $i++ ?></td>
 							<td><?php echo $Student['MaHS']; ?></td>
@@ -151,7 +152,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 									echo $class['MaLop'] . ' ; ';
 								endforeach;
 								?></td>
-							
+
 
 						</tr>
 				<?php endforeach;
@@ -430,7 +431,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			<h3>Thay đổi mật khẩu thành công!</h3>
 		</div>
 
-		<p style="margin-left: 80%; font-style:italic; font-size:13px"> <?php echo '*Tổng số học viên: '. $i-1 . '  Nam: '.$nam.'  Nữ: '.$nu ?> </p>
+		<p style="margin-left: 80%; font-style:italic; font-size:13px"> <?php echo '*Tổng số học viên: ' . $i - 1 . '  Nam: ' . $nam . '  Nữ: ' . $nu ?> </p>
 
 
 	</main>
@@ -443,15 +444,15 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 	</footer>
 
 	<script>
-			function convertDateFormat(dateString) {
+		function convertDateFormat(dateString) {
 			var dateParts = dateString.split("-");
 			var formattedDate = dateParts[2] + "-" + dateParts[1] + "-" + dateParts[0];
 			return formattedDate;
 		}
 
 		function numberWithCommas(x) {
-    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+			return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+		}
 
 
 		const rows = document.querySelectorAll('.tbody-1 tr');
@@ -544,25 +545,22 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 						classes[k++] = ds_hs_lop[i];
 					}
 				}
-				
+
 
 				var html = '';
 				var color = '';
-				if (classes.length === '0'){
+				if (classes.length === '0') {
 					html += '<p>Học viên chưa tham gia lớp học nào </p>';
-				}
-				else {
+				} else {
 					html += '<p> Số lớp đã tham gia: ' + classes.length + '</p>';
 
 					for (var i = 0; i < classes.length; i++) {
 
-						if(classes[i]['TrangThai'] == 'Đang mở'){
+						if (classes[i]['TrangThai'] == 'Đang mở') {
 							color = '#00c608';
-						}
-						else if(classes[i]['TrangThai'] == 'Chưa mở'){
+						} else if (classes[i]['TrangThai'] == 'Chưa mở') {
 							color = '#ad9d0b';
-						}
-						else{
+						} else {
 							color = '#ad0b0b';
 						}
 
@@ -592,7 +590,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 							'<tr>' +
 
 							'<td>' +
-							'<p id="fee-class">Học phí:  ' + numberWithCommas(classes[i]['HocPhi'])+ '/buổi' + '</p>' +
+							'<p id="fee-class">Học phí:  ' + numberWithCommas(classes[i]['HocPhi']) + '/buổi' + '</p>' +
 							'</td>' +
 
 							'<td>' +
@@ -602,7 +600,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 							'<tr>' +
 
 							'<td>' +
-							'<p id="status-class" style ="color:' +color+ '" >Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
+							'<p id="status-class" style ="color:' + color + '" >Trạng thái:  ' + classes[i]['TrangThai'] + '</p>' +
 							'</td>' +
 							'</tr>' +
 							'</table>' +
@@ -903,7 +901,7 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 
 
 
-		
+
 		var sortDirection = {}; // Store the current sort direction for each column
 
 		function sortTable(columnIndex) {
@@ -915,16 +913,26 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			});
 
 			rows.sort(function(a, b) {
-				var aValue = a.getElementsByTagName('td')[columnIndex].innerText.trim();
-				var bValue = b.getElementsByTagName('td')[columnIndex].innerText.trim();
+				
 
+				if (columnIndex === 4) {
+					var aValue = parseFloat(a.getElementsByTagName('td')[columnIndex].innerText.trim());
+					var bValue = parseFloat(b.getElementsByTagName('td')[columnIndex].innerText.trim());
 
-				if (sortDirection[columnIndex] === 'asc') {
-					return aValue.localeCompare(bValue);
+					if (sortDirection[columnIndex] === 'asc') {
+						return aValue - bValue;
+					} else {
+						return bValue - aValue;
+					}
 				} else {
-					return bValue.localeCompare(aValue);
+					var aValue = a.getElementsByTagName('td')[columnIndex].innerText.trim();
+				var bValue = b.getElementsByTagName('td')[columnIndex].innerText.trim();
+					if (sortDirection[columnIndex] === 'asc') {
+						return aValue.localeCompare(bValue);
+					} else {
+						return bValue.localeCompare(aValue);
+					}
 				}
-
 
 
 			});
@@ -982,7 +990,6 @@ $jsonListtk_hs =  json_encode($listtk_hs);
 			}
 			clickedHeader.appendChild(sortIcon);
 		}
-
 	</script>;
 
 

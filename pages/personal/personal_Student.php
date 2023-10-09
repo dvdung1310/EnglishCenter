@@ -210,8 +210,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
 </a>
 <div class="menubar-left">
-  <a class="menubar-nav"  href="./userStudent_class.php" >Thông tin lớp học</a>
-  <a class="menubar-nav  last-nav" href="./userStudent_link.php">Liên kết với phụ huynh</a>
+  <a class="menubar-nav"  href="../main_pages/userStudent_class.php" >Thông tin lớp học</a>
+  <a class="menubar-nav  last-nav" href="../main_pages/userStudent_link.php">Liên kết với phụ huynh</a>
 
   <div class="menubar-info-wrap">
     <div class="menubar-info">

@@ -92,9 +92,9 @@ tr:hover {
     background-color: #d4e3ff;
 }
 
-tbody {
+.tbody-1 {
     display: block;
-    max-height: 500px;
+    max-height: 600px;
     /* set maximum height */
     overflow-y: auto;
     /* enable vertical scroll */

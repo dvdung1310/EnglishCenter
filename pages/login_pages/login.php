@@ -67,7 +67,7 @@ if ($test) {
 
         <div class="login-student">
             <div class="login-student-img">
-                <img src="../../assets/images/logo-web.png" alt="">
+                    <a href="../home/home.php"><img src="../../assets/images/logo-web.png" alt=""></a>
             </div>
             <div class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">

@@ -82,7 +82,7 @@ function listSchedules($connection)
 // select danh sach diemd danh
 function listDD($connection, $magv)
 {
-    $sql = "SELECT  diemdanh.MaLop , diemdanh.MaHS , hocsinh.TenHS, ThoiGian, dd FROM diemdanh  INNER JOIN hocsinh INNER JOIN gv_lop WHERE diemdanh.MaHS = hocsinh.MaHS AND diemdanh.MaLop = gv_lop.MaLop and gv_lop.MaGV = ?";
+    $sql = "SELECT  diemdanh.MaLop , diemdanh.MaHS , hocsinh.TenHS, ThoiGian, dd FROM diemdanh  INNER JOIN hocsinh INNER JOIN gv_lop WHERE diemdanh.MaHS = hocsinh.MaHS AND diemdanh.MaLop = gv_lop.MaLop and gv_lop.MaGV = ? order by ThoiGian desc";
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement =  $connection->prepare($sql);

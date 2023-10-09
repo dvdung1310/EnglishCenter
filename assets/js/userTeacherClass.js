@@ -6,7 +6,7 @@ function showHiddenInfo(event, maLopp) {
     document.getElementById('modal-bg').style.display = 'block';
 
     dateListDiv.innerHTML = '';
-
+    var check_empty = true;
     for (var key in diemDanhGrouped) {
         if (diemDanhGrouped.hasOwnProperty(key)) {
             var diemDanhArray = diemDanhGrouped[key];
@@ -14,8 +14,14 @@ function showHiddenInfo(event, maLopp) {
 
             if (maLop === maLopp) {
                 createAttendanceDateDiv(diemDanhArray);
+                check_empty = false;
             }
+           
+
         }
+    }
+    if(check_empty){
+        dateListDiv.innerHTML = '<p style="margin-left:100px; font-size:18px; font-style:italic">Chưa có dữ liệu điểm danh!</p>';      
     }
     class_select = maLopp;
 }
@@ -131,7 +137,6 @@ for (var i = 0; i < ds_diemdanh.length; i++) {
 
     diemDanhGrouped[key].push(diemDanh);
 }
-console.log(diemDanhGrouped);
 
 document.getElementById('close').addEventListener('click', function () {
     document.getElementById('modal-bg').style.display = 'none';

@@ -629,7 +629,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- danh sach lop hoc -->
       <div class="instrucment-wrap">
         <div class="instruct-inner">
-          <div class="instruct-title">Danh sách lớp </div>
+          <div class="instruct-title">Danh sách lớp sắp mở </div>
           <div class="instruct-content">
             <div class="instruct-slide">
               <div class="slider-for-instruct instructSlider">
@@ -664,17 +664,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                   foreach ($nameTeacher as $name) {
                     $s = $name['TenGV'];
                   }
+                  $gph =  discount($listClassOn['MaLop'], $connection);
+
                 ?>
                   <div class="instructNav-item">
                     <div class="instruct-item-wrap">
                       <div class="introNavImg">
-                        <div class="listClassOn<?php echo $i++ ?>">
+                        <div class="listClassOn<?php echo $i++ ?>" style="    height: 267px;">
                           <a href="
 	                          detailClass.php?malop=<?php echo $listClassOn['MaLop'] ?>
 	                          ">
                             <p> Mã lớp: <?php echo $listClassOn['MaLop'] ?></p>
                             <p> Tên lớp: <?php echo $listClassOn['TenLop'] ?></p>
-                            <p> Tên giáo viên: <?php echo $s ?></p>
+                            <p> Giáo viên: <?php echo $s ?></p>
+                            <p>
+                              <?php if ($gph['GiamHocPhi'] > 0)
+                                echo 'Giảm học phí: ' . $gph['GiamHocPhi'] . "%".'<br>'.'(Từ '. convertDateFormat($gph['TGBatDau']).' đến '.convertDateFormat($gph['TGKetThuc']).') ' ?>
+                                </p>
                           </a>
                         </div>
                       </div>

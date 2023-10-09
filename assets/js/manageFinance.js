@@ -726,6 +726,8 @@ function handleRowClick(index) {
         if ((hoaDon_select.MaHS == ds_hs_hocphi[i].MaHS) && (hoaDon_select.MaLop == ds_hs_hocphi[i].MaLop))
             hp = ds_hs_hocphi[i].HocPhi;
     }
+    document.getElementById('fee-bill-detail').textContent = numberWithCommas(hp) + ' /buổi';
+
     document.getElementById('session-bill-detail').textContent = parseInt(hoaDon_select.SoTien / hp);
     if (hoaDon_select.TrangThai === 'Hoàn thành') {
         color = "green";

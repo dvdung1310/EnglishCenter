@@ -73,8 +73,7 @@ if (isset($_POST['submit'])) {
 
         <div class="login-student" style=" width: 500px;">
             <div class="login-student-img">
-                <img src="/assets/images/logo-web.png" alt="">
-            </div>
+            <a href="../home/home.php"><img src="../../assets/images/logo-web.png" alt=""></a>            </div>
 
             <div class="login-student-form">
                 <form action="<?php htmlspecialchars($_SERVER['PHP_SELF']) ?>" method="post">

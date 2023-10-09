@@ -139,7 +139,7 @@ include $path_dir . '/database.php';
 function searchLuongGV($connection, $key)
 {
     $sql = "SELECT luonggv.MaGV , MaLuong, TenHD ,ThoiGian, Lop,ThoiGianTT, SoTien, TrangThai, giaovien.TenGV, giaovien.TenGV, giaovien.GioiTinh, giaovien.NgaySinh, giaovien.Tuoi, giaovien.QueQuan, giaovien.DiaChi, giaovien.TrinhDo, giaovien.SDT, giaovien.Email  FROM luonggv INNER JOIN giaovien WHERE luonggv.MaGV =  giaovien.MaGV and
-         (MaLuong like :key or luonggv.MaGV like :key or giaovien.TenGV like :key or ThoiGian like :key or ThoiGianTT like :key or Lop like :key  or TenHD like :key)";
+         (MaLuong like :key or luonggv.MaGV like :key or giaovien.TenGV like :key or ThoiGian like :key or ThoiGianTT like :key or Lop like :key  or TenHD like :key) order by MaLuong desc";
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement =  $connection->prepare($sql);

@@ -143,7 +143,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$soTien =  str_replace(',', '', $soTien);
 		$stdd = $soTienDaDong + $soTien;
 		$npcl = $SoTienPhaiDong - $stdd;
-		if ($npcl == 0) {
+		if ($npcl <= 0) {
 			$tt = 'Hoàn thành';
 		} else {
 			$tt = 'Còn nợ';
@@ -178,10 +178,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				deleteLSTHPbyMaGD($connection, $a['MaGD']);
 			}
 		}
-		if ($remainingFee == 0 || $remainingFee < 0) {
-			$tt = 'Hoàn thành';
+		if ($totalAmount == 0) {
+			$tt = 'Chưa đóng';
 		} else {
-			$tt = 'Còn nợ';
+			if ($remainingFee <= 0) {
+				$tt = 'Hoàn thành';
+			} else {
+				$tt = 'Còn nợ';
+			}
 		}
 		updateHDTHP_addLSTHP($connection, $totalAmount, $remainingFee, $tt, $mahd);
 
@@ -228,7 +232,7 @@ $jslistDD =  json_encode($listDD);
 				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
 				<li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
 
-				
+
 			</ul>
 		</nav>
 	</header>
@@ -564,6 +568,10 @@ $jslistDD =  json_encode($listDD);
 										<td id="time-bill-detail"></td>
 									</tr>
 									<tr>
+										<th class="lb-detail-bill">Học phí:</th>
+										<td id="fee-bill-detail"></td>
+									</tr>
+									<tr>
 										<th class="lb-detail-bill">Số buổi học:</th>
 										<td id="session-bill-detail"></td>
 									</tr>
@@ -881,7 +889,6 @@ $jslistDD =  json_encode($listDD);
 		<p>© 2023 Hệ thống quản lý giáo dục. All rights reserved.</p>
 	</footer>
 </body>
-
 
 
 

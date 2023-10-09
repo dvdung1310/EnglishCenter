@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 		if (!empty($_POST['teacher-add-bill'])) {
 			$gv = $_POST['teacher-add-bill'];
-			var_dump($gv);
+		
 			$arrayTeacher = explode(",", $gv);
 		}
 

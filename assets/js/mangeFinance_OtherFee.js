@@ -71,13 +71,18 @@ function hienthids(status, kind,filteredData) {
     filteredData_ds = filteredData;
     var html = '';var html_last = '';
     var color = '';
-    var tongSoTien = 0; 
+    var tongSoTien = 0; var tienChuaTT = 0;  var tienDaTT =0;var dem1 =0; var dem0 =0;
     if (filteredData.length != 0) {
         for (var i = 0; i < filteredData.length; i++) {
             if (filteredData[i]['TrangThai'] === 'Đã thanh toán') {
                 color = "lightgreen";
+                tienDaTT += filteredData[i]['SoTien'];
+               
+                dem1++;
             }
-            else { color = "#ff9393" }
+            else { color = "#ff9393";
+            tienChuaTT += filteredData[i]['SoTien'];
+            dem0++; }
             // else { color = "#bcbdff" }
 
             html += '<tr onclick="handleRowClick(' + i + ')">';
@@ -111,9 +116,21 @@ function hienthids(status, kind,filteredData) {
         html_last += '<td >' +  '</td>';   
         html_last += '<td >' + 'Tổng : </td>';
         html_last += '<td >' + numberWithCommas(tongSoTien) + '</td>';
-        html_last += '<td >' +  '</td>';
-        html_last += '<td >'  + '</td>';
+        html_last += '<td >' +  'Đã thanh toán :</td>';
+        html_last += '<td >'  +  numberWithCommas(tienDaTT)+'('+ dem1+')</td>';
         html_last += '</tr>';
+
+        html_last += '<tr>';
+        html_last += '<td style="width:20px ;  ">'  + '</td>';
+        html_last += '<td >' +  '</td>';
+        html_last += '<td >' +  '</td>';
+        html_last += '<td >' +  '</td>';   
+        html_last += '<td >' + ' </td>';
+        html_last += '<td >' + '</td>';
+        html_last += '<td >' +  'Chưa thanh toán :</td>';
+        html_last += '<td >'  +  numberWithCommas(tienChuaTT)+'('+ dem0+')</td>';
+        html_last += '</tr>';
+
 
         document.querySelector(".tbody-1").innerHTML = html;
         document.querySelector(".tbody-5").innerHTML = html_last;

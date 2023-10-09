@@ -109,7 +109,7 @@ if ($check_empty) {
         <div class="login-student">
             <div class="login-student-img">
 
-                <img src="/assets/images/logo-web.png" alt="">
+            <a href="../home/home.php"><img src="../../assets/images/logo-web.png" alt=""></a>
             </div>
 
             <div style="padding: 0 100px;" class="login-student-form">

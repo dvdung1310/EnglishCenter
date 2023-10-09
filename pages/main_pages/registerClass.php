@@ -41,7 +41,10 @@ if (isset($_POST['check'])) {
         $mahs = $_SESSION['MaHS']['MaHS'];
         $maph = checkExitPH_HS($mahs, $connection);
         if ($maph) {
+
+           
             $checkregister = createTabHS_LOP($mahs, $malop, $connection);
+            
             $stRegister = $dataClass['SLHS'];
             setHSDANGKI($stRegister, $malop, $connection);
 
@@ -320,7 +323,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td style="color: #0088cc" id="" contenteditable="false"><?php echo $dataClass['LuaTuoi']; ?></td>
                         </tr>
                         <tr>
-                            <th style="color:#ffd95c">Thời gian tạo lớp:</th>
+                            <th style="color:#ffd95c">Thời gian bắt đầu khóa học:</th>
                             <td style="color: #0088cc" id="teacher-date" contenteditable="false"><?php echo convertDateFormat($dataClass['ThoiGian']); ?></td>
                         </tr>
                         <tr>
@@ -383,7 +386,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 if (empty($discount['GiamHocPhi'])) {
                                     echo '0%';
                                 } else {
-                                    echo $discount['GiamHocPhi'] . '%';
+                                    echo $discount['GiamHocPhi'] . '%'.'    &emsp; &emsp; (Từ '.$discount['TGBatDau'].' đến '.$discount['TGKetThuc'].')';
                                 }
                                 ?>
                             </td>

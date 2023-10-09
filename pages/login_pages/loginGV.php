@@ -62,7 +62,7 @@ if ($test) {
 
         <div class="login-student" style="width: 500px;">
             <div class="login-student-img">
-                <img src="/assets/images/logo-web.png" alt="">
+            <a href="../home/home.php"><img src="../../assets/images/logo-web.png" alt=""></a>
             </div>
 
             <div class="login-student-form">

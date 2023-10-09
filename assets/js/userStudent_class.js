@@ -54,14 +54,14 @@ var html_class_close = '';
 for (var i = 0; i < ds_classClose.length; i++) {
   
         html_class_close += ' <div class="class"><table style="width: 100%;"> <tbody id="tbody-class"><tr style="width: 100%;">';
-        html_class_close += '<td style="width:30%">Mã lớp: <span style="font-weight: bold;">' + ds_classOpen[i].MaLop + '</span></td>';
+        html_class_close += '<td style="width:30%">Mã lớp: <span style="font-weight: bold;">' + ds_classClose[i].MaLop + '</span></td>';
 
-        html_class_close += '<td style="width:40%">Tên lớp: <span style="font-weight: bold;">' + ds_classOpen[i].TenLop + '</span></td>';
-        html_class_close += '<td>Lứa tuổi: <span style="font-weight: bold;">' + ds_classOpen[i].LuaTuoi + '</span></td> </tr>';
-        html_class_close += '<tr style="width: 100%;"> <td style="width:30%">Số lượng học viên : <span style="font-weight: bold;">' + ds_classOpen[i].SLHS + '</span></td> ';
-        html_class_close += '<td style="width:40%">Học phí: <span style="font-weight: bold;">' + numberWithCommas(ds_classOpen[i].HocPhi) + ' VND/ buổi' + '</span></td>';
-        html_class_close += '<td>Số buổi đã tổ chức: <span style="font-weight: bold;">' + ds_classOpen[i].SoBuoiDaToChuc + '/' + ds_classOpen[i].SoBuoi + ' buổi' + '</span></td> </tr>';
-        html_class_close += '<tr style="width: 100%;"> <td style="width:10%">Số buổi nghỉ : <span style="font-weight: bold;">' + ds_classOpen[i].SoBuoiNghi + '</span>  <br>';
+        html_class_close += '<td style="width:40%">Tên lớp: <span style="font-weight: bold;">' + ds_classClose[i].TenLop + '</span></td>';
+        html_class_close += '<td>Lứa tuổi: <span style="font-weight: bold;">' + ds_classClose[i].LuaTuoi + '</span></td> </tr>';
+        html_class_close += '<tr style="width: 100%;"> <td style="width:30%">Số lượng học viên : <span style="font-weight: bold;">' + ds_classClose[i].SLHS + '</span></td> ';
+        html_class_close += '<td style="width:40%">Học phí: <span style="font-weight: bold;">' + numberWithCommas(ds_classClose[i].HocPhi) + ' VND/ buổi' + '</span></td>';
+        html_class_close += '<td>Số buổi đã tổ chức: <span style="font-weight: bold;">' + ds_classClose[i].SoBuoiDaToChuc + '/' + ds_classClose[i].SoBuoi + ' buổi' + '</span></td> </tr>';
+        html_class_close += '<tr style="width: 100%;"> <td style="width:10%">Số buổi nghỉ : <span style="font-weight: bold;">' + ds_classClose[i].SoBuoiNghi + '</span>  <br>';
         for (var j = 0; j < ds_absent.length; j++) {
             if( ds_absent[j].MaLop == ds_classClose[i].MaLop) {
                 html_class_close += convertDateFormat(ds_absent[j].ThoiGian) + '<br>' + '        ';

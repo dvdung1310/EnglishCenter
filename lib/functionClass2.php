@@ -654,7 +654,20 @@ function discount($Malop, $connection)
         echo $e->getMessage();
     }
 }
+//
+function selectClassGHP( $connection)
+{
+    $sql = "select * from lopghp ";
+    try {
+        $statement = $connection->prepare($sql);
 
+        $statement->execute();
+        $data =$statement->fetchAll(PDO::FETCH_ASSOC);
+        return $data;
+    } catch (PDOException $e) {
+        echo $e->getMessage();
+    }
+}
 // giảm học phí
 
 function insertDiscountMahs($Malop,$Mahs,$GiamHocPhi, $connection)

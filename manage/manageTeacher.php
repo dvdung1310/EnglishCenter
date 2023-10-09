@@ -552,7 +552,7 @@ $jsonlistClassActive = json_encode($listClassActive);
 				ds_giaovien = <?php print_r($jsonListTeacher); ?>;
 				ds_tk_gv = <?php print_r($jsonListtk_gv); ?>;
 				ds_gv_lop = <?php print_r($jsonListClass); ?>;
-
+				console.log(ds_gv_lop);
 				for (var i = 0; i < ds_giaovien.length; i++) {
 					if (stt_select == ds_giaovien[i].MaGV)
 						teacher_select = ds_giaovien[i];

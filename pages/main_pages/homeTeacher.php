@@ -7,6 +7,7 @@ $maGV = $_SESSION['MaGV'];
 
 
 $listClassActive  =  listClassOfTeacher($connection, $maGV, 'Đang mở');
+
 $listClassClose  =  listClassOfTeacher($connection, $maGV, 'Đã đóng');
 $listSchedules =  listSchedules($connection);
 $listStudentOfClass =  studentOfClass($connection, $maGV);
@@ -16,6 +17,7 @@ $detailTeacher = selectTeacher($connection, $maGV);
 
 $jslistDD =  json_encode($listDD);
 $jslistClassClose = json_encode($listClassClose);
+$jslistClassActive = json_encode($listClassActive);
 $jslistStudentOfClass = json_encode($listStudentOfClass);
 $jsmaGV  =  json_encode($maGV);
 $jstenGV  =  json_encode($tenGV);
@@ -102,7 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $la =  selectSoBuoiDaToChuc($connection, $class);
         $soBDTC =  $la[0]['SoBuoiDaToChuc'] - 1;
 
-        if ($soBDTC != 0)
+   
             updateSoBuoiDaToChuc($connection, $soBDTC, $class);
 
         header("Location: homeTeacher.php");
@@ -395,6 +397,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <script>
     var ds_diemdanh = <?php print_r($jslistDD); ?>;
     var ds_lopDong = <?php print_r($jslistClassClose); ?>;
+    var ds_lopMo = <?php print_r($jslistClassActive); ?>;
     var ds_hocsinh = <?php print_r($jslistStudentOfClass); ?>;
     var MaGV = <?php print_r($jsmaGV); ?>;
     var tenGV = <?php print_r($jstenGV); ?>;

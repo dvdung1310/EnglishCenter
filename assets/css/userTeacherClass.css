@@ -116,11 +116,14 @@
     border-radius: 7px;
 }
 
-#close:hover{
+#close:hover  {
     opacity: 0.7;
     cursor: pointer;
 }
 
+#tbody-listStudent-add input:hover{
+    cursor: pointer;
+}
 #attendance ,#attendance-add {
     text-align: center;
     margin-left: 15%;

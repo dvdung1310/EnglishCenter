@@ -19,9 +19,9 @@ if ($dataClass['TrangThai'] == 'Chưa mở') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (isset($_POST['deleteClass'])) {
-        $listMaHD =  selectMaHD($connection,$malop);
-        foreach($listMaHD as $hd){
-            deleteLSTHP($connection,$hd['MaHD']);
+        $listMaHD =  selectMaHD($connection, $malop);
+        foreach ($listMaHD as $hd) {
+            deleteLSTHP($connection, $hd['MaHD']);
         }
         $result = deleteClassById($malop, $connection);
         header("Location: ListClass.php");
@@ -98,25 +98,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         updateClass_TeacherByID($malop, $teacher, $newTeacher, $TeacherSalarie, $newTeacherSalarie, $connection);
 
-        if(isset($_POST['startDiscount'])){
+        if (isset($_POST['startDiscount'])) {
             $startDiscount = $_POST['startDiscount'];
-        }else{
+        } else {
             $startDiscount = '2023-1-1';
         }
 
-        if(isset($_POST['endDiscount'])){
+        if (isset($_POST['endDiscount'])) {
             $endDiscount = $_POST['endDiscount'];
-        }else{
+        } else {
             $endDiscount = '2023-1-1';
         }
 
-        if(isset($_POST['discountpercent'])){
+        if (isset($_POST['discountpercent'])) {
             $Discount = $_POST['discountpercent'];
-        }else{
+        } else {
             $Discount = 0;
         }
 
-        editDiscountFull($malop,$startDiscount,$endDiscount,$Discount,$connection);
+        editDiscountFull($malop, $startDiscount, $endDiscount, $Discount, $connection);
 
         header("Location: DetailsClass.php?maLop=$classcode");
         exit();
@@ -129,6 +129,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $mahsDiscount = $list['MaHS'];
             $x = 'discount' . $i++;
             $discount = $_POST[$x];
+
+            $discount = str_replace('%', '', $discount);
             editDiscount($discount, $mahsDiscount, $malop, $connection);
         }
         header("Location: DetailsClass.php?maLop=$malop");
@@ -207,14 +209,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         <?php
-        if($dataClass['TrangThai'] == 'Chưa mở'):?>
-            #piechart_3d{
-                display: none;
-            }
-        <?php endif ?>
-        
+        if ($dataClass['TrangThai'] == 'Chưa mở') : ?>#piechart_3d {
+            display: none;
+        }
 
-        */
+        <?php endif ?>*/
     </style>
 </head>
 
@@ -227,12 +226,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </div>
         <nav>
             <ul>
-            <li><a style="color: #0088cc;"href="./ListClass.php">Quản lý lớp học</a></li>
+                <li><a style="color: #0088cc;" href="./ListClass.php">Quản lý lớp học</a></li>
                 <li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
                 <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
                 <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
                 <li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
-                <li><a  href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+                <li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
                 <li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
 
             </ul>
@@ -275,7 +274,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <td id="" contenteditable="false"><?php echo $dataClass['LuaTuoi']; ?></td>
                             </tr>
                             <tr>
-                                <th>Thời gian tạo lớp:</th>
+                                <th>Thời gian bắt đầu khóa học:</th>
                                 <td id="teacher-date" contenteditable="false"><?php echo convertDateFormat($dataClass['ThoiGian']); ?></td>
                             </tr>
                             <tr>
@@ -291,7 +290,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </tr>
                             <tr>
                                 <th>Học phí/buổi:</th>
-                                <td id="teacher-qq" contenteditable="false"><?php echo numberWithCommas($dataClass['HocPhi']); ?>VND</td>
+                                <td id="teacher-qq" contenteditable="false"><?php echo numberWithCommas($dataClass['HocPhi']) . ' VND'; ?></td>
                             </tr>
                             <tr>
                                 <th>Tổng số buổi đã dạy:</th>
@@ -328,7 +327,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         $TeacherSalarie = $nameTeachers['TienTraGV'];
                                     };
 
-                                    echo numberWithCommas($TeacherSalarie);
+                                    echo numberWithCommas($TeacherSalarie) . ' VND';
                                     ?>
                                 </td>
                             </tr>
@@ -336,14 +335,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <tr>
                                 <th>Khuyến mại : </th>
                                 <td>
-                                <?php
-                                $discount = getDiscount($malop,$connection);
-                               
-                                if(empty($discount['GiamHocPhi'])){
-                                    echo '0%';
-                                }else{
-                                    echo $discount['GiamHocPhi'].'%';
-                                }                                
+                                    <?php
+                                    $discount = getDiscount($malop, $connection);
+
+                                    if (empty($discount['GiamHocPhi'])) {
+                                        echo '0%';
+                                    } else {
+                                        echo $discount['GiamHocPhi'] . '%';
+                                    }
                                     ?>
                                 </td>
                             </tr>
@@ -377,7 +376,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <label for="classAge">Lứa tuổi:<label id="lbclassAge" style="color:red; font-size:13px ; font-style: italic "></label></label>
                         <input type="text" id="classAge" name="classAge" value="<?php echo $dataClass['LuaTuoi']; ?>">
 
-                        <label for="classTimeOpen">Thời gian tạo lớp:<label id="lbclassTimeOpen" style="color:red; font-size:13px ; font-style: italic "></label></label>
+                        <label for="classTimeOpen">Thời gian bắt đầu khóa học:<label id="lbclassTimeOpen" style="color:red; font-size:13px ; font-style: italic "></label></label>
                         <input type="date" id="classTimeOpen" name="classTimeOpen" value="<?php echo $dataClass['ThoiGian']; ?>">
                         <br>
 
@@ -458,37 +457,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <br>
                         <label for="condition">Giảm giá:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
                         <p>
-                        <?php
-                                $discount = getDiscount($malop,$connection);
-                               
-                                if(empty($discount['GiamHocPhi'])){
-                                    echo '0%';
-                                }
-                                ?>
-                                <?php
-                                if(empty($discount['GiamHocPhi'])):?>
-                                 <button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px;" type="button" onclick="addDiscount()">Thêm khuyến mại</button>
-                                <div id="addDiscount">
-                               </div>
+                            <?php
+                            $discount = getDiscount($malop, $connection);
 
-                               <?php else: ?><br>
-                                
-                                <label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label>
-                              Thời gian bắt đầu : <input type="date" name="startDiscount" id="startDiscount" value="<?php echo $discount['TGBatDau']?>"><br>
-                              Thời gian kết thúc : <input type="date" name="endDiscount" id="endDiscount" value="<?php echo $discount['TGKetThuc']?>"><br>
-                              Khuyến mại : <input type="text" name="discountpercent" id="discountpercent" style="width: 40%;" value="<?php echo $discount['GiamHocPhi']?>">
-                              <label id="lbvv1"></label>
-                               <?php endif ?>
+                            if (empty($discount['GiamHocPhi'])) {
+                                echo '0%';
+                            }
+                            ?>
+                            <?php
+                            if (empty($discount['GiamHocPhi'])) : ?>
+                                <button style="background-color: chartreuse; border: 1px solid #fff; border-radius:5px ; padding: 5px 4px;" type="button" onclick="addDiscount()">Thêm khuyến mại</button>
+                        <div id="addDiscount">
+                        </div>
 
-                               
+                    <?php else : ?><br>
 
-                            
-                                  
-                        </p>
-                        
+                        <label class="lbStyle" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label>
+                        Thời gian bắt đầu : <input type="date" name="startDiscount" id="startDiscount" value="<?php echo $discount['TGBatDau'] ?>"><br>
+                        Thời gian kết thúc : <input type="date" name="endDiscount" id="endDiscount" value="<?php echo $discount['TGKetThuc'] ?>"><br>
+                        Khuyến mại : <input type="text" name="discountpercent" id="discountpercent" style="width: 40%;" value="<?php echo $discount['GiamHocPhi'] ?>">
+                        <label id="lbvv1"></label>
+                    <?php endif ?>
 
 
-                        <input type="submit" id='update' name="update" value="Sửa">
+
+
+
+                    </p>
+
+
+
+                    <input type="submit" id='update' name="update" value="Sửa">
                     </form>
 
                     <div id="card-container"></div>
@@ -535,11 +534,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             echo $numberAbsences['Absences'];
                                             ?></td>
                                         <td>
-                                            <input name="discount<?php echo $discountNumber++ ?>" style="border:none" type="text" placeholder="<?php
-                                                                                                                                                $discount = discount($mahs, $malop, $connection);
-                                                                                                                                                echo $discount['GiamHocPhi'];
-                                                                                                                                                echo '%';
-                                                                                                                                                ?>">
+                                            <input name="discount<?php echo $discountNumber++ ?>" style="border:none" type="text" value="<?php
+                                                                                                                                            $discount = discount($mahs, $malop, $connection);
+                                                                                                                                            echo $discount['GiamHocPhi'];
+                                                                                                                                            echo '%';
+                                                                                                                                            ?>">
                                         </td>
                                     </tr>
                                 <?php endforeach ?>
@@ -562,10 +561,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <tr>
                                 <th>STT</th>
                                 <th>Thời gian</th>
-                                <th>Sỉ số</th>
+                                <th>Sĩ số</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="listdday">
 
                             <?php $listTime = ListTimeAttendance($malop, $connection);
                             $j = 1;
@@ -575,7 +574,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <td><?php echo $j++ ?></td>
                                     <td><?php echo convertDateFormat($data['ThoiGian']) ?></td>
                                     <td><?php
-                                        $totalStudent = TotalStudentByTime($data['ThoiGian'],$malop, $connection);
+                                        $totalStudent = TotalStudentByTime($data['ThoiGian'], $malop, $connection);
                                         echo $totalStudent['total'] . '/' . $dataClass['SLHS']  ?></td>
                                 </tr>
 
@@ -616,7 +615,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         <td>
                                                             <div class="squaredcheck">
                                                                 <input onclick="showCheckBox(<?php echo $dataStudentTime['MAHS']; ?>)" <?php echo ($dataStudentTime['dd'] == 1) ? 'checked' : ''; ?> type="checkbox" id="squaredcheck<?php echo $dataStudentTime['MAHS'] ?>" id="<?php echo $dataStudentTime['MAHS']; ?>" name="<?php echo $dataStudentTime['MAHS']; ?>" value="<?php echo $dataStudentTime['dd']; ?>" class="checkbox <?php echo ($dataStudentTime['dd'] == 1) ? 'green' : 'red'; ?>">
-                                                                <?php echo ($dataStudentTime['dd'] == 1) ? 'có' : 'không'; ?>
+                                                                <?php echo ($dataStudentTime['dd'] == 1) ? '' : ''; ?>
                                                                 <label for="squaredcheck<?php echo $dataStudentTime['MAHS'] ?>"></label>
 
                                                             </div>
@@ -633,7 +632,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                             }
                                             $listDD = json_encode($arr);
                                             ?>
-                                            <input type="submit" id="submitDiemDanh" value="Sửa" name="submitDiemDanh">
+                                            <!-- <input type="submit" id="submitDiemDanh" value="Sửa" name="submitDiemDanh"> -->
                                         </form>
                                     </table>
                                 </div>
@@ -650,7 +649,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
     <!-- thống kê -->
     <div id="piechart_3d" style="width: 100%; height: 500px;"></div>
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js">
+
+    </script>
     <script type="text/javascript">
         google.charts.load("current", {
             packages: ["corechart"]
@@ -661,8 +662,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             var data = google.visualization.arrayToDataTable([
                 ['Đi học', 'Nghỉ học'],
                 <?php $a = getCountDD(1, $malop, $connection);
-                $b = getCountDD(0, $malop, $connection)
-                ?>['Đi học', <?php echo $a['dihoc'] ?>],
+                $b = getCountDD(0, $malop, $connection);
+              
+                ?>
+                ['Đi học', <?php echo $a['dihoc'] ?>],
                 ['Nghỉ học', <?php echo $b['dihoc'] ?>],
             ]);
 
@@ -722,7 +725,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     };
 
     var jsonListStudents = <?php echo $jsonListStudents ?>;
-    console.log(jsonListStudents);
+
     const submit_discount = document.getElementById('discount');
     submit_discount.addEventListener('click', function(event) {
         const formdiscount = document.getElementById('form_discount');
@@ -737,13 +740,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }, 1000);
 
     })
-   var buttonClicked = false;
+    var buttonClicked = false;
+
     function addDiscount() {
         buttonClicked = true;
-		var container = document.getElementById("addDiscount");
-		var card = document.createElement("div");
-		card.className = "card";
-		card.innerHTML = `
+        var container = document.getElementById("addDiscount");
+        var card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
 		<label class="" id="lbdiscount" style="color:red; font-size:13px ; font-style: italic "></label>
 							Thời gian bát đầu : <input type="date" name="startDiscount" id="startDiscount" ><br>
 							Thời gian kết thúc: <input type="date" name="endDiscount" id="endDiscount"> <br>
@@ -751,17 +755,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label id="lbvv2"></label>
 							<button class="delete-button" onclick="deleteDiscount(this)">Xóa khuyến mại :</button>
   `;
-		container.appendChild(card);
-	}
+        container.appendChild(card);
+    }
 
-	function deleteDiscount(button) {
+    function deleteDiscount(button) {
         buttonClicked = false;
-		var index = button.getAttribute("data-index");
-		var card = button.parentNode;
-		var container = card.parentNode;
-		container.removeChild(card);
+        var index = button.getAttribute("data-index");
+        var card = button.parentNode;
+        var container = card.parentNode;
+        container.removeChild(card);
 
-	}
+    }
 </script>
 
 </html>

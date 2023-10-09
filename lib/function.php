@@ -122,7 +122,7 @@ function checkAcountParents($userName, $passWord, $connection)
 //  check tài khoản GIAO VIEN có trong database hay ko ?
 function checkAcountTeacher($userName, $passWord, $connection)
 {
-    $sql = "select * from tk_gv where BINARY  userName = ? and BINARY  passWord = ? ";
+    $sql = "select * from tk_gv where   UserName = ? and   Password = ? ";
     try {
         $statement = $connection->prepare($sql);
         $statement->execute([$userName, $passWord]);

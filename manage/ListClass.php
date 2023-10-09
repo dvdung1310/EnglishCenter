@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			$schedules2 = "schedules2";
 		}
 
-		$price = trim($_POST['price']);
+		$price = str_replace(',', '', $_POST['price']); 
 		$numberlessons = trim($_POST['numberlessons']);
 		$students = trim($_POST['students']);
 
@@ -54,7 +54,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 			if ($schedules2 != "schedules2") {
 				$schedulesClass2 = CreateSchedules_Class($schedules2, $maLop, $connection);
 			}
-			$tientraGV = $_POST['TeacherSalarie'];
+			$tientraGV = str_replace(',', '', $_POST['TeacherSalarie']);
+			
 			$teacherClass = CreateTeacher_Class($teachers, $maLop, $tientraGV, $connection);
 			if ($teacherClass && isset($_POST['startDiscount']) && isset($_POST['endDiscount']) && isset($_POST['discountpercent'])) {
 				insertDiscount($_POST['startDiscount'], $_POST['endDiscount'], $_POST['discountpercent'], $maLop, $connection);
@@ -95,13 +96,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		</div>
 		<nav>
 			<ul>
-			<li><a style="color: #0088cc;"href="./ListClass.php">Quản lý lớp học</a></li>
-                <li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
-                <li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
-                <li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
-                <li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
-                <li><a  href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
-                <li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
+				<li><a style="color: #0088cc;" href="./ListClass.php">Quản lý lớp học</a></li>
+				<li><a href="../manage/ManageStudent.php">Quản lý học viên</a></li>
+				<li><a href="../manage/manageTeacher.php">Quản lý giáo viên</a></li>
+				<li><a href="../manage/manageParent.php">Quản lý phụ huynh</a></li>
+				<li><a href="../manage/ManageFinance.php">Quản lý tài chính</a></li>
+				<li><a href="../manage/manageStatistical.php">Báo cáo thống kê</a></li>
+				<li><a href="../pages/home/home.php" style="display: flex;"><img src="../assets/images/icon-logout.png" alt="" style="width:20px"></a></li>
 
 			</ul>
 		</nav>
@@ -132,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 				<?php
 				if ($dataClassOnOff != null) :
 					foreach ($dataClassOnOff as $datas) :
-						var_dump($datas);
+						
 						$maLop = $datas['MaLop'];
 						$nameTeacher = dataTeacherByMaLop($maLop, $connection);
 						$schedules = dataSchedulesByMaLop($maLop, $connection); ?>
@@ -193,7 +194,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 							<label for="classAge">Lứa tuổi:<label class="lbStyle" id="lbclassAge" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br><input style="width:40%" type="text" id="classAge" name="classAge" placeholder="Nhập lứa tuổi...">
 							<br>
-							<label for="classTimeOpen">Thời gian tạo lớp:</label>
+							<label for="classTimeOpen">Thời gian bắt đầu khóa học:</label>
 							<input type="date" id="classTimeOpen" name="classTimeOpen" placeholder="Nhập thời gian..."><label id="lbclassTimeOpen" style="color:red; font-size:13px ; font-style: italic "></label>
 							<br>
 
@@ -214,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 							<br>
 							<label for="price">Học phí/buổi:<label class="lbStyle" id="lbprice" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<br><input style="width:40%" type="text" id="price" name="price" placeholder="Nhập học phí...">
+							<br><input style="width:40%" type="text" id="price" name="price" placeholder="Nhập học phí..." oninput="formatNumber(this)" >
 							<br>
 							<label for="numberlessons">Tổng số buổi học:<label class="lbStyle" id="lbnumberlessons" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br><input style="width:40%" type="text" id="numberlessons" name="numberlessons" placeholder="Nhập số buổi học...">
@@ -233,8 +234,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 								<?php endforeach; ?>
 							</select>
 							<br><label for="TeacherSalarie">Lương giáo viên/buổi:<label class="lbStyle" id="lbTeacherSalarie" style="color:red; font-size:13px ; font-style: italic "></label></label>
-							<br> <input style="width:40%" type="text" id="TeacherSalarie" name="TeacherSalarie" placeholder="Nhập lương giáo viên">
-<br>
+							<br> <input style="width:40%" type="text" id="TeacherSalarie" name="TeacherSalarie" placeholder="Nhập lương giáo viên" oninput="formatNumber(this)">
+							<br>
 							<label for="condition">Trạng thái:<label class="lbStyle" id="lbcondition" style="color:red; font-size:13px ; font-style: italic "></label></label>
 							<br><select name="SelectCondition" id="SelectCondition">
 								<option value="">Trạng thái</option>
@@ -551,6 +552,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 	//         })
 	//     })
 	// })
+	function numberWithCommas(x) {
+		return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+	}
+	function parseNumericValue(value) {
+    return parseInt(value.replace(/,/g, ''));
+}
+
+	document.getElementById('TeacherSalarie').addEventListener('blur', function() {
+		var value = parseNumericValue(this.value);
+
+		if (!value) {
+			this.value = '';
+		} else {
+			this.value = numberWithCommas(value);
+
+		}
+
+	});
+	document.getElementById('lbprice').addEventListener('blur', function() {
+		var value = parseNumericValue(this.value);
+
+		if (!value) {
+			this.value = '';
+		} else {
+			this.value = numberWithCommas(value);
+
+		}
+
+	});
+
+	function formatNumber(input) {
+    let value = input.value;
+   
+    value = value.replace(/[^\d,]/g, '');
+   
+    value = value.replace(/,/g, '');
+   
+    value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    input.value = value;
+}
+
+
+	
 </script>
 
 

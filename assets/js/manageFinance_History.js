@@ -99,7 +99,7 @@ function hienthids(kind, dsHoaDon_vl) {
             }
 
             html_last += '<tr>';
-            html_last += '<td style="width:100px "></td>';
+            html_last += '<td style="width:100px;display: flex; align-items: center"><div style="background-color:#84e3b5; width:10px; height:10px"> </div>: Thu <div style="background-color:#ffd093; width:10px; height:10px;margin-left:10px"> </div>: Chi</td>';
             html_last += '<td></td>';
             html_last += '<td>Tổng: ' + numberWithCommas(tongSoTien) + '</td>';
             html_last += '<td>Thu: ' + numberWithCommas(tongThu) + '</td>';

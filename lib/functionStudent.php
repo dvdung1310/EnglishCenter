@@ -151,6 +151,7 @@
             echo $e->getMessage();
         }
     }
+    
 
     // truy vấn ma hdhocphi cua lop
 function selectMaHD( $connection, $malop)
@@ -262,7 +263,7 @@ function deleteLSTHP($connection,$mahd)
     // select ds hs_lop cung tt lop
     
     function lisths_lop($connection){
-        $sql = "SELECT MaHS, lop.MaLop , lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi, lop.SoBuoi, lop.SoBuoiDaToChuc, lop.TrangThai , hs_lop.SoBuoiNghi , hs_lop.GiamHocPhi , giaovien.TenGV FROM `hs_lop` inner JOIN lop INNER JOIN gv_lop INNER JOIN giaovien WHERE hs_lop.MaLop = lop.MaLop AND lop.MaLop = gv_lop.MaLop AND gv_lop.MAGV = giaovien.MaGV;";
+        $sql = "SELECT MaHS, lop.MaLop , lop.TenLop, lop.LuaTuoi, lop.ThoiGian, lop.SLHS, lop.SLHSToiDa, lop.HocPhi, lop.SoBuoi, lop.SoBuoiDaToChuc, lop.TrangThai , hs_lop.SoBuoiNghi , hs_lop.GiamHocPhi , giaovien.TenGV FROM `hs_lop` inner JOIN lop INNER JOIN gv_lop INNER JOIN giaovien WHERE hs_lop.MaLop = lop.MaLop AND lop.MaLop = gv_lop.MaLop AND gv_lop.MAGV = giaovien.MaGV order  by TrangThai desc; ";
 
         try{
             $connection -> setAttribute(PDO:: ATTR_ERRMODE, PDO:: ERRMODE_EXCEPTION);
@@ -329,3 +330,5 @@ function deleteLSTHP($connection,$mahd)
 
 
 ?>
+
+

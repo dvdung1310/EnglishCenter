@@ -248,7 +248,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <td style="color: #0088cc" id="" contenteditable="false"><?php echo $dataClass['LuaTuoi']; ?></td>
                         </tr>
                         <tr>
-                            <th style="color:#ffd95c">Thời gian tạo lớp:</th>
+                            <th style="color:#ffd95c">Thời gian bắt đầu khóa học:</th>
                             <td style="color: #0088cc" id="teacher-date" contenteditable="false"><?php echo convertDateFormat($dataClass['ThoiGian']); ?></td>
                         </tr>
                         <tr>
@@ -299,6 +299,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 foreach ($nameTeacher as $nameTeachers) {
                                     echo  $TeacherSalarie = $nameTeachers['TrinhDo'];
                                 };
+                                ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th style="color: #0088cc">Khuyến mại :</th>
+                            <td style="color: #0088cc">
+                                <?php
+                                $discount = getDiscount($malop, $connection);
+
+                                if (empty($discount['GiamHocPhi'])) {
+                                    echo '0%';
+                                } else {
+                                    echo $discount['GiamHocPhi'] . '%'.'    &emsp; &emsp; (Từ '.$discount['TGBatDau'].' đến '.$discount['TGKetThuc'].')';
+                                }
                                 ?>
                             </td>
                         </tr>

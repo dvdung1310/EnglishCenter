@@ -139,7 +139,7 @@ include $path_dir . '/database.php';
 function searchChiPhiKhac($connection, $key)
 {
     $sql = "SELECT MaHD, TenHD, LoaiHD, ThoiGian, SoTien, ThoiGianTT, TrangThai  FROM chiphikhac WHERE  
-         MaHD like :key or TenHD like :key or LoaiHD like :key or ThoiGian like :key or SoTien like :key or ThoiGianTT like :key  or TrangThai like :key";
+         MaHD like :key or TenHD like :key or LoaiHD like :key or ThoiGian like :key or SoTien like :key or ThoiGianTT like :key  or TrangThai like :key order by MaHD desc";
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement =  $connection->prepare($sql);

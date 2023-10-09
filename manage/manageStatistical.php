@@ -196,7 +196,6 @@ $jslistCountClass = json_encode($listCountClass);
     var countLopHD = <?php print_r($jslistCountClassAcitve); ?>;
     var ds_LopHD = <?php print_r($jslistClassActive); ?>;
     var countGender = <?php print_r($jslistCountGender); ?>;
-
     var countAge = <?php print_r($jslistCountAge); ?>;
 
     var ds_DangKyHoc = <?php print_r($jslistHSDangKyHoc); ?>;

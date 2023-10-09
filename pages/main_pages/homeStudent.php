@@ -22,6 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   }
 }
 
+$lopghp = selectClassGHP($connection);
+
 $jstenHS = json_encode($tenHS);
 $jsdetailStudent = json_encode($detailStudent);
 
@@ -59,6 +61,7 @@ $jsdetailStudent = json_encode($detailStudent);
       text-decoration: none;
       color: #fff;
     }
+
     .menubar-nav:hover {
       background-color: turquoise;
     }
@@ -553,7 +556,7 @@ $jsdetailStudent = json_encode($detailStudent);
       <!-- danh sach lop hoc -->
       <div class="instrucment-wrap">
         <div class="instruct-inner">
-          <div class="instruct-title">Danh sách lớp </div>
+          <div class="instruct-title">Danh sách lớp sắp mở</div>
           <div class="instruct-content">
             <div class="instruct-slide">
               <div class="slider-for-instruct instructSlider">
@@ -588,17 +591,27 @@ $jsdetailStudent = json_encode($detailStudent);
                   foreach ($nameTeacher as $name) {
                     $s = $name['TenGV'];
                   }
+
+
+                  $gph =  discount($listClassOn['MaLop'], $connection);
                 ?>
                   <div class="instructNav-item">
                     <div class="instruct-item-wrap">
                       <div class="introNavImg">
-                        <div class="listClassOn<?php echo $i++ ?>">
+                        <div class="listClassOn<?php echo $i++ ?>" style="    height: 267px;">
                           <a href="                          
                           registerClass.php?malop=<?php echo $listClassOn['MaLop'] ?>                          
                           ">
                             <p> Mã lớp: <?php echo $listClassOn['MaLop'] ?></p>
                             <p> Tên lớp: <?php echo $listClassOn['TenLop'] ?></p>
-                            <p> Tên giáo viên: <?php echo $s ?></p>
+                            <p> Giáo viên: <?php echo $s ?></p>
+                            <p>
+                              <?php if ($gph['GiamHocPhi'] > 0)
+                                echo 'Giảm học phí: ' . $gph['GiamHocPhi'] . "%".'<br>'.'(Từ '. convertDateFormat($gph['TGBatDau']).' đến '.convertDateFormat($gph['TGKetThuc']).') ' ?>
+                                </p>
+
+
+
                           </a>
                         </div>
                       </div>
@@ -684,12 +697,12 @@ $jsdetailStudent = json_encode($detailStudent);
     </div>
   </div>
   </div>
-<a href="../../assets/images/"></a>
+  <a href="../../assets/images/"></a>
   <script>
-     var tenHS = <?php print_r($jstenHS); ?>;
-     var detailStudent = <?php print_r($jsdetailStudent); ?>;
+    var tenHS = <?php print_r($jstenHS); ?>;
+    var detailStudent = <?php print_r($jsdetailStudent); ?>;
 
-  const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
+    const authMenuBarHTMl = ` <div class="PageMenuBar" style ="position:absolute">
 <a class="PageLogoWrap" href="../main_pages/homeStudent.php">
     <img src="../../assets/images/logo-web.png" class="PageLogoImg"/>
 </a>
@@ -716,27 +729,26 @@ $jsdetailStudent = json_encode($detailStudent);
 </div>
 
 </div>`
-  //isAuthentication === true
-  document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
-  var $ = document.querySelector.bind(document)
-var $$ = document.querySelectorAll.bind(document)
+    //isAuthentication === true
+    document.querySelector("#menu-bar").innerHTML = authMenuBarHTMl
+    var $ = document.querySelector.bind(document)
+    var $$ = document.querySelectorAll.bind(document)
 
 
-$(".menubar-drop-btn").onclick = ()=>{
-   
-    $(".menubar-dropdown-menu").classList.toggle("menubar-show")
- 
-}
+    $(".menubar-drop-btn").onclick = () => {
 
-var img2 = document.querySelector(".menubar-avt");
-    if (detailStudent[0].GioiTinh == "Nam") {
-    
-        img2.src = "../../assets/images/Student-male-icon.png";
-    } else {
-        
-        img2.src = "../../assets/images/Student-female-icon.png";
+      $(".menubar-dropdown-menu").classList.toggle("menubar-show")
+
     }
 
+    var img2 = document.querySelector(".menubar-avt");
+    if (detailStudent[0].GioiTinh == "Nam") {
+
+      img2.src = "../../assets/images/Student-male-icon.png";
+    } else {
+
+      img2.src = "../../assets/images/Student-female-icon.png";
+    }
   </script>
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
   <!--boostrap.js-->
@@ -746,7 +758,7 @@ var img2 = document.querySelector(".menubar-avt");
   <script type="text/javascript" src="../../plugins/slick-1.8.1/slick/slick.min.js">
   </script>
   <script src="../home/home.js"></script>
- 
+
   <!-- <script src="../common/menubar.js"></script> -->
 </body>
 

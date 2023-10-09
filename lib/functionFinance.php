@@ -82,7 +82,7 @@ function attendOfMonth($connection, $month, $year)
 
     $finish = date("Y-m-t", strtotime($begin));
 
-    $sql = 'SELECT MaLop, MaHS, COUNT(*) AS "SoBuoiDiemDanh" FROM diemdanh WHERE ThoiGian BETWEEN ? AND ? AND dd = true GROUP BY MaLop, MaHS';
+    $sql = 'SELECT MaLop, MaHS, COUNT(*) AS "SoBuoiDiemDanh" FROM diemdanh WHERE ThoiGian BETWEEN ? AND ? AND dd = "1" GROUP BY MaLop, MaHS';
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement = $connection->prepare($sql);
@@ -151,7 +151,7 @@ function searchHDHocPhi($connection, $key)
 {
     $sql = "SELECT hdhocphi.MaHS , MaHD, TenHD,MaLop , ThoiGian, SoTien, GiamHocPhi,SoTienGiam, SoTienPhaiDong, SoTienDaDong, NoPhiConLai,TrangThai ,hocsinh.TenHS, hocsinh.GioiTinh, hocsinh.NgaySinh, hocsinh.Tuoi, hocsinh.DiaChi, hocsinh.SDT, hocsinh.Email  FROM `hdhocphi` INNER JOIN hocsinh WHERE hdhocphi.MaHS = hocsinh.MaHS and
 
-         (MaHD like :key or TenHD like :key or ThoiGian like :key or TrangThai like :key or hocsinh.TenHS like :key or MaLop like :key )";
+         (MaHD like :key or TenHD like :key or ThoiGian like :key or TrangThai like :key or hocsinh.TenHS like :key or MaLop like :key ) order by MaHD desc";
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement = $connection->prepare($sql);
@@ -238,7 +238,7 @@ function deleteLSTHPbyMaHD($connection, $mahd)
 //select lsthp
 function listLSTHP($connection)
 {
-    $sql = "select * from lsthp";
+    $sql = "select * from lsthp order by ThoiGian desc";
     try {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         $statement = $connection->prepare($sql);

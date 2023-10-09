@@ -54,6 +54,7 @@ var chart_classActiveChar = null;
 var countLopHD_year = [];
 var SoLop = [];
 
+
 filterByYear(new Date().getFullYear());
 filterCountLopDong(new Date().getFullYear())
 
@@ -136,6 +137,7 @@ function createclassActiveChart() {
 
 var selectYear = document.getElementById('select-year');
 selectYear.addEventListener('change', function () {
+
     var currentYear = selectYear.value;
     filterByYear(currentYear);
     filterCountLopDong(currentYear);
@@ -146,6 +148,7 @@ selectYear.addEventListener('change', function () {
 
 /// ds lop hoat dong theo nam
 function filterByYear(year) {
+    countLopHD_year = [];
     countLopHD_year = Array.from({ length: 12 }, () => 0);
 
     countLopHD.forEach(function (item) {
@@ -166,7 +169,7 @@ function filterCountLopDong(year) {
             previousMonth = 12;
         }
         var currentMonthData = ds_LopHD.filter(function (item) {
-            return item.Thang === month && item.Nam === year;
+            return item.Thang == month && item.Nam == year;
         });
 
         var previousMonthData = ds_LopHD.filter(function (item) {
@@ -180,13 +183,22 @@ function filterCountLopDong(year) {
         });
 
         var count = 0;
+
         for (var i = 0; i < previousMonthData.length; i++) {
             var existsInCurrentMonth = currentMonthData.some(function (item) {
+
                 return item.MaLop == previousMonthData[i].MaLop;
             });
             if (!existsInCurrentMonth) {
+
                 count++;
+
             }
+
+
+        }
+        if ((month > (new Date().getMonth() + 1)) && (year == (new Date().getFullYear()))) {
+            count = 0;
         }
         SoLop.push(count);
     }
@@ -337,7 +349,7 @@ function createStudentChar() {
     var data = {
         labels: ["Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"],
         total: tongSoHS,
-        hocDiHoc: soHSDKHoc, 
+        hocDiHoc: soHSDKHoc,
         hocKhongHoc: soHSKHoc
     };
 
@@ -346,7 +358,7 @@ function createStudentChar() {
     if (chart_StudentChar) {
         chart_StudentChar.destroy();
     }
-     chart_StudentChar = new Chart(ctx, {
+    chart_StudentChar = new Chart(ctx, {
         type: "bar",
         data: {
             labels: data.labels,
@@ -396,7 +408,7 @@ function createStudentChar() {
                         weight: 'bold',
                         color: '#333333'
                     }
-        
+
                 }
             }
         }
@@ -407,7 +419,17 @@ function createStudentChar() {
 
 
 function filterByYear_Hs(year) {
-    soHSDKHoc = Array.from({ length: 12 }, () => 0);
+    var currentMonth = new Date().getMonth() + 1;
+
+    var currentYear = new Date().getFullYear();
+    if(year == currentYear){
+        soHSDKHoc = Array.from({ length: currentMonth }, () => 0);
+
+    }
+    else{
+        soHSDKHoc = Array.from({ length: 12 }, () => 0);
+    }
+   
 
     ds_DangKyHoc.forEach(function (item) {
         if (item.Nam == year) {
@@ -422,14 +444,14 @@ selectYear_hs.addEventListener('change', function () {
     selectedYear = selectYear_hs.value;
     filterByYear_Hs(selectedYear);
     countTotal();
-    soHSKHoc = tongSoHS.map((value, index) => value - soHSDKHoc[index]); 
+    soHSKHoc = tongSoHS.map((value, index) => value - soHSDKHoc[index]);
     createStudentChar();
 });
 
 
 function countTotal() {
     tongSoHS = [];
-    
+
 
     for (var i = 1; i <= 12; i++) {
         var monthData = {
@@ -444,6 +466,15 @@ function countTotal() {
             if (((monthData.Thang >= ds_HSTang[j].Thang) && (monthData.Nam == ds_HSTang[j].Nam)) || (monthData.Nam > ds_HSTang[j].Nam)) {
                 s += ds_HSTang[j].so;
             }
+        }
+
+    
+        var currentMonth = new Date().getMonth() + 1;
+
+        var currentYear = new Date().getFullYear();
+
+        if( ((monthData.Thang > currentMonth) && (monthData.Nam == currentYear)) || (monthData.Nam > currentYear)){
+            s = 0;
         }
         monthData.so = s;
 
@@ -500,9 +531,9 @@ var year = today.getFullYear();
 var currentDate = day + '-' + month + '-' + year;
 
 var html = '<h3> Tính đến ngày ' + currentDate + ' :</h3> <br>';
-    html += '<ul> <li> Tổng số lớp đã mở : ' + ds_tongLop[2].so +'</li>  ';
-    html += ' <li> Tổng số lớp đang hoạt động : ' + ds_tongLop[0].so +'</li>  ';
-    html += '<li> Tổng số lớp đã hoàn thành : ' + ds_tongLop[1].so +'</li>  </ul>';
+html += '<ul> <li> Tổng số lớp đã mở : ' + (ds_tongLop[0].so + ds_tongLop[1].so) + '</li>  ';
+html += ' <li> Tổng số lớp đang hoạt động : ' + ds_tongLop[0].so + '</li>  ';
+html += '<li> Tổng số lớp đã hoàn thành : ' + ds_tongLop[1].so + '</li>  </ul>';
 
 
 

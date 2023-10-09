@@ -45,7 +45,7 @@ function createStudentChar() {
                     type: "line",
                     label: "Chi",
                     data: data.soChi,
-                    borderColor: "rgba(54, 162, 235, 1)",
+                    borderColor: "rgba(255, 99, 132, 1)",
                     borderWidth: 2,
                     fill: false
                 },
@@ -53,7 +53,7 @@ function createStudentChar() {
                     type: "line",
                     label: "Thu",
                     data: data.soThu,
-                    borderColor: "rgba(255, 99, 132, 1)",
+                    borderColor: "rgba(54, 162, 235, 1)",
                     borderWidth: 2,
                     fill: false
                 }
@@ -189,14 +189,31 @@ function tinhTyLeLoiNhuan(tyLeLoiNhuan, tongDoanhThu) {
             tyLeLoiNhuan.push(parseFloat(0).toFixed(2));
         }
         else if (doanhThuTruoc == 0 && doanhThuHienTai != 0) {
+            if(doanhThuHienTai>0)
             tyLeLoiNhuan.push(parseFloat(100).toFixed(2));
+            else
+            tyLeLoiNhuan.push(parseFloat(-100).toFixed(2));
         }
         else {
-            if (doanhThuTruoc < 0 && doanhThuHienTai < 0) {
-                var tyLe = (-((doanhThuHienTai - doanhThuTruoc) / doanhThuTruoc)) * 100;
+         if(doanhThuTruoc >0 && doanhThuHienTai >0){
+                var tyLe = ((doanhThuHienTai - doanhThuTruoc) / doanhThuTruoc )*100;
             }
-            else
-                var tyLe = ((doanhThuHienTai - doanhThuTruoc) / doanhThuTruoc) * 100;
+            else if (doanhThuTruoc <0 && doanhThuHienTai <0){
+                var tyLe = -((  Math.abs(doanhThuHienTai)  - Math.abs(doanhThuTruoc) ) / Math.abs(doanhThuTruoc)) * 100;
+
+            }
+            else if (doanhThuTruoc >0 && doanhThuHienTai <0){
+            
+                var tyLe = -((  Math.abs(doanhThuHienTai)  + Math.abs(doanhThuTruoc) ) / Math.abs(doanhThuTruoc)) * 100;
+
+            }
+            else if (doanhThuTruoc <0 && doanhThuHienTai >0){
+                var tyLe = ((  Math.abs(doanhThuHienTai)  + Math.abs(doanhThuTruoc) ) / Math.abs(doanhThuTruoc)) * 100;
+
+            }
+         
+            
+
             tyLeLoiNhuan.push(parseFloat(tyLe).toFixed(2));
         }
     }

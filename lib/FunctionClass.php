@@ -21,7 +21,7 @@ function listSchedules($connection)
 // danh sách giáo viên
 function listTeacher($connection)
 {
-    $sql = "SELECT * FROM giaovien";
+    $sql = "SELECT * FROM giaovien order by TenGV asc" ;
     try {
         $stmt = $connection->query($sql);
         $data = array();
@@ -286,22 +286,22 @@ function updateClassbyID(
     $connection
 ) {
 
-    $sql = "update lop set TenLop = ? , LuaTuoi = ?, ThoiGian= ?, SLHS= ? , 
+    $sql = "update lop set TenLop = ? , LuaTuoi = ?, ThoiGian= ?, 
     SLHSToiDa = ?, HocPhi = ?,SoBuoi = ?,
-     SoBuoiDaToChuc = ? ,  TrangThai = ? 
+     TrangThai = ? 
       where MaLop = ?";
     try {
         $statement =  $connection->prepare($sql);
         $statement->bindParam(1, $TenLop);
         $statement->bindParam(2, $LuaTuoi);
         $statement->bindParam(3, $ThoiGian);
-        $statement->bindParam(4, $SLHS);
-        $statement->bindParam(5, $SLHSToiDa);
-        $statement->bindParam(6, $HocPhi);
-        $statement->bindParam(7, $SoBuoi);
-        $statement->bindParam(8, $SoBuoiDaToChuc);
-        $statement->bindParam(9, $TrangThai);
-        $statement->bindParam(10, $MaLop);
+     
+        $statement->bindParam(4, $SLHSToiDa);
+        $statement->bindParam(5, $HocPhi);
+        $statement->bindParam(6, $SoBuoi);
+    
+        $statement->bindParam(7, $TrangThai);
+        $statement->bindParam(8, $MaLop);
         $statement->execute();
     } catch (PDOException $e) {
         echo $e->getMessage();
